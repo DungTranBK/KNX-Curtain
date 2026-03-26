@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "*.h": "c",
+        "*.c": "c"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "clangd.arguments": [
+        "--compile-commands-dir=${workspaceFolder}/build",
+        "--background-index",
+        "--clang-tidy",
+        "--fallback-style=Google"
+    ]
+}

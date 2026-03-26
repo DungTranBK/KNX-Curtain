@@ -1,0 +1,141 @@
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+&uart00 {
+    status = "okay";
+    current-speed = <57600>;
+    pinctrl-0 = <&uart00_default_custom>;
+    pinctrl-1 = <&uart00_sleep_custom>;
+    pinctrl-names = "default", "sleep";
+};
+
+&lfxo {
+    status = "disabled";
+};
+
+&uart30 {
+    status = "disabled";
+};
+
+&wdt31 {
+    status = "okay";
+};
+
+&pinctrl {
+    uart00_default_custom: uart00_default_custom {
+        group1 {
+            psels = <NRF_PSEL(UART_TX, 2, 7)>, <NRF_PSEL(UART_RX, 2, 8)>;
+            bias-pull-up;
+        };
+    };
+
+    uart00_sleep_custom: uart00_sleep_custom {
+        group1 {
+            psels = <NRF_PSEL(UART_TX, 2, 7)>, <NRF_PSEL(UART_RX, 2, 8)>;
+            low-power-enable;
+        };
+    };
+};
+
+/* Disable standard buttons and LEDs to avoid conflicts */
+/delete-node/ &button0;
+/delete-node/ &button2;
+/delete-node/ &button3;
+/delete-node/ &led0;
+/delete-node/ &led1;
+/delete-node/ &led2;
+/delete-node/ &led3;
+
+
+/ {
+    /* Main Button */
+    buttons {
+        compatible = "gpio-keys";
+        main_button: button_1 {
+            gpios = <&gpio2 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>; /* P1.13 */
+            label = "Main Button";
+            zephyr,code = <INPUT_KEY_0>;
+        };
+    };
+
+    /* RGB LEDs */
+    leds {
+        compatible = "gpio-leds";
+        led_red: led_red {
+            gpios = <&gpio1 0 0>; /* P0.02 */
+            label = "Red LED";
+        };
+        led_green: led_green {
+            gpios = <&gpio1 11 0>; /* P0.03 */
+            label = "Green LED";
+        };
+        led_blue: led_blue {
+            gpios = <&gpio1 1 0>; /* P0.04 */
+            label = "Blue LED";
+        };
+    };
+
+    /* 4 Latching Relays */
+    relays {
+        compatible = "custom,latching-relays";
+        relay_0: relay_0 {
+            on-gpios = <&gpio2 3 GPIO_ACTIVE_HIGH>;   /* P2.03 */
+            off-gpios = <&gpio2 4 GPIO_ACTIVE_HIGH>;  /* P2.04 */
+        };
+        relay_1: relay_1 {
+            on-gpios = <&gpio2 5 GPIO_ACTIVE_HIGH>;   /* P2.05 */
+            off-gpios = <&gpio2 6 GPIO_ACTIVE_HIGH>;  /* P2.06 */
+        };
+        relay_2: relay_2 {
+            on-gpios = <&gpio2 9 GPIO_ACTIVE_HIGH>;   /* P2.09 */
+            off-gpios = <&gpio2 10 GPIO_ACTIVE_HIGH>; /* P2.10 */
+        };
+        relay_3: relay_3 {
+            on-gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>;   /* P0.00 */
+            off-gpios = <&gpio0 1 GPIO_ACTIVE_HIGH>;  /* P0.01 */
+        };
+    };
+
+    /* Software I2C (bit-bang) on P2.0/P2.1 for AT24C02 EEPROM */
+    i2c_gpio: i2c_gpio {
+        compatible = "gpio-i2c";
+        sda-gpios = <&gpio2 0 (GPIO_OPEN_DRAIN | GPIO_PULL_UP)>;
+        scl-gpios = <&gpio2 1 (GPIO_OPEN_DRAIN | GPIO_PULL_UP)>;
+        clock-frequency = <I2C_BITRATE_STANDARD>;
+        #address-cells = <1>;
+        #size-cells = <0>;
+        status = "okay";
+    };
+
+    aliases {
+        sw0 = &main_button;
+        sw1 = &main_button;
+        sw2 = &main_button;
+        sw3 = &main_button;
+        led0 = &led_red;
+        led1 = &led_green;
+        led2 = &led_blue;
+        led3 = &led_red;
+        relay0 = &relay_0;
+        relay1 = &relay_1;
+        relay2 = &relay_2;
+        relay3 = &relay_3;
+        watchdog0 = &wdt31;
+    };
+};
+
+/* UART20 - Keep for console but ensure it doesn't conflict */
+&uart20_default {
+    group1 {
+        psels = <NRF_PSEL(UART_TX, 1, 4)>; /* Keep standard TX on P1.04 */
+    };
+    group2 {
+        psels = <NRF_PSEL(UART_RX, 1, 3)>, <NRF_PSEL(UART_CTS, 1, 7)>;
+    };
+};
+/delete-node/ &{/pin-controller/spi00_default/group1/};
+
+&spi00 {
+    /delete-property/ cs-gpios;
+    zephyr,deferred-init;
+};
+/delete-node/ &{/pin-controller/spi00_sleep/group1/};

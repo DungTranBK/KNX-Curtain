@@ -1,0 +1,17 @@
+description: Container for latching relay channels
+
+compatible: "custom,latching-relays"
+
+child-binding:
+  description: A single latching relay channel with ON and OFF GPIO pins
+
+  properties:
+    on-gpios:
+      type: phandle-array
+      required: true
+      description: GPIO pin for turning the relay ON
+
+    off-gpios:
+      type: phandle-array
+      required: true
+      description: GPIO pin for turning the relay OFF

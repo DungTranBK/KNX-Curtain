@@ -1,0 +1,38 @@
+{
+    "configurations": [
+        {
+            "name": "nRF Connect SDK",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/include/driver",
+                "c:/ncs/v3.0.1/zephyr/include",
+                "c:/ncs/v3.0.1/zephyr/include/zephyr",
+                "c:/ncs/v3.0.1/zephyr/arch/arm/include",
+                "c:/ncs/v3.0.1/modules/hal/nordic/nrfx",
+                "c:/ncs/v3.0.1/modules/hal/nordic/nrfx/drivers/include",
+                "c:/ncs/v3.0.1/modules/hal/nordic/nrfx/mdk"
+            ],
+            "defines": [
+                "CONFIG_GPIO=1",
+                "CONFIG_SERIAL=1",
+                "CONFIG_UART_INTERRUPT_DRIVEN=1",
+                "DK_LIBRARY=1"
+            ],
+            "compilerPath": "c:/ncs/toolchains/31f4403e35/opt/zephyr-sdk/arm-zephyr-eabi/bin/arm-zephyr-eabi-gcc.exe",
+            "cStandard": "c99",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "gcc-arm",
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": "${workspaceFolder}/.vscode/browse.vc.db",
+                "path": [
+                    "${workspaceFolder}/**",
+                    "c:/ncs/v3.0.1/zephyr/include",
+                    "c:/ncs/v3.0.1/modules/hal/nordic/nrfx"
+                ]
+            }
+        }
+    ],
+    "version": 4
+}

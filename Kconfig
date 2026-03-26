@@ -1,0 +1,31 @@
+source "Kconfig.zephyr"
+
+config KNX_ACTUATOR_4_RELAY
+	bool "Enable Provisioner mode on demo"
+	default false
+
+config WATCHDOG_PROCESS_TIMEOUT_MS
+	int "Watchdog timeout value [ms]"
+	default 12000
+	range 1000 120000
+	help
+	  Timeout của watchdog timer. Sau thời gian này thiết bị sẽ tự động reset.
+	  
+	  Phân tích các tác vụ dài nhất:
+	  - Factory reset: ~4 giây (3s delay + 1.2s processing)
+	  - Fast provisioning: 30-60 giây (có timeout riêng 60s)
+	  - Mesh operations: thường < 10 giây
+	  - Flash operations: < 5 giây
+	  
+	  Timeout 12 giây:
+	  - Phát hiện treo nhanh (12 giây)
+	  - Feed interval: 4 giây (timeout/3) - số nguyên, đảm bảo feed kịp thời
+	  - Margin: 8 giây - rất an toàn, chịu được delay lớn trong work queue
+	  - Đủ cho hầu hết tác vụ ngắn và trung bình
+	  
+	  Lưu ý: Với timeout 12 giây, các tác vụ dài (>12s) có thể bị reset.
+	  Fast provisioning có timeout riêng 60s và có thể retry nếu bị reset.
+	  
+	  Range hỗ trợ bởi Nordic: 1 ms - 130,023,423 ms (~36 giờ)
+	  Giá trị mặc định: 12000 ms (12 giây)
+
