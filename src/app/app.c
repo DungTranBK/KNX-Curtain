@@ -310,7 +310,7 @@ int app_get_curtain_current_position(uint8_t curtain_idx,
                                     HOZ_DZ3WP = 3
                                     VER_220V = 4
      2. VD_CONFIG_CURTAIN_LIMIT_TIME (cmd: 0x40)
-        - Curtain Limit time (4 bytes): 0x00000000 - 0xFFFFFFFF (1s - 10800s)
+        - Curtain Limit time (4 bytes): 0x00000000 - 0x012c (1s - 300s)
           NOTE: MSB first (same as uint16_t, uint32_t...)
  * @retval 0 on success, -1 on failure
  */
