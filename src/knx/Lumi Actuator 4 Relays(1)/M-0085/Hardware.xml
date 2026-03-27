@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<KNX CreatedBy="kaenx-creator" ToolVersion="1.0.0" xmlns="http://knx.org/xml/project/20">
+  <ManufacturerData>
+    <Manufacturer RefId="M-0085">
+      <Hardware>
+        <Hardware Id="M-0085_H-RL.2D4CH.2D2025-1" Name="KNX 4-Channel Relay Hardware" SerialNumber="RL-4CH-2025" VersionNumber="1" BusCurrent="10" HasIndividualAddress="1" HasApplicationProgram="1">
+          <Products>
+            <Product Id="M-0085_H-RL.2D4CH.2D2025-1_P-RL0042025" Text="Lumi Actuator 4 Relays" OrderNumber="RL0042025" IsRailMounted="1" DefaultLanguage="en-US" Hash="AnLjbePVzg1aJqn1Pw+TsXZNpRw=">
+              <RegistrationInfo RegistrationStatus="Registered" RegistrationSignature="Zzmo4mg1v8WHv+sNWDEm108AMiKVOBTSHE24mTeXzEGprVEBUpydpXIPMUbUbGKQLGz4YMq24FAU1ErO42mODRAsiMlriuphe8o37uTiYL0MnSerAKnJkb+R8IpPSSU0m0tsA5bzxOWX/604uMI4oxE7PL+DfFdzJDa35MB7WU0=" />
+            </Product>
+          </Products>
+          <Hardware2Programs>
+            <Hardware2Program Id="M-0085_H-RL.2D4CH.2D2025-1_HP-07E9-01-1D78" MediumTypes="MT-0" Hash="LuXxN5Yjz3d4WDruyqdNJFn4DJ0=">
+              <ApplicationProgramRef RefId="M-0085_A-07E9-01-1D78" />
+              <RegistrationInfo RegistrationStatus="Registered" RegistrationNumber="0001/11" RegistrationSignature="FoTHKI1AALnGXDbjhmuf85HnKP2jmX1qQD9rcdFwX8DYoF3NMBlh4oBb0hmM2APvUcVlUX2Rxd+7X38Oee7DWBTPwfCeY476ByQDE24j6WV6l/d5RwUzgCQ2Lm+4CRG/kAwR0k86sqhCtmh72d7VpgYrENcse/4luNNgKAVyJAE=" />
+            </Hardware2Program>
+          </Hardware2Programs>
+        </Hardware>
+      </Hardware>
+      <Languages>
+        <Language Identifier="en-US">
+          <TranslationUnit RefId="M-0085_H-RL.2D4CH.2D2025-1_P-RL0042025">
+            <TranslationElement RefId="M-0085_H-RL.2D4CH.2D2025-1_P-RL0042025">
+              <Translation AttributeName="Text" Text="Lumi Actuator 4 Relays" />
+            </TranslationElement>
+          </TranslationUnit>
+        </Language>
+      </Languages>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>

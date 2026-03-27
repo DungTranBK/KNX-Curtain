@@ -49,6 +49,7 @@
 #include "../include/execution_scene.h"
 #include "../include/fact.h"
 #include "../include/fast_provision.h"
+#include "../include/knx_adapter.h"
 #include "../include/led.h"
 #include "../include/led_ev.h"
 #include "../include/mesh_node.h"
@@ -251,6 +252,9 @@ static void bt_ready(int err) {
 
   /* Init curtain */
   curtain_init();
+
+  /* Initialize KNX adapter */
+  knx_adapter_init();
 
   /* Initialize relay module */
   err = relay_init();

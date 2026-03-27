@@ -1,0 +1,147 @@
+#include "knx_facade.h"
+
+#include "knx/bits.h"
+
+#ifndef KNX_NO_AUTOMATIC_GLOBAL_INSTANCE
+
+#if (defined(ARDUINO_ARCH_STM32) || \
+        defined(ARDUINO_ARCH_ESP32) || \
+        defined(ARDUINO_ARCH_ESP8266) || \
+        defined(ARDUINO_ARCH_SAMD) || \
+        defined(ARDUINO_ARCH_RP2040)) || \
+        defined(LIBRETINY) || \
+        (defined(__ZEPHYR__) || defined(CONFIG_NRF_CONNECT_SDK))
+
+// Only ESP8266 and ESP32 have this define. For all other platforms this is just empty.
+#ifndef IRAM_ATTR
+    #define IRAM_ATTR
+#endif
+
+#ifndef PROG_BTN_PRESS_MIN_MILLIS
+    #define PROG_BTN_PRESS_MIN_MILLIS 50
+#endif
+
+#ifndef PROG_BTN_PRESS_MAX_MILLIS
+    #define PROG_BTN_PRESS_MAX_MILLIS 500
+#endif
+
+#if defined(__ZEPHYR__) || defined(CONFIG_NRF_CONNECT_SDK)
+    #include <zephyr/kernel.h>
+    #define GET_MILLIS() k_uptime_get()
+#else
+    #define GET_MILLIS() millis()
+#endif
+
+IRAM_ATTR void buttonEvent()
+{
+    static uint32_t lastEvent = 0;
+    static uint32_t lastPressed = 0;
+
+    uint32_t diff = GET_MILLIS() - lastEvent;
+
+    if (diff >= PROG_BTN_PRESS_MIN_MILLIS && diff <= PROG_BTN_PRESS_MAX_MILLIS)
+    {
+        if (GET_MILLIS() - lastPressed > 200)
+        {
+            knx.toggleProgMode();
+            lastPressed = GET_MILLIS();
+        }
+    }
+
+    lastEvent = GET_MILLIS();
+}
+#endif
+
+#ifdef ARDUINO_ARCH_SAMD
+    // predefined global instance for TP or RF or TP/RF coupler
+    #if MASK_VERSION == 0x07B0
+        KnxFacade<SamdPlatform, Bau07B0> knx(buttonEvent);
+    #elif MASK_VERSION == 0x27B0
+        KnxFacade<SamdPlatform, Bau27B0> knx(buttonEvent);
+    #elif MASK_VERSION == 0x2920
+        KnxFacade<SamdPlatform, Bau2920> knx(buttonEvent);
+    #else
+        #error "Mask version not supported on ARDUINO_ARCH_SAMD"
+    #endif
+#elif defined(ARDUINO_ARCH_RP2040)
+    // predefined global instance for TP or RF or IP or TP/RF coupler or TP/IP coupler
+    #if MASK_VERSION == 0x07B0
+        KnxFacade<RP2040ArduinoPlatform, Bau07B0> knx(buttonEvent);
+    #elif MASK_VERSION == 0x27B0
+        KnxFacade<RP2040ArduinoPlatform, Bau27B0> knx(buttonEvent);
+    #elif MASK_VERSION == 0x57B0
+        KnxFacade<RP2040ArduinoPlatform, Bau57B0> knx(buttonEvent);
+    #elif MASK_VERSION == 0x2920
+        KnxFacade<RP2040ArduinoPlatform, Bau2920> knx(buttonEvent);
+    #elif MASK_VERSION == 0x091A
+        KnxFacade<RP2040ArduinoPlatform, Bau091A> knx(buttonEvent);
+    #else
+        #error "Mask version not supported on ARDUINO_ARCH_RP2040"
+    #endif
+
+#elif defined(ARDUINO_ARCH_ESP8266)
+    // predefined global instance for TP or IP or TP/IP coupler
+    #if MASK_VERSION == 0x07B0
+        KnxFacade<EspPlatform, Bau07B0> knx(buttonEvent);
+    #elif MASK_VERSION == 0x57B0
+        KnxFacade<EspPlatform, Bau57B0> knx(buttonEvent);
+    #elif MASK_VERSION == 0x091A
+        KnxFacade<EspPlatform, Bau091A> knx(buttonEvent);
+    #else
+        #error "Mask version not supported on ARDUINO_ARCH_ESP8266"
+    #endif
+
+#elif defined(ARDUINO_ARCH_ESP32)
+    // predefined global instance for TP or IP or TP/IP coupler
+    #if MASK_VERSION == 0x07B0
+        KnxFacade<Esp32Platform, Bau07B0> knx(buttonEvent);
+    #elif MASK_VERSION == 0x57B0
+        KnxFacade<Esp32Platform, Bau57B0> knx(buttonEvent);
+    #elif MASK_VERSION == 0x091A
+        KnxFacade<Esp32Platform, Bau091A> knx(buttonEvent);
+    #else
+        #error "Mask version not supported on ARDUINO_ARCH_ESP32"
+    #endif
+
+#elif defined(LIBRETINY)
+    // predefined global instance for TP or IP or TP/IP coupler
+    #if MASK_VERSION == 0x07B0
+        KnxFacade<LibretinyPlatform, Bau07B0> knx(buttonEvent);
+    #elif MASK_VERSION == 0x57B0
+        KnxFacade<LibretinyPlatform, Bau57B0> knx(buttonEvent);
+    #elif MASK_VERSION == 0x091A
+        KnxFacade<LibretinyPlatform, Bau091A> knx(buttonEvent);
+    #else
+        #error "Mask version not supported on LIBRETINY"
+    #endif
+
+#elif defined(ESP_PLATFORM)
+    // predefined global instance for TP or IP or TP/IP coupler
+    #if MASK_VERSION == 0x07B0
+        KnxFacade<Esp32IdfPlatform, Bau07B0> knx(buttonEvent);
+    #elif MASK_VERSION == 0x57B0
+        KnxFacade<Esp32IdfPlatform, Bau57B0> knx(buttonEvent);
+    #elif MASK_VERSION == 0x091A
+        KnxFacade<Esp32IdfPlatform, Bau091A> knx(buttonEvent);
+    #else
+        #error "Mask version not supported on ESP_IDF_ESP32"
+    #endif
+
+#elif defined(ARDUINO_ARCH_STM32)
+    #if MASK_VERSION == 0x07B0
+        KnxFacade<Stm32Platform, Bau07B0> knx(buttonEvent);
+    #else
+        #error "Mask version not supported on ARDUINO_ARCH_STM32"
+    #endif
+#elif defined(__ZEPHYR__) || defined(CONFIG_NRF_CONNECT_SDK)
+    // predefined global instance for TP only
+    #if MASK_VERSION == 0x07B0
+        KnxFacade<NordicPlatform, Bau07B0> knx(buttonEvent);
+    #else
+        #error "Mask version not supported on Nordic/Zephyr"
+    #endif
+#else // Non-Arduino platforms and Linux platform
+    // no predefined global instance
+#endif
+
+#endif // KNX_NO_AUTOMATIC_GLOBAL_INSTANCE

@@ -1,5 +1,4 @@
 #include "../../include/app.h"
-#include "../../include/at24c02.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -12,10 +11,12 @@
 #include <zephyr/sys/byteorder.h>
 
 #include "../../include/app_device.h"
+#include "../../include/at24c02.h"
 #include "../../include/button.h"
 #include "../../include/curtain.h"
 #include "../../include/fact.h"
 #include "../../include/fast_provision.h"
+#include "../../include/knx_adapter.h"
 #include "../../include/led.h"
 #include "../../include/led_ev.h"
 #include "../../include/mesh_node.h"
@@ -36,6 +37,11 @@ LOG_MODULE_REGISTER(app, CONFIG_LOG_DEFAULT_LEVEL);
 #define I2C_DEV_NODE DT_NODELABEL(i2c_gpio)
 #define AT24C02_TEST_INTERVAL_MS 5000
 
+/* TODO, KNX Forward Declaration for KNX bridge */
+int app_handle_control_curtain_from_knx(uint8_t curtain_idx,
+                                        CurtainControlId_enum cmd_id,
+                                        uint8_t position);
+
 /**
  * @brief Handle sending sensor data to Bluetooth Mesh
  */
@@ -54,8 +60,8 @@ const uint8_t button_config_arr[] = {CONFIG_BTN_ID_BLUETOOTH,
 
 typedef enum {
   STEP_IDLE,
-  STEP_HOLD_10S,         // wait release
-  STEP_HOLD_10S_RELEASE, // wait press one time
+  STEP_HOLD_10S,          // wait release
+  STEP_HOLD_10S_RELEASE,  // wait press one time
   STEP_WAIT_REBOOT_AFTER_RESET,
   STEP_INVALID,
 } StepReset_Enum;
@@ -155,74 +161,76 @@ void button_handle_btn_event(uint8_t button_id, uint8_t evt) {
   }
   if (idx == CONFIG_BUTTON_IDX) {
     switch (evt) {
-    case START_PRESS:
-      if (led_get_blink_led_flag() == BLINK_IDLE) {
-        led_off_all();
-      }
-      k_sleep(K_MSEC(100));
-      led_refresh(BACKUP_MASK);
-      break;
-
-    case PRESS_ONE_TIME:
-      if (para_btn_reset.step != STEP_HOLD_10S_RELEASE) {
-        // TODO, KNX enable/disable configuration mode
-        break;
-      }
-      if (para_btn_reset.is_active == true) {
-        if (!clock_time_exceed_ms(para_btn_reset.is_active_st_time,
-                                  CONFIRM_RESET_TIMEOUT_MS)) {
-          // TODO, KNX clear ETS data
-          LOG_INF("\n KNX CLEAR ETS DATA");
-        } else {
-          button_check_clean_reset_param();
-          LOG_INF("\n Confirm reset KNX timeout");
+      case START_PRESS:
+        if (led_get_blink_led_flag() == BLINK_IDLE) {
+          led_off_all();
         }
-        led_enable_queue();
-      }
-      break;
-
-    case PRESS_TWO_TIME:
-      if (para_btn_reset.step != STEP_HOLD_10S_RELEASE) {
-        network_enable_provisioning_with_timeout();
+        k_sleep(K_MSEC(100));
+        led_refresh(BACKUP_MASK);
         break;
-      }
-      if (para_btn_reset.is_active == true) {
-        if (!clock_time_exceed_ms(para_btn_reset.is_active_st_time,
-                                  CONFIRM_RESET_TIMEOUT_MS)) {
-          factory_reset_and_reboot();
-          LOG_INF("\n BLE mesh OUT_NETWORK");
-        } else {
-          button_check_clean_reset_param();
-          LOG_INF("\n Confirm reset Bluetooth timeout");
+
+      case PRESS_ONE_TIME:
+        if (para_btn_reset.step != STEP_HOLD_10S_RELEASE) {
+          // TODO, KNX enable/disable configuration mode
+          knx_toggle_prog_mode();
+          break;
         }
-        led_enable_queue();
-      }
-      break;
-
-    case HOLD_10S:
-      led_disable_current_command_and_queue_with_timeout(
-          CONFIRM_RESET_TIMEOUT_MS);
-      // led_off_all();
-      led_blink_no_queue(CONFIG_LED_MASK, 2, LAST_STATE_REFRESH_LED,
-                         LED_COLOR_BLUE, 200);
-      update_reset_by_btn_step(STEP_HOLD_10S);
-      break;
-
-    case _RELEASE:
-    case RL_AFTER_PRESS:
-      if (para_btn_reset.step == STEP_HOLD_10S) {
-        if (!clock_time_exceed_ms(para_btn_reset.change_step_last_t,
-                                  TIMER_2S)) {
-          update_reset_by_btn_step(STEP_HOLD_10S_RELEASE);
-          para_btn_reset.is_active = true;
-          para_btn_reset.is_active_st_time = clock_time_ms();
-          if (led_get_blink_led_flag() == BLINK_IDLE) {
-            led_refresh(CONFIG_LED_MASK);
+        if (para_btn_reset.is_active == true) {
+          if (!clock_time_exceed_ms(para_btn_reset.is_active_st_time,
+                                    CONFIRM_RESET_TIMEOUT_MS)) {
+            // TODO, KNX clear ETS data
+            knx_wipe_config();
+            LOG_INF("\n KNX CLEAR ETS DATA");
+          } else {
+            button_check_clean_reset_param();
+            LOG_INF("\n Confirm reset KNX timeout");
           }
-          LOG_INF("\n STEP_HOLD_10S_RELEASE");
+          led_enable_queue();
         }
-      }
-      break;
+        break;
+
+      case PRESS_TWO_TIME:
+        if (para_btn_reset.step != STEP_HOLD_10S_RELEASE) {
+          network_enable_provisioning_with_timeout();
+          break;
+        }
+        if (para_btn_reset.is_active == true) {
+          if (!clock_time_exceed_ms(para_btn_reset.is_active_st_time,
+                                    CONFIRM_RESET_TIMEOUT_MS)) {
+            factory_reset_and_reboot();
+            LOG_INF("\n BLE mesh OUT_NETWORK");
+          } else {
+            button_check_clean_reset_param();
+            LOG_INF("\n Confirm reset Bluetooth timeout");
+          }
+          led_enable_queue();
+        }
+        break;
+
+      case HOLD_10S:
+        led_disable_current_command_and_queue_with_timeout(
+            CONFIRM_RESET_TIMEOUT_MS);
+        // led_off_all();
+        led_blink_no_queue(CONFIG_LED_MASK, 2, LAST_STATE_REFRESH_LED,
+                           LED_COLOR_BLUE, 200);
+        update_reset_by_btn_step(STEP_HOLD_10S);
+        break;
+
+      case _RELEASE:
+      case RL_AFTER_PRESS:
+        if (para_btn_reset.step == STEP_HOLD_10S) {
+          if (!clock_time_exceed_ms(para_btn_reset.change_step_last_t,
+                                    TIMER_2S)) {
+            update_reset_by_btn_step(STEP_HOLD_10S_RELEASE);
+            para_btn_reset.is_active = true;
+            para_btn_reset.is_active_st_time = clock_time_ms();
+            if (led_get_blink_led_flag() == BLINK_IDLE) {
+              led_refresh(CONFIG_LED_MASK);
+            }
+            LOG_INF("\n STEP_HOLD_10S_RELEASE");
+          }
+        }
+        break;
     }
   }
 UPDATE_BTN_PAR:
@@ -238,8 +246,29 @@ UPDATE_BTN_PAR:
 /**
  * @brief Dispatch received serial frames to appropriate handlers.
  */
-void app_serial_dispatch(uint8_t *par, size_t par_len) {
+void app_serial_dispatch(uint8_t* par, size_t par_len) {
   // TODO, KNX handle incoming message from serial port
+}
+
+//============KNX============
+// Bridge: KNX -> Curtain logic
+void app_knx_shutter_move(bool going_down) {
+  LOG_INF("KNX -> SHUTTER MOVE: %s", going_down ? "DOWN" : "UP");
+  // position 0xFF for DOWN, 0x00 for UP
+  app_handle_control_curtain_from_knx(0, CURTAIN_CONTROL_ID_RUN,
+                                      going_down ? 0xFF : 0x00);
+}
+
+void app_knx_shutter_stop(void) {
+  LOG_INF("KNX -> SHUTTER STOP");
+  app_handle_control_curtain_from_knx(0, CURTAIN_CONTROL_ID_STOP, 0);
+}
+
+void app_knx_shutter_set_position(uint8_t percent) {
+  LOG_INF("KNX -> SHUTTER SET POSITION: %u%%", percent);
+  // Convert 0-100% to 0x00-0xFF
+  uint8_t curtain_pos = (uint8_t)((uint16_t)percent * 255 / 100);
+  app_handle_control_curtain_from_knx(0, CURTAIN_CONTROL_ID_RUN, curtain_pos);
 }
 
 /*
@@ -264,7 +293,7 @@ int app_handle_control_curtain_from_knx(uint8_t curtain_idx,
   memset(&level_set, 0, sizeof(level_set));
   level_set.level = position;
   level_set.type = cmd_id;
-  return handle_mesh_cmd_sig_g_level_set((u8 *)&level_set,
+  return handle_mesh_cmd_sig_g_level_set((u8*)&level_set,
                                          sizeof(vd_cmd_g_level_set_t), &cb_par);
 }
 
@@ -276,9 +305,14 @@ int app_handle_control_curtain_from_knx(uint8_t curtain_idx,
 void app_handle_curtain_update_level(uint8_t curtain_idx,
                                      uint8_t current_position) {
   // TODO, KNX send state change to KNX bus
-  LOG_INF("KNX: app_handle_curtain_update_level: curtain_idx=%d, "
-          "current_position=%d",
-          curtain_idx, current_position);
+  LOG_INF(
+      "KNX: app_handle_curtain_update_level: curtain_idx=%d, "
+      "current_position=%d",
+      curtain_idx, current_position);
+
+  // Convert 0x00-0xFF back to 0-100% for KNX feedback
+  uint8_t knx_pct = (uint8_t)((uint16_t)current_position * 100 / 255);
+  knx_send_position_status(knx_pct);
 }
 
 /**
@@ -288,7 +322,7 @@ void app_handle_curtain_update_level(uint8_t curtain_idx,
  * @retval 0 on success, -1 on failure
  */
 int app_get_curtain_current_position(uint8_t curtain_idx,
-                                     uint8_t *current_position) {
+                                     uint8_t* current_position) {
   if (curtain_idx >= RELAY_COUNT || current_position == NULL) {
     return -1;
   }
@@ -314,7 +348,7 @@ int app_get_curtain_current_position(uint8_t curtain_idx,
           NOTE: MSB first (same as uint16_t, uint32_t...)
  * @retval 0 on success, -1 on failure
  */
-int app_handle_set_curtain_config(int model_idx, uint8_t *par, int par_len,
+int app_handle_set_curtain_config(int model_idx, uint8_t* par, int par_len,
                                   uint8_t cmd) {
   if (cmd == VD_CONFIG_CURTAIN_TYPE_OPT ||
       cmd == VD_CONFIG_CURTAIN_LIMIT_TIME) {
@@ -330,7 +364,7 @@ int app_handle_set_curtain_config(int model_idx, uint8_t *par, int par_len,
 */
 bool knx_ets_has_been_configured(void) {
   // TODO, KNX check ETS has been configured
-  return false;
+  return knx_is_configured();
 }
 
 /* ============================================================================
@@ -373,7 +407,7 @@ void app_handle_refresh_led(uint16_t mask) {
   }
 }
 
-static void app_super_loop(void *p1, void *p2, void *p3) {
+static void app_super_loop(void* p1, void* p2, void* p3) {
   ARG_UNUSED(p1);
   ARG_UNUSED(p2);
   ARG_UNUSED(p3);

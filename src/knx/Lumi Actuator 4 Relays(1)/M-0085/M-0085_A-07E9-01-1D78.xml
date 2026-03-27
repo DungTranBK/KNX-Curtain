@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<KNX CreatedBy="kaenx-creator" ToolVersion="1.0.0" xmlns="http://knx.org/xml/project/20">
+  <ManufacturerData>
+    <Manufacturer RefId="M-0085">
+      <ApplicationPrograms>
+        <ApplicationProgram Id="M-0085_A-07E9-01-1D78" ApplicationNumber="2025" ApplicationVersion="1" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="Lumi Actuator 4 Relays" DefaultLanguage="en-US" LoadProcedureStyle="MergedProcedure" PeiType="0" DynamicTableManagement="false" Linkable="false" IsSecureEnabled="true" MaxSecurityIndividualAddressEntries="500" MaxSecurityGroupKeyTableEntries="512" MinEtsVersion="5.0" Hash="HWzmqmbIYhuHhFfwMJS0eA==">
+          <Static>
+            <Code>
+              <RelativeSegment Id="M-0085_A-07E9-01-1D78_RS-04-00000" Name="Parameters" Offset="0" Size="28" LoadStateMachine="4" />
+            </Code>
+            <ParameterTypes>
+              <ParameterType Id="M-0085_A-07E9-01-1D78_PT-1" Name="1">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Disabled" Value="0" Id="M-0085_A-07E9-01-1D78_PT-1_EN-0" />
+                  <Enumeration Text="Switch" Value="1" Id="M-0085_A-07E9-01-1D78_PT-1_EN-1" />
+                  <Enumeration Text="Auto On/Off" Value="2" Id="M-0085_A-07E9-01-1D78_PT-1_EN-2" />
+                  <Enumeration Text="Momentary" Value="3" Id="M-0085_A-07E9-01-1D78_PT-1_EN-3" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-0085_A-07E9-01-1D78_PT-2" Name="2">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Restore last state" Value="0" Id="M-0085_A-07E9-01-1D78_PT-2_EN-0" />
+                  <Enumeration Text="Force OFF" Value="1" Id="M-0085_A-07E9-01-1D78_PT-2_EN-1" />
+                  <Enumeration Text="Force ON" Value="2" Id="M-0085_A-07E9-01-1D78_PT-2_EN-2" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-0085_A-07E9-01-1D78_PT-4" Name="4">
+                <TypeNumber Type="unsignedInt" minInclusive="0" maxInclusive="10800" SizeInBit="32" />
+              </ParameterType>
+              <ParameterType Id="M-0085_A-07E9-01-1D78_PT-5" Name="5">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Auto OFF" Value="0" Id="M-0085_A-07E9-01-1D78_PT-5_EN-0" />
+                  <Enumeration Text="Auto ON" Value="1" Id="M-0085_A-07E9-01-1D78_PT-5_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+            </ParameterTypes>
+            <Parameters>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-1" Name="R1_Mode" ParameterType="M-0085_A-07E9-01-1D78_PT-1" Text="Relay 1 Mode" Value="0">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="0" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-2" Name="R1_Startup" ParameterType="M-0085_A-07E9-01-1D78_PT-2" Text="Startup Behaviour" Value="0">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="1" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-3" Name="R1_AutoType" ParameterType="M-0085_A-07E9-01-1D78_PT-5" Text="Auto Mode Type" Value="0">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="2" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-5" Name="R1_Time" ParameterType="M-0085_A-07E9-01-1D78_PT-4" Text="Time Value (s)" Value="500">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="3" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-6" Name="R2_Mode" ParameterType="M-0085_A-07E9-01-1D78_PT-1" Text="Relay 2 Mode" Value="0">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="7" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-7" Name="R2_Startup" ParameterType="M-0085_A-07E9-01-1D78_PT-2" Text="Startup Behaviour" Value="0">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="8" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-8" Name="R2_AutoType" ParameterType="M-0085_A-07E9-01-1D78_PT-5" Text="Auto Mode Type" Value="0">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="9" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-10" Name="R2_Time" ParameterType="M-0085_A-07E9-01-1D78_PT-4" Text="Time Value (s)" Value="500">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="10" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-11" Name="R3_Mode" ParameterType="M-0085_A-07E9-01-1D78_PT-1" Text="Relay 3 Mode" Value="0">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="14" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-12" Name="R3_Startup" ParameterType="M-0085_A-07E9-01-1D78_PT-2" Text="Startup Behaviour" Value="0">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="15" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-13" Name="R3_AutoType" ParameterType="M-0085_A-07E9-01-1D78_PT-5" Text="Auto Mode Type" Value="0">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="16" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-15" Name="R3_Time" ParameterType="M-0085_A-07E9-01-1D78_PT-4" Text="Time Value (s)" Value="500">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="17" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-16" Name="R4_Mode" ParameterType="M-0085_A-07E9-01-1D78_PT-1" Text="Relay 4 Mode" Value="0">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="21" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-17" Name="R4_Startup" ParameterType="M-0085_A-07E9-01-1D78_PT-2" Text="Startup Behaviour" Value="0">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="22" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-18" Name="R4_AutoType" ParameterType="M-0085_A-07E9-01-1D78_PT-5" Text="Auto Mode Type" Value="0">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="23" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-07E9-01-1D78_P-20" Name="R4_Time" ParameterType="M-0085_A-07E9-01-1D78_PT-4" Text="Time Value (s)" Value="500">
+                <Memory CodeSegment="M-0085_A-07E9-01-1D78_RS-04-00000" Offset="24" BitOffset="0" />
+              </Parameter>
+            </Parameters>
+            <ParameterRefs>
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-1" Id="M-0085_A-07E9-01-1D78_P-1_R-1" Name="R1_Mode" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-2" Id="M-0085_A-07E9-01-1D78_P-2_R-2" Name="R1_Startup" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-3" Id="M-0085_A-07E9-01-1D78_P-3_R-3" Name="R1_AutoType" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-5" Id="M-0085_A-07E9-01-1D78_P-5_R-5" Name="R1_Time" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-6" Id="M-0085_A-07E9-01-1D78_P-6_R-6" Name="R2_Mode" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-7" Id="M-0085_A-07E9-01-1D78_P-7_R-7" Name="R2_Startup" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-8" Id="M-0085_A-07E9-01-1D78_P-8_R-8" Name="R2_AutoType" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-10" Id="M-0085_A-07E9-01-1D78_P-10_R-10" Name="R2_Time" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-11" Id="M-0085_A-07E9-01-1D78_P-11_R-11" Name="R3_Mode" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-12" Id="M-0085_A-07E9-01-1D78_P-12_R-12" Name="R3_Startup" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-13" Id="M-0085_A-07E9-01-1D78_P-13_R-13" Name="R3_AutoType" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-15" Id="M-0085_A-07E9-01-1D78_P-15_R-15" Name="R3_Time" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-16" Id="M-0085_A-07E9-01-1D78_P-16_R-16" Name="R4_Mode" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-17" Id="M-0085_A-07E9-01-1D78_P-17_R-17" Name="R4_Startup" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-18" Id="M-0085_A-07E9-01-1D78_P-18_R-18" Name="R4_AutoType" />
+              <ParameterRef RefId="M-0085_A-07E9-01-1D78_P-20" Id="M-0085_A-07E9-01-1D78_P-20_R-20" Name="R4_Time" />
+            </ParameterRefs>
+            <ComObjectTable>
+              <ComObject Id="M-0085_A-07E9-01-1D78_O-1" Name="Relay1_Switch" Text="Relay 1 Switch" Number="1" FunctionText="Switch" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="M-0085_A-07E9-01-1D78_O-2" Name="Relay1_Status" Text="Relay 1 Status" Number="2" FunctionText="Status" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="M-0085_A-07E9-01-1D78_O-3" Name="Relay2_Switch" Text="Relay 2 Switch" Number="3" FunctionText="Switch" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="M-0085_A-07E9-01-1D78_O-4" Name="Relay2_Status" Text="Relay 2 Status" Number="4" FunctionText="Status" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="M-0085_A-07E9-01-1D78_O-5" Name="Relay3_Switch" Text="Relay 3 Switch" Number="5" FunctionText="Switch" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="M-0085_A-07E9-01-1D78_O-6" Name="Relay3_Status" Text="Relay 3 Status" Number="6" FunctionText="Status" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="M-0085_A-07E9-01-1D78_O-7" Name="Relay4_Switch" Text="Relay 4 Switch" Number="7" FunctionText="Switch" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="M-0085_A-07E9-01-1D78_O-8" Name="Relay4_Status" Text="Relay 4 Status" Number="8" FunctionText="Status" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+            </ComObjectTable>
+            <ComObjectRefs>
+              <ComObjectRef RefId="M-0085_A-07E9-01-1D78_O-1" Id="M-0085_A-07E9-01-1D78_O-1_R-1" />
+              <ComObjectRef RefId="M-0085_A-07E9-01-1D78_O-2" Id="M-0085_A-07E9-01-1D78_O-2_R-2" />
+              <ComObjectRef RefId="M-0085_A-07E9-01-1D78_O-3" Id="M-0085_A-07E9-01-1D78_O-3_R-3" />
+              <ComObjectRef RefId="M-0085_A-07E9-01-1D78_O-4" Id="M-0085_A-07E9-01-1D78_O-4_R-4" />
+              <ComObjectRef RefId="M-0085_A-07E9-01-1D78_O-5" Id="M-0085_A-07E9-01-1D78_O-5_R-5" />
+              <ComObjectRef RefId="M-0085_A-07E9-01-1D78_O-6" Id="M-0085_A-07E9-01-1D78_O-6_R-6" />
+              <ComObjectRef RefId="M-0085_A-07E9-01-1D78_O-7" Id="M-0085_A-07E9-01-1D78_O-7_R-7" />
+              <ComObjectRef RefId="M-0085_A-07E9-01-1D78_O-8" Id="M-0085_A-07E9-01-1D78_O-8_R-8" />
+            </ComObjectRefs>
+            <AddressTable MaxEntries="65535" />
+            <AssociationTable MaxEntries="65535" />
+            <LoadProcedures>
+              <LoadProcedure MergeId="2">
+                <LdCtrlRelSegment AppliesTo="full" LsmIdx="4" Size="28" Mode="0" Fill="0" />
+              </LoadProcedure>
+              <LoadProcedure MergeId="4">
+                <LdCtrlWriteRelMem ObjIdx="4" Offset="0" Size="28" Verify="true" />
+              </LoadProcedure>
+            </LoadProcedures>
+            <Options SupportsExtendedMemoryServices="true" SupportsExtendedPropertyServices="true" />
+          </Static>
+          <Dynamic>
+            <Channel Text="General" Number="1" Id="M-0085_A-07E9-01-1D78_CH-1" Name="">
+              <ParameterBlock Id="M-0085_A-07E9-01-1D78_PB-1" Text="Product Information" Name="Product_Info">
+                <ParameterSeparator Id="M-0085_A-07E9-01-1D78_PS-1" Text="Model: Lumi Actuator 4 Relays" />
+                <ParameterSeparator Id="M-0085_A-07E9-01-1D78_PS-2" Text="Firmware: v1.0.0" />
+                <ParameterSeparator Id="M-0085_A-07E9-01-1D78_PS-3" Text="Hardware: v1.0" />
+                <ParameterSeparator Id="M-0085_A-07E9-01-1D78_PS-4" Text="Manufacturer: Lumi" />
+              </ParameterBlock>
+            </Channel>
+            <Channel Text="Relay" Number="2" Id="M-0085_A-07E9-01-1D78_CH-2" Name="">
+              <ParameterBlock Id="M-0085_A-07E9-01-1D78_PB-2" Text="Relay 1" Name="Relay1_Config">
+                <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-1_R-1" />
+                <choose ParamRefId="M-0085_A-07E9-01-1D78_P-1_R-1">
+                  <when test="1">
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-1_R-1" />
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-2_R-2" />
+                    <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-2_R-2" />
+                  </when>
+                  <when test="2">
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-1_R-1" />
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-2_R-2" />
+                    <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-3_R-3" />
+                    <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-5_R-5" />
+                  </when>
+                  <when test="3">
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-1_R-1" />
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-2_R-2" />
+                    <ParameterSeparator Id="M-0085_A-07E9-01-1D78_PS-5" Text="Mode: Momentary (Press-Release)" />
+                    <ParameterSeparator Id="M-0085_A-07E9-01-1D78_PS-6" Text="Device will automatically turn off after 500ms pulse." />
+                  </when>
+                </choose>
+              </ParameterBlock>
+              <ParameterBlock Id="M-0085_A-07E9-01-1D78_PB-3" Text="Relay 2" Name="Relay2_Config">
+                <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-6_R-6" />
+                <choose ParamRefId="M-0085_A-07E9-01-1D78_P-6_R-6">
+                  <when test="1">
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-3_R-3" />
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-4_R-4" />
+                    <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-7_R-7" />
+                  </when>
+                  <when test="2">
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-3_R-3" />
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-4_R-4" />
+                    <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-8_R-8" />
+                    <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-10_R-10" />
+                  </when>
+                  <when test="3">
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-3_R-3" />
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-4_R-4" />
+                    <ParameterSeparator Id="M-0085_A-07E9-01-1D78_PS-7" Text="Mode: Momentary (Press-Release)" />
+                    <ParameterSeparator Id="M-0085_A-07E9-01-1D78_PS-8" Text="Device will automatically turn off after 500ms pulse." />
+                  </when>
+                </choose>
+              </ParameterBlock>
+              <ParameterBlock Id="M-0085_A-07E9-01-1D78_PB-4" Text="Relay 3" Name="Relay3_Config">
+                <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-11_R-11" />
+                <choose ParamRefId="M-0085_A-07E9-01-1D78_P-11_R-11">
+                  <when test="1">
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-5_R-5" />
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-6_R-6" />
+                    <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-12_R-12" />
+                  </when>
+                  <when test="2">
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-5_R-5" />
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-6_R-6" />
+                    <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-13_R-13" />
+                    <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-15_R-15" />
+                  </when>
+                  <when test="3">
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-5_R-5" />
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-6_R-6" />
+                    <ParameterSeparator Id="M-0085_A-07E9-01-1D78_PS-9" Text="Mode: Momentary (Press-Release)" />
+                    <ParameterSeparator Id="M-0085_A-07E9-01-1D78_PS-10" Text="Device will automatically turn off after 500ms pulse." />
+                  </when>
+                </choose>
+              </ParameterBlock>
+              <ParameterBlock Id="M-0085_A-07E9-01-1D78_PB-5" Text="Relay 4" Name="Relay4_Config">
+                <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-16_R-16" />
+                <choose ParamRefId="M-0085_A-07E9-01-1D78_P-16_R-16">
+                  <when test="1">
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-7_R-7" />
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-8_R-8" />
+                    <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-17_R-17" />
+                  </when>
+                  <when test="2">
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-7_R-7" />
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-8_R-8" />
+                    <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-18_R-18" />
+                    <ParameterRefRef RefId="M-0085_A-07E9-01-1D78_P-20_R-20" />
+                  </when>
+                  <when test="3">
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-7_R-7" />
+                    <ComObjectRefRef RefId="M-0085_A-07E9-01-1D78_O-8_R-8" />
+                    <ParameterSeparator Id="M-0085_A-07E9-01-1D78_PS-11" Text="Mode: Momentary (Press-Release)" />
+                    <ParameterSeparator Id="M-0085_A-07E9-01-1D78_PS-12" Text="Device will automatically turn off after 500ms pulse." />
+                  </when>
+                </choose>
+              </ParameterBlock>
+            </Channel>
+          </Dynamic>
+        </ApplicationProgram>
+      </ApplicationPrograms>
+      <Languages>
+        <Language Identifier="en-US">
+          <TranslationUnit RefId="M-0085_A-07E9-01-1D78">
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78">
+              <Translation AttributeName="Name" Text="Lumi Actuator 4 Relays" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PT-1_EN-0">
+              <Translation AttributeName="Text" Text="Disabled" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PT-1_EN-1">
+              <Translation AttributeName="Text" Text="Switch" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PT-1_EN-2">
+              <Translation AttributeName="Text" Text="Auto On/Off" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PT-1_EN-3">
+              <Translation AttributeName="Text" Text="Momentary" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PT-2_EN-0">
+              <Translation AttributeName="Text" Text="Restore last state" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PT-2_EN-1">
+              <Translation AttributeName="Text" Text="Force OFF" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PT-2_EN-2">
+              <Translation AttributeName="Text" Text="Force ON" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PT-5_EN-0">
+              <Translation AttributeName="Text" Text="Auto OFF" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PT-5_EN-1">
+              <Translation AttributeName="Text" Text="Auto ON" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-1">
+              <Translation AttributeName="Text" Text="Relay 1 Mode" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-2">
+              <Translation AttributeName="Text" Text="Startup Behaviour" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-3">
+              <Translation AttributeName="Text" Text="Auto Mode Type" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-5">
+              <Translation AttributeName="Text" Text="Time Value (s)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-6">
+              <Translation AttributeName="Text" Text="Relay 2 Mode" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-7">
+              <Translation AttributeName="Text" Text="Startup Behaviour" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-8">
+              <Translation AttributeName="Text" Text="Auto Mode Type" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-10">
+              <Translation AttributeName="Text" Text="Time Value (s)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-11">
+              <Translation AttributeName="Text" Text="Relay 3 Mode" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-12">
+              <Translation AttributeName="Text" Text="Startup Behaviour" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-13">
+              <Translation AttributeName="Text" Text="Auto Mode Type" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-15">
+              <Translation AttributeName="Text" Text="Time Value (s)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-16">
+              <Translation AttributeName="Text" Text="Relay 4 Mode" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-17">
+              <Translation AttributeName="Text" Text="Startup Behaviour" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-18">
+              <Translation AttributeName="Text" Text="Auto Mode Type" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_P-20">
+              <Translation AttributeName="Text" Text="Time Value (s)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_O-1">
+              <Translation AttributeName="Text" Text="Relay 1 Switch" />
+              <Translation AttributeName="FunctionText" Text="Switch" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_O-2">
+              <Translation AttributeName="Text" Text="Relay 1 Status" />
+              <Translation AttributeName="FunctionText" Text="Status" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_O-3">
+              <Translation AttributeName="Text" Text="Relay 2 Switch" />
+              <Translation AttributeName="FunctionText" Text="Switch" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_O-4">
+              <Translation AttributeName="Text" Text="Relay 2 Status" />
+              <Translation AttributeName="FunctionText" Text="Status" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_O-5">
+              <Translation AttributeName="Text" Text="Relay 3 Switch" />
+              <Translation AttributeName="FunctionText" Text="Switch" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_O-6">
+              <Translation AttributeName="Text" Text="Relay 3 Status" />
+              <Translation AttributeName="FunctionText" Text="Status" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_O-7">
+              <Translation AttributeName="Text" Text="Relay 4 Switch" />
+              <Translation AttributeName="FunctionText" Text="Switch" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_O-8">
+              <Translation AttributeName="Text" Text="Relay 4 Status" />
+              <Translation AttributeName="FunctionText" Text="Status" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_CH-1">
+              <Translation AttributeName="Text" Text="General" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PB-1">
+              <Translation AttributeName="Text" Text="Product Information" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PS-1">
+              <Translation AttributeName="Text" Text="Model: Lumi Actuator 4 Relays" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PS-2">
+              <Translation AttributeName="Text" Text="Firmware: v1.0.0" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PS-3">
+              <Translation AttributeName="Text" Text="Hardware: v1.0" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PS-4">
+              <Translation AttributeName="Text" Text="Manufacturer: Lumi" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_CH-2">
+              <Translation AttributeName="Text" Text="Relay" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PB-2">
+              <Translation AttributeName="Text" Text="Relay 1" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PS-5">
+              <Translation AttributeName="Text" Text="Mode: Momentary (Press-Release)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PS-6">
+              <Translation AttributeName="Text" Text="Device will automatically turn off after 500ms pulse." />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PB-3">
+              <Translation AttributeName="Text" Text="Relay 2" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PS-7">
+              <Translation AttributeName="Text" Text="Mode: Momentary (Press-Release)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PS-8">
+              <Translation AttributeName="Text" Text="Device will automatically turn off after 500ms pulse." />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PB-4">
+              <Translation AttributeName="Text" Text="Relay 3" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PS-9">
+              <Translation AttributeName="Text" Text="Mode: Momentary (Press-Release)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PS-10">
+              <Translation AttributeName="Text" Text="Device will automatically turn off after 500ms pulse." />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PB-5">
+              <Translation AttributeName="Text" Text="Relay 4" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PS-11">
+              <Translation AttributeName="Text" Text="Mode: Momentary (Press-Release)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-07E9-01-1D78_PS-12">
+              <Translation AttributeName="Text" Text="Device will automatically turn off after 500ms pulse." />
+            </TranslationElement>
+          </TranslationUnit>
+        </Language>
+      </Languages>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>

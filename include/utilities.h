@@ -61,17 +61,17 @@ static inline uint32_t clock_time_get_elapsed_time(uint32_t start_time) {
 #define FAILURE 1
 #endif
 
-enum ButtonState_enum {
+enum ButtonState_tag {
   _RELEASE = 0,
   HOLD_3S = 1,
   HOLD_5S = 2,
   HOLD_10S = 3,
 
   PRESS_TWO_TIME = 4,
-  PRESS_THREE_TIME = 5, // just use by MC
+  PRESS_THREE_TIME = 5,  // just use by MC
   PRESS_FOUR_TIME = 6,
   PRESS_FIVE_TIME = 7,
-  PRESS_TEN_TIME = 8, // just use by MC
+  PRESS_TEN_TIME = 8,  // just use by MC
 
   HOLD_15S = 9,
   HOLD_7S = 10,
@@ -79,10 +79,10 @@ enum ButtonState_enum {
   HOLD_12S = 12,
 
   PRESS_SIX_TIME = 13,
-  PRESS_EIGHT_TIME = 14,  // just use by MC
-  HOLD_50MS = 15,         // just use by MC
-  HOLD_500MS = 16,        // just use by MC
-  PRESS_TWELVE_TIME = 17, // just use by MC
+  PRESS_EIGHT_TIME = 14,   // just use by MC
+  HOLD_50MS = 15,          // just use by MC
+  HOLD_500MS = 16,         // just use by MC
+  PRESS_TWELVE_TIME = 17,  // just use by MC
 
   PRESS_ONE_TIME = 18,
 
@@ -214,10 +214,11 @@ enum control_direction_t {
   DIR_RSV
 };
 
-enum src_control_enum {
+enum src_control_tag {
   SRC_DEVICE,
   SRC_APP,
   SRC_BINDING,
+  SRC_KNX,
   SRC_UNKNOWN,
 };
 typedef uint8_t src_control_enum;
@@ -253,10 +254,10 @@ typedef struct {
 
 #define LEVEL_MIN (-32767)
 #define LEVEL_MAX (32767)
-#define LIGHTNESS_MIN (1) // can not set 0
+#define LIGHTNESS_MIN (1)  // can not set 0
 #define LIGHTNESS_MAX (0xFFFF)
-#define CTL_TEMP_MIN (0x0320) // 800
-#define CTL_TEMP_MAX (0x4E20) // 20000
+#define CTL_TEMP_MIN (0x0320)  // 800
+#define CTL_TEMP_MAX (0x4E20)  // 20000
 #define CTL_D_UV_MIN (-32768)
 #define CTL_D_UV_MAX (32767)
 #define HSL_HUE_MIN (0)
