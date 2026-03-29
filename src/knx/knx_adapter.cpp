@@ -74,6 +74,13 @@ static void app_tx_listener_cb(const struct zbus_channel* chan) {
 }
 ZBUS_LISTENER_DEFINE(app_tx_listener, app_tx_listener_cb);
 
+static void knx_rx_listener_cb(const struct zbus_channel* chan) {
+  if (&chan_knx_rx == chan) {
+    k_work_reschedule(&knx_work, K_NO_WAIT);
+  }
+}
+ZBUS_LISTENER_DEFINE(knx_rx_listener, knx_rx_listener_cb);
+
 // ============================================================================
 // 4. INTERNAL HELPERS
 // ============================================================================
