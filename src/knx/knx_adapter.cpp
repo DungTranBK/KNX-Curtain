@@ -13,6 +13,7 @@
 #include <zephyr/zbus/zbus.h>
 
 #include "../../include/app_device.h"
+#include "../../include/curtain.h"
 #include "../../include/knx_mapping_config.h"
 #include "../../include/knx_provision.h"
 #include "../../include/led.h"
@@ -94,29 +95,21 @@ static void rx_trigger_callback(void) {
  */
 static void load_shutter_params(void) {
   // --- Basic parameters ---
-  shutter_config.blind_type =
-      (knx_blind_type_t)knx->paramByte(PARAM_BLIND_TYPE);
-  shutter_config.time_mode =
-      (knx_time_mode_t)knx->paramByte(PARAM_TIME_SAME_DIFF);
+  shutter_config.motor_type =
+      (knx_blind_type_t)knx->paramByte(PARAM_MOTOR_TYPE);
 
-  // TimeOpen: 2 bytes, big-endian
-  shutter_config.time_open_sec = knx->paramWord(PARAM_TIME_OPEN);
-
-  // TimeClose: depends on time_mode
-  if (shutter_config.time_mode == TIME_MODE_INDEPENDENT) {
-    shutter_config.time_close_sec = knx->paramWord(PARAM_TIME_CLOSE);
-  } else {
-    shutter_config.time_close_sec = shutter_config.time_open_sec;
-  }
+  // TravelTime: 2 bytes, big-endian
+  shutter_config.travel_time_sec = knx->paramWord(PARAM_TRAVEL_TIME);
 
   // --- Enable flags (bit-packed at offset 6) ---
   uint8_t enable_byte = knx->paramByte(PARAM_ENABLE_FLAGS);
-  shutter_config.enable_position = (enable_byte >> PARAM_ENABLE_POS_BIT) & 1;
-  shutter_config.enable_status = (enable_byte >> PARAM_ENABLE_STATUS_BIT) & 1;
+  LOG_INF("DEBUG: EnableFlags Byte (Offset 6): 0x%02X", enable_byte);
   shutter_config.enable_scene = (enable_byte >> PARAM_ENABLE_SCENE_BIT) & 1;
 
-  // --- Relay count (Custom mode only) ---
-  shutter_config.relay_count = knx->paramByte(PARAM_RELAY_COUNT);
+  // --- Scene store enable flag (bit-packed at offset 7) ---
+  uint8_t flags2 = knx->paramByte(PARAM_ENABLE_SCENE_STORE_BYTE);
+  shutter_config.enable_scene_store =
+      (flags2 >> PARAM_ENABLE_SCENE_STORE_BIT) & 1;
 
   // --- Scene assignments (10 scenes, 2 bytes each) ---
   for (uint8_t i = 0; i < KNX_MAX_SCENES; i++) {
@@ -127,12 +120,10 @@ static void load_shutter_params(void) {
   }
 
   // --- Log configuration ---
-  LOG_INF("Shutter Config: BlindType=%d, TimeOpen=%u, TimeClose=%u",
-          shutter_config.blind_type, shutter_config.time_open_sec,
-          shutter_config.time_close_sec);
-  LOG_INF("  EnablePos=%d, EnableStatus=%d, EnableScene=%d",
-          shutter_config.enable_position, shutter_config.enable_status,
-          shutter_config.enable_scene);
+  LOG_INF("Shutter Config: MotorType=%d, TravelTime=%u",
+          shutter_config.motor_type, shutter_config.travel_time_sec);
+  LOG_INF("  EnableScene=%d, EnableSceneStore=%d", shutter_config.enable_scene,
+          shutter_config.enable_scene_store);
 
   if (shutter_config.enable_scene) {
     for (uint8_t i = 0; i < KNX_MAX_SCENES; i++) {
@@ -141,6 +132,21 @@ static void load_shutter_params(void) {
                 shutter_config.scenes[i].num, shutter_config.scenes[i].pos);
       }
     }
+  }
+
+  // --- SYNC TO CURTAIN APP ---
+  // If configured, overwrite BLE/Flash settings with KNX priority
+  if (knx->configured()) {
+    // Map KNX Enums (1-based) to App Enums (0-based)
+    uint8_t app_type = (shutter_config.motor_type > 0)
+                           ? (uint8_t)(shutter_config.motor_type - 1)
+                           : 0;
+    // Map Time (Seconds to Milliseconds)
+    uint32_t limit_ms = (uint32_t)shutter_config.travel_time_sec * 1000;
+
+    if (limit_ms == 0) limit_ms = 20000;  // Default 20s if not set
+
+    curtain_set_opt(0, app_type, limit_ms);
   }
 }
 
@@ -184,7 +190,20 @@ static void knx_work_handler(struct k_work* work) {
   k_mutex_lock(&knx_stack_mutex, K_FOREVER);
   knx->loop();
 
+  static uint32_t last_log = 0;
+  if (k_uptime_get_32() - last_log > 10000) {
+    last_log = k_uptime_get_32();
+    LOG_INF("KNX Loop Heartbeat: Configured=%d, IA=0x%04x", knx->configured(),
+            knx->individualAddress());
+  }
+
   if (knx->configured()) {
+    // Debug: log if GO3 is updated even if flags are not checked yet
+    if (knx->getGroupObject(GO_SH_SAPBP).commFlag() == ComFlag::Updated) {
+      LOG_INF("DEBUG: GO_SH_SAPBP (3) UPDATED! current flag=%d",
+              (int)knx->getGroupObject(GO_SH_SAPBP).commFlag());
+    }
+
     // --- GO1: MUD (Move Up/Down) ---
     if (knx->getGroupObject(GO_SH_MUD).commFlag() == ComFlag::Updated) {
       bool going_down = (bool)knx->getGroupObject(GO_SH_MUD).value();
@@ -201,13 +220,11 @@ static void knx_work_handler(struct k_work* work) {
     }
 
     // --- GO3: SAPBP (Set Absolute Position %) ---
-    if (shutter_config.enable_position) {
-      if (knx->getGroupObject(GO_SH_SAPBP).commFlag() == ComFlag::Updated) {
-        uint8_t pct = (uint8_t)knx->getGroupObject(GO_SH_SAPBP).value();
-        knx->getGroupObject(GO_SH_SAPBP).commFlag(ComFlag::Ok);
-        LOG_INF("KNX -> Position: %u%%", pct);
-        app_knx_shutter_set_position(pct);
-      }
+    if (knx->getGroupObject(GO_SH_SAPBP).commFlag() == ComFlag::Updated) {
+      uint8_t pct = (uint8_t)knx->getGroupObject(GO_SH_SAPBP).value();
+      knx->getGroupObject(GO_SH_SAPBP).commFlag(ComFlag::Ok);
+      LOG_INF("KNX -> Position: %u%%", pct);
+      app_knx_shutter_set_position(pct);
     }
 
     // --- GO6: SCENE (DPT 18.001) ---
@@ -276,6 +293,10 @@ int knx_adapter_init(void) {
     // (security_interface_object.cpp)
   }
 
+  // Explicitly log the active FDSK for verification as requested by user
+  LOG_INF("FINAL ACTIVE FDSK for boot:");
+  LOG_HEXDUMP_INF(SecurityInterfaceObject::fdsk(), 16, "Active FDSK:");
+
   // --- Metadata Setup (from knx_mapping_config.h) ---
   knx->manufacturerId(KNX_MANUFACTURER_ID);
 
@@ -301,6 +322,10 @@ int knx_adapter_init(void) {
         (PropertyID)66, 1, const_cast<uint8_t*>(appProgId), count);
     if (count == 0) LOG_WRN("PID 66 write failed");
   }
+
+  // Register beforeRestartCallback to handle Master Reset (Erase all and
+  // reboot)
+  knx->bau().beforeRestartCallback(knx_wipe_config);
 
   // Step 1: Load NVS memory (EEPROM buffer: config, keys, group objects)
   LOG_INF("[BOOT] Step 1/3 - Loading KNX config from NVS...");
@@ -328,13 +353,9 @@ int knx_adapter_init(void) {
     // Setup DPTs for Group Objects
     knx->getGroupObject(GO_SH_MUD).dataPointType(DPT_UpDown);
     knx->getGroupObject(GO_SH_STOP).dataPointType(DPT_Trigger);
-    if (shutter_config.enable_position) {
-      knx->getGroupObject(GO_SH_SAPBP).dataPointType(DPT_Scaling);
-    }
-    if (shutter_config.enable_status) {
-      knx->getGroupObject(GO_SH_IMUD).dataPointType(DPT_UpDown);
-      knx->getGroupObject(GO_SH_CAPBP).dataPointType(DPT_Scaling);
-    }
+    knx->getGroupObject(GO_SH_SAPBP).dataPointType(DPT_Scaling);
+    knx->getGroupObject(GO_SH_IMUD).dataPointType(DPT_UpDown);
+    knx->getGroupObject(GO_SH_CAPBP).dataPointType(DPT_Scaling);
     if (shutter_config.enable_scene) {
       knx->getGroupObject(GO_SH_SCENE).dataPointType(DPT_SceneControl);
     }
@@ -410,7 +431,7 @@ void knx_log_device_info(void) {
   LOG_INF("Individual Address: %d.%d.%d", (ia >> 12) & 0x0F, (ia >> 8) & 0x0F,
           ia & 0xFF);
   LOG_INF("Configured: %s", knx->configured() ? "YES" : "NO");
-  LOG_INF("BlindType: %d", shutter_config.blind_type);
+  LOG_INF("MotorType: %d", shutter_config.motor_type);
   k_mutex_unlock(&knx_stack_mutex);
 }
 
@@ -430,7 +451,7 @@ void knx_wipe_config(void) {
 }
 
 void knx_send_direction_feedback(bool going_down) {
-  if (!knx || !initialized || !shutter_config.enable_status) return;
+  if (!knx || !initialized) return;
 
   k_mutex_lock(&knx_stack_mutex, K_FOREVER);
   if (knx->configured()) {
@@ -441,7 +462,7 @@ void knx_send_direction_feedback(bool going_down) {
 }
 
 void knx_send_position_status(uint8_t percent) {
-  if (!knx || !initialized || !shutter_config.enable_status) return;
+  if (!knx || !initialized) return;
 
   k_mutex_lock(&knx_stack_mutex, K_FOREVER);
   if (knx->configured()) {

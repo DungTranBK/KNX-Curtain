@@ -24,7 +24,7 @@ extern "C" {
 #define KNX_HARDWARE_VERSION 0x01
 #define KNX_ORDER_NUMBER {'S', 'H', '0', '0', '1', ' ', ' ', ' ', ' ', ' '}
 #define KNX_APP_NUMBER 0x0001
-#define KNX_APP_VERSION 0x0C  // ApplicationVersion="12"
+#define KNX_APP_VERSION 0x13  // ApplicationVersion="19" (Updated to match XML)
 
 // PID 13: [MID_H, MID_L, AppNum_H, AppNum_L, AppVer]
 #define KNX_PID13_PROG_VERSION                                                 \
@@ -55,14 +55,14 @@ extern "C" {
 // ============================================================================
 //
 // Memory Map:
-//   Offset 0       : BlindType       (1 byte,  enum 0-5)
-//   Offset 1       : TimeSameDiff    (1 byte,  enum 0-1)
-//   Offset 2-3     : TimeOpen        (2 bytes, uint16 BE, 1-300 sec)
-//   Offset 4-5     : TimeClose       (2 bytes, uint16 BE, 1-300 sec)
-//   Offset 6 bit0  : EnablePosition  (1 bit)
-//   Offset 6 bit1  : EnableStatus    (1 bit)
+// Memory Map:
+//   Offset 0       : MotorType       (1 byte,  enum 1-5)
+//   Offset 1       : UNUSED
+//   Offset 2-3     : TravelTime      (2 bytes, uint16 BE, 1-300 sec)
+//   Offset 4-5     : UNUSED
 //   Offset 6 bit2  : EnableScene     (1 bit)
-//   Offset 7       : RelayCount      (1 byte, Custom mode only: 2 or 3)
+//   Offset 7 bit0  : EnableSceneStore (1 bit)
+//   Offset 8-27    : Scene A-J       (10 × 2 bytes each)
 //   Offset 8-27    : Scene A-J       (10 × 2 bytes each)
 //     Each scene:
 //       Byte0 bit7   : Active (1 bit)
@@ -70,16 +70,13 @@ extern "C" {
 //       Byte1        : Target Position % (0-100)
 
 // --- Basic Parameters ---
-#define PARAM_BLIND_TYPE 0
-#define PARAM_TIME_SAME_DIFF 1
-#define PARAM_TIME_OPEN 2     // 2 bytes (uint16 BE)
-#define PARAM_TIME_CLOSE 4    // 2 bytes (uint16 BE)
+#define PARAM_MOTOR_TYPE 0
+#define PARAM_TRAVEL_TIME 2   // 2 bytes (uint16 BE)
 #define PARAM_ENABLE_FLAGS 6  // Bit-packed enable flags
-#define PARAM_RELAY_COUNT 7
+#define PARAM_ENABLE_SCENE_STORE_BYTE 7
+#define PARAM_ENABLE_SCENE_STORE_BIT 0
 
 // Enable flag bit positions within offset 6
-#define PARAM_ENABLE_POS_BIT 0
-#define PARAM_ENABLE_STATUS_BIT 1
 #define PARAM_ENABLE_SCENE_BIT 2
 
 // --- Scene Parameters (10 scenes, 2 bytes each) ---
@@ -127,16 +124,12 @@ typedef struct {
 
 typedef struct {
   // --- Motor config ---
-  knx_blind_type_t blind_type;
-  knx_time_mode_t time_mode;
-  uint16_t time_open_sec;   // 1-300
-  uint16_t time_close_sec;  // 1-300
-  uint8_t relay_count;      // 2 or 3 (Custom mode only)
+  knx_blind_type_t motor_type;
+  uint16_t travel_time_sec;  // 1-300
 
   // --- Enable flags ---
-  bool enable_position;
-  bool enable_status;
   bool enable_scene;
+  bool enable_scene_store;
 
   // --- Scene assignments ---
   knx_scene_config_t scenes[KNX_MAX_SCENES];

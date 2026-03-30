@@ -8,16 +8,19 @@
 /*                              INCLUDE FILES                                 */
 /******************************************************************************/
 #include "../../include/curtain.h"
-#include "../../include/led.h"
-#include "../../include/net_message.h"
-#include "../../include/sw_binding.h"
-#include "../../include/utilities.h"
-#include "../../include/vendor.h"
+
 #include <zephyr/bluetooth/mesh.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/random/random.h>
 #include <zephyr/settings/settings.h>
+
+#include "../../include/led.h"
+#include "../../include/net_message.h"
+#include "../../include/relay.h"
+#include "../../include/sw_binding.h"
+#include "../../include/utilities.h"
+#include "../../include/vendor.h"
 
 LOG_MODULE_REGISTER(curtain, CONFIG_LOG_DEFAULT_LEVEL);
 
@@ -106,15 +109,15 @@ static uint32_t settings_load_pos[ELE_CNT];
 static bool settings_pos_loaded;
 static bool settings_opt_loaded;
 
-static int curtain_settings_set(const char *name, size_t len,
-                                settings_read_cb read_cb, void *cb_arg);
+static int curtain_settings_set(const char* name, size_t len,
+                                settings_read_cb read_cb, void* cb_arg);
 
 SETTINGS_STATIC_HANDLER_DEFINE(curtain, SETTINGS_CURTAIN_BASE, NULL,
                                curtain_settings_set, NULL, NULL);
 
-static int curtain_settings_set(const char *name, size_t len,
-                                settings_read_cb read_cb, void *cb_arg) {
-  const char *next;
+static int curtain_settings_set(const char* name, size_t len,
+                                settings_read_cb read_cb, void* cb_arg) {
+  const char* next;
   int rc;
 
   if (settings_name_steq(name, "pos", &next) && !next) {
@@ -165,9 +168,9 @@ static int curtain_config_enable_auto_send(void);
 static void Curtain_UpdateCurtainPosition(CurtainNumber_enum CT_No);
 static void curtain_update_device_status(u16 curtain_mask);
 static uint8_t curtain_get_curtain_position_per_char(CurtainNumber_enum CT_No,
-                                                     uint8_t *pos_present,
-                                                     uint8_t *pos_target,
-                                                     uint8_t *state);
+                                                     uint8_t* pos_present,
+                                                     uint8_t* pos_target,
+                                                     uint8_t* state);
 static void curtain_set_command(CurtainNumber_enum CT_No,
                                 CurtainCmd_enum curtainCmd);
 
@@ -203,20 +206,20 @@ void curtain_config_auto_send_proc(void) {
       }
       if (opcode_msg_auto_send[cz_auto_send_st.op_index] ==
           VD_CONFIG_CURTAIN_TYPE_OPT) {
-        curtain_response_curtain_type(cz_auto_send_st.btn_idx,
-                                      bt_mesh_primary_addr() +
-                                          cz_auto_send_st.btn_idx,
-                                      GATEWAY_UNICAST_ADDR);
+        curtain_response_curtain_type(
+            cz_auto_send_st.btn_idx,
+            bt_mesh_primary_addr() + cz_auto_send_st.btn_idx,
+            GATEWAY_UNICAST_ADDR);
         if (++cz_auto_send_st.btn_idx >= ELE_CNT) {
           cz_auto_send_st.op_index++;
           cz_auto_send_st.btn_idx = 0;
         }
       } else if (opcode_msg_auto_send[cz_auto_send_st.op_index] ==
                  VD_CONFIG_CURTAIN_LIMIT_TIME) {
-        curtain_response_limit_time(cz_auto_send_st.btn_idx,
-                                    bt_mesh_primary_addr() +
-                                        cz_auto_send_st.btn_idx,
-                                    GATEWAY_UNICAST_ADDR);
+        curtain_response_limit_time(
+            cz_auto_send_st.btn_idx,
+            bt_mesh_primary_addr() + cz_auto_send_st.btn_idx,
+            GATEWAY_UNICAST_ADDR);
         if (++cz_auto_send_st.btn_idx >= ELE_CNT) {
           cz_auto_send_st.op_index++;
           cz_auto_send_st.btn_idx = 0;
@@ -296,7 +299,7 @@ static void curtain_response_curtain_type(int idx, u16 src_adr, u16 dst_adr) {
     curtain_type_rsp.op = VD_CONFIG_CURTAIN_TYPE_OPT;
     curtain_type_rsp.endpoint = idx + 1;
     curtain_type_rsp.cz_type = cz_opt.type[idx];
-    mesh_tx_cmd_rsp(VD_CONFIG_NODE_STATUS, (uint8_t *)&curtain_type_rsp,
+    mesh_tx_cmd_rsp(VD_CONFIG_NODE_STATUS, (uint8_t*)&curtain_type_rsp,
                     sizeof(curtain_type_rsp_t), src_adr, dst_adr, 0, 0);
   }
 }
@@ -307,9 +310,9 @@ static void curtain_response_curtain_type(int idx, u16 src_adr, u16 dst_adr) {
  * @param
  * @retval  None
  */
-int curtain_handle_get_curtain_type(uint8_t *par, int par_len,
-                                    mesh_cb_fun_par_t *cb_par) {
-  curtain_type_get_t *p_get = (curtain_type_get_t *)par;
+int curtain_handle_get_curtain_type(uint8_t* par, int par_len,
+                                    mesh_cb_fun_par_t* cb_par) {
+  curtain_type_get_t* p_get = (curtain_type_get_t*)par;
   uint8_t idx = p_get->endpoint - 1;
   if (idx < ELE_CNT) {
     curtain_response_curtain_type(idx, cb_par->adr_dst, GATEWAY_UNICAST_ADDR);
@@ -324,10 +327,10 @@ int curtain_handle_get_curtain_type(uint8_t *par, int par_len,
  * @param
  * @retval  None
  */
-int curtain_handle_set_curtain_type(uint8_t model_idx, uint8_t *par,
+int curtain_handle_set_curtain_type(uint8_t model_idx, uint8_t* par,
                                     int par_len, bool notify_led_en) {
   LOG_HEXDUMP_INF(par, par_len, "curtain_handle_set_curtain_type: ");
-  curtain_type_set_t *p_set = (curtain_type_set_t *)par;
+  curtain_type_set_t* p_set = (curtain_type_set_t*)par;
   uint8_t idx = p_set->endpoint - 1;
   if (idx < ELE_CNT) {
     if (notify_led_en == true) {
@@ -363,9 +366,9 @@ static void curtain_response_limit_time(int idx, u16 src_adr, u16 dst_adr) {
   if (idx < ELE_CNT) {
     limit_time_rsp_t limit_time_rsp;
     limit_time_rsp.op = VD_CONFIG_CURTAIN_LIMIT_TIME;
-    limit_time_rsp.mode = 0; // Normal mode
+    limit_time_rsp.mode = 0;  // Normal mode
     limit_time_rsp.limit_time_ms = cz_opt.limit_time[idx];
-    mesh_tx_cmd_rsp(VD_CONFIG_NODE_STATUS, (uint8_t *)&limit_time_rsp,
+    mesh_tx_cmd_rsp(VD_CONFIG_NODE_STATUS, (uint8_t*)&limit_time_rsp,
                     sizeof(limit_time_rsp_t), src_adr, dst_adr, 0, 0);
   }
 }
@@ -376,7 +379,7 @@ static void curtain_response_limit_time(int idx, u16 src_adr, u16 dst_adr) {
  * @param
  * @retval  None
  */
-int curtain_handle_get_limit_time(uint8_t model_idx, uint8_t *par,
+int curtain_handle_get_limit_time(uint8_t model_idx, uint8_t* par,
                                   int par_len) {
   curtain_response_limit_time(model_idx, bt_mesh_primary_addr() + model_idx,
                               GATEWAY_UNICAST_ADDR);
@@ -389,10 +392,10 @@ int curtain_handle_get_limit_time(uint8_t model_idx, uint8_t *par,
  * @param
  * @retval  None
  */
-int curtain_handle_set_limit_time(uint8_t model_idx, uint8_t *par, int par_len,
+int curtain_handle_set_limit_time(uint8_t model_idx, uint8_t* par, int par_len,
                                   bool notify_led_en) {
   LOG_HEXDUMP_INF(par, par_len, "curtain_handle_set_limit_time: ");
-  limit_time_set_t *p_set = (limit_time_set_t *)par;
+  limit_time_set_t* p_set = (limit_time_set_t*)par;
   if (model_idx < ELE_CNT) {
     if (notify_led_en == true) {
       if (p_set->limit_time >= TIMER_1S && p_set->limit_time <= TIMER_5Min) {
@@ -422,22 +425,22 @@ int curtain_handle_set_limit_time(uint8_t model_idx, uint8_t *par, int par_len,
  * @param
  * @retval  None
  */
-int curtain_cfg_handle_get_message(int model_idx, uint8_t *par, int par_len,
+int curtain_cfg_handle_get_message(int model_idx, uint8_t* par, int par_len,
                                    uint8_t cmd) {
   if (model_idx >= ELE_CNT) {
     return -1;
   }
   switch (cmd) {
-  case VD_CONFIG_CURTAIN_TYPE_OPT:
-    curtain_response_curtain_type(model_idx, bt_mesh_primary_addr() + model_idx,
+    case VD_CONFIG_CURTAIN_TYPE_OPT:
+      curtain_response_curtain_type(
+          model_idx, bt_mesh_primary_addr() + model_idx, GATEWAY_UNICAST_ADDR);
+      break;
+    case VD_CONFIG_CURTAIN_LIMIT_TIME:
+      curtain_response_limit_time(model_idx, bt_mesh_primary_addr() + model_idx,
                                   GATEWAY_UNICAST_ADDR);
-    break;
-  case VD_CONFIG_CURTAIN_LIMIT_TIME:
-    curtain_response_limit_time(model_idx, bt_mesh_primary_addr() + model_idx,
-                                GATEWAY_UNICAST_ADDR);
-    break;
-  default:
-    return -1;
+      break;
+    default:
+      return -1;
   }
   return 0;
 }
@@ -448,20 +451,20 @@ int curtain_cfg_handle_get_message(int model_idx, uint8_t *par, int par_len,
  * @param
  * @retval  None
  */
-int curtain_cfg_handle_set_message(int model_idx, uint8_t *par, int par_len,
+int curtain_cfg_handle_set_message(int model_idx, uint8_t* par, int par_len,
                                    uint8_t cmd, bool notify_led_en) {
   if (model_idx >= ELE_CNT) {
     return -1;
   }
   switch (cmd) {
-  case VD_CONFIG_CURTAIN_TYPE_OPT:
-    curtain_handle_set_curtain_type(model_idx, par, par_len, notify_led_en);
-    break;
-  case VD_CONFIG_CURTAIN_LIMIT_TIME:
-    curtain_handle_set_limit_time(model_idx, par, par_len, notify_led_en);
-    break;
-  default:
-    return -1;
+    case VD_CONFIG_CURTAIN_TYPE_OPT:
+      curtain_handle_set_curtain_type(model_idx, par, par_len, notify_led_en);
+      break;
+    case VD_CONFIG_CURTAIN_LIMIT_TIME:
+      curtain_handle_set_limit_time(model_idx, par, par_len, notify_led_en);
+      break;
+    default:
+      return -1;
   }
   return 0;
 }
@@ -474,7 +477,7 @@ int curtain_cfg_handle_set_message(int model_idx, uint8_t *par, int par_len,
  */
 void curtain_response_st_to_gateway(uint8_t idx) {
   if (idx < ELE_CNT) {
-    mesh_tx_cmd_rsp(G_LEVEL_STATUS, (uint8_t *)&cz_level_st[idx].present_level,
+    mesh_tx_cmd_rsp(G_LEVEL_STATUS, (uint8_t*)&cz_level_st[idx].present_level,
                     1, bt_mesh_primary_addr() + idx, GATEWAY_UNICAST_ADDR, 0,
                     0);
   }
@@ -488,7 +491,7 @@ void curtain_response_st_to_gateway(uint8_t idx) {
  */
 void curtain_update_present_level(uint8_t idx, uint8_t level) {
   if (idx < ELE_CNT) {
-    cz_level_st[idx].present_level = level; // 0 - 0xFF
+    cz_level_st[idx].present_level = level;  // 0 - 0xFF
   }
 }
 
@@ -669,7 +672,6 @@ static void curtain_set_command(CurtainNumber_enum CT_No,
  */
 static void curtain_control_relay(CurtainNumber_enum CT_No, uint8_t open,
                                   uint8_t close, uint8_t stop) {
-
   if (CT_No == 0) {
     uint8_t idx_relay = 0;
     relay_control_directly(idx_relay + 0, open);
@@ -689,81 +691,82 @@ static void curtain_control_relay(CurtainNumber_enum CT_No, uint8_t open,
  */
 static uint8_t curtain_run_stop_command(CurtainNumber_enum CT_No) {
   switch (curtainData[CT_No].cmdStep) {
-  case 0:
-    curtainData[CT_No].enableCalculatorCurtainPosition = false;
-    // curtainData[CT_No].lastButtonState = _STOP_BUTTON_PRESS;
-    curtainData[CT_No].curtainState = CURTAIN_STATE_STOP;
+    case 0:
+      curtainData[CT_No].enableCalculatorCurtainPosition = false;
+      // curtainData[CT_No].lastButtonState = _STOP_BUTTON_PRESS;
+      curtainData[CT_No].curtainState = CURTAIN_STATE_STOP;
 #ifdef CZ_EXTENDED_STATE
-    curtainData[CT_No].extended_state = EX_ST_STOP;
+      curtainData[CT_No].extended_state = EX_ST_STOP;
 #endif
 #ifdef THREE_TOUCH
 #ifdef HOLD_FOR_TOUCH
-    stopLedBlinkStartTime = clock_time_ms();
+      stopLedBlinkStartTime = clock_time_ms();
 #endif
-    Curtain_RefreshLedDelay(TIMER_500MS, CURTAIN_0_MASK);
+      Curtain_RefreshLedDelay(TIMER_500MS, CURTAIN_0_MASK);
 #else
-    // curtain_handle_refresh_led((uint16_t)(1 << CT_No));
+      // curtain_handle_refresh_led((uint16_t)(1 << CT_No));
 #endif
-    Curtain_StoreCurrentPosition(CT_No);
-#if DEVICE_TYPE == DEV_CURTAIN
-    if (cz_opt.type[CT_No] == HOZ_DZ3W) {
-      curtain_control_relay(CT_No, OFF, OFF, OFF);
-    } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
-      curtain_control_relay(CT_No, OFF, OFF, ON);
-    } else if (cz_opt.type[CT_No] == HOZ_DT99) {
-      if (g_tempcloseOrOpenState[CT_No] == CURTAIN_STATE_OPEN) {
-        curtain_control_relay(CT_No, ON, OFF, OFF);
-      } else if (g_tempcloseOrOpenState[CT_No] == CURTAIN_STATE_CLOSE) {
-        curtain_control_relay(CT_No, OFF, ON, OFF);
-      }
-    } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
-      curtain_control_relay(CT_No, ON, ON, OFF);
-    } else if (cz_opt.type[CT_No] == VER_220V) {
-      curtain_control_relay(CT_No, OFF, OFF, OFF);
-    }
-#elif DEVICE_TYPE == DEV_ROLLING_DOOR
-    if (rd_type == RD_S3DZ1) {
-      curtain_control_relay(CT_No, OFF, OFF, OFF);
-    } else if (rd_type == RD_S4DZ1) {
-      curtain_control_relay(CT_No, OFF, OFF, ON);
-    }
-#endif
-    curtainData[CT_No].startDelayTimeForCmdStep = clock_time_ms();
-    curtainData[CT_No].cmdStep = 1;
-    // Update Level
-    Curtain_UpdateCurtainPosition(CT_No);
-    break;
-  case 1:
-    if (clock_time_get_elapsed_time(
-            curtainData[CT_No].startDelayTimeForCmdStep) > DEFAULT_PULL_DELAY) {
+      Curtain_StoreCurrentPosition(CT_No);
 #if DEVICE_TYPE == DEV_CURTAIN
       if (cz_opt.type[CT_No] == HOZ_DZ3W) {
-        curtain_control_relay(CT_No, ON, ON, OFF);
+        curtain_control_relay(CT_No, OFF, OFF, OFF);
       } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
+        curtain_control_relay(CT_No, OFF, OFF, ON);
       } else if (cz_opt.type[CT_No] == HOZ_DT99) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-        g_tempcloseOrOpenState[CT_No] = CURTAIN_STATE_STOP;
+        if (g_tempcloseOrOpenState[CT_No] == CURTAIN_STATE_OPEN) {
+          curtain_control_relay(CT_No, ON, OFF, OFF);
+        } else if (g_tempcloseOrOpenState[CT_No] == CURTAIN_STATE_CLOSE) {
+          curtain_control_relay(CT_No, OFF, ON, OFF);
+        }
       } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
+        curtain_control_relay(CT_No, ON, ON, OFF);
+      } else if (cz_opt.type[CT_No] == VER_220V) {
         curtain_control_relay(CT_No, OFF, OFF, OFF);
       }
 #elif DEVICE_TYPE == DEV_ROLLING_DOOR
       if (rd_type == RD_S3DZ1) {
-        curtain_control_relay(CT_No, OFF, OFF, ON);
-      } else if (rd_type == RD_S4DZ1) {
         curtain_control_relay(CT_No, OFF, OFF, OFF);
+      } else if (rd_type == RD_S4DZ1) {
+        curtain_control_relay(CT_No, OFF, OFF, ON);
       }
 #endif
-      curtainData[CT_No].cmdStep = 0;
-#ifdef CZ_EXTENDED_STATE
-      curtainData[CT_No].extended_state = EX_ST_STOPED;
+      curtainData[CT_No].startDelayTimeForCmdStep = clock_time_ms();
+      curtainData[CT_No].cmdStep = 1;
+      // Update Level
+      Curtain_UpdateCurtainPosition(CT_No);
+      break;
+    case 1:
+      if (clock_time_get_elapsed_time(
+              curtainData[CT_No].startDelayTimeForCmdStep) >
+          DEFAULT_PULL_DELAY) {
+#if DEVICE_TYPE == DEV_CURTAIN
+        if (cz_opt.type[CT_No] == HOZ_DZ3W) {
+          curtain_control_relay(CT_No, ON, ON, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DT99) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+          g_tempcloseOrOpenState[CT_No] = CURTAIN_STATE_STOP;
+        } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        }
+#elif DEVICE_TYPE == DEV_ROLLING_DOOR
+        if (rd_type == RD_S3DZ1) {
+          curtain_control_relay(CT_No, OFF, OFF, ON);
+        } else if (rd_type == RD_S4DZ1) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        }
 #endif
-      return CURRENT_CMD_HANDLE_DONE;
-    }
-    break;
-  default:
-    curtainData[CT_No].cmdStep = 0;
-    break;
+        curtainData[CT_No].cmdStep = 0;
+#ifdef CZ_EXTENDED_STATE
+        curtainData[CT_No].extended_state = EX_ST_STOPED;
+#endif
+        return CURRENT_CMD_HANDLE_DONE;
+      }
+      break;
+    default:
+      curtainData[CT_No].cmdStep = 0;
+      break;
   }
   return CURRENT_CMD_HANDLE_NOT_DONE;
 }
@@ -775,128 +778,130 @@ static uint8_t curtain_run_stop_command(CurtainNumber_enum CT_No) {
  * @retval BYTE: Handle Close Command Status
  */
 static uint8_t curtain_run_close_command(CurtainNumber_enum CT_No) {
-
   switch (curtainData[CT_No].cmdStep) {
-  case 0:
+    case 0:
 #ifdef CZ_EXTENDED_STATE
-    curtainData[CT_No].extended_state = EX_ST_START_CLOSE;
+      curtainData[CT_No].extended_state = EX_ST_START_CLOSE;
 #endif
-    curtainData[CT_No].curtainState = CURTAIN_STATE_CLOSE;
-    curtainData[CT_No].enableCalculatorCurtainPosition = false;
-    curtainData[CT_No].destinationPositionToGoTo =
-        curtainData[CT_No].tempDestinationPositionToGoTo;
-    // curtain_handle_refresh_led((uint16_t)(1 << CT_No));
-#if DEVICE_TYPE == DEV_CURTAIN
-    if (cz_opt.type[CT_No] == HOZ_DZ3W) {
-      curtain_control_relay(CT_No, OFF, OFF, OFF);
-    } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
-      curtain_control_relay(CT_No, OFF, OFF, ON);
-    } else if (cz_opt.type[CT_No] == HOZ_DT99) {
-      curtain_control_relay(CT_No, OFF, OFF, OFF);
-    } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
-      curtain_control_relay(CT_No, ON, ON, OFF);
-    } else if (cz_opt.type[CT_No] == VER_220V) {
-      curtain_control_relay(CT_No, OFF, OFF, OFF);
-    }
-#elif DEVICE_TYPE == DEV_ROLLING_DOOR
-    if (rd_type == RD_S3DZ1) {
-      curtain_control_relay(CT_No, OFF, OFF, OFF);
-    } else if (rd_type == RD_S4DZ1) {
-      curtain_control_relay(CT_No, OFF, OFF, ON);
-    }
-#endif
-    curtainData[CT_No].startDelayTimeForCmdStep = clock_time_ms();
-    curtainData[CT_No].cmdStep = 1;
-    // Update Level
-    if (curtainData[CT_No].currentPosition !=
-        curtainData[CT_No].curtainLimitTime) {
-      Curtain_UpdateCurtainPosition(CT_No);
-    }
-    break;
-  case 1:
-    if (clock_time_get_elapsed_time(
-            curtainData[CT_No].startDelayTimeForCmdStep) > DEFAULT_PULL_DELAY) {
+      curtainData[CT_No].curtainState = CURTAIN_STATE_CLOSE;
+      curtainData[CT_No].enableCalculatorCurtainPosition = false;
+      curtainData[CT_No].destinationPositionToGoTo =
+          curtainData[CT_No].tempDestinationPositionToGoTo;
+      // curtain_handle_refresh_led((uint16_t)(1 << CT_No));
 #if DEVICE_TYPE == DEV_CURTAIN
       if (cz_opt.type[CT_No] == HOZ_DZ3W) {
-        curtain_control_relay(CT_No, OFF, ON, OFF);
+        curtain_control_relay(CT_No, OFF, OFF, OFF);
       } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-      } else if (cz_opt.type[CT_No] == HOZ_DT99) {
-        curtain_control_relay(CT_No, ON, OFF, OFF);
-      } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-      }
-#elif DEVICE_TYPE == DEV_ROLLING_DOOR
-      if (rd_type == RD_S3DZ1) {
         curtain_control_relay(CT_No, OFF, OFF, ON);
-      } else if (rd_type == RD_S4DZ1) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-      }
-#endif
-      curtainData[CT_No].startDelayTimeForCmdStep = clock_time_ms();
-      curtainData[CT_No].cmdStep = 2;
-    }
-    break;
-  case 2:
-    if (clock_time_get_elapsed_time(
-            curtainData[CT_No].startDelayTimeForCmdStep) > DEFAULT_PULL_DELAY) {
-      curtainData[CT_No].enableCalculatorCurtainPosition = true;
-      curtainData[CT_No].curtainRunningStartTime = clock_time_ms();
-      curtainData[CT_No].startPosition = curtainData[CT_No].currentPosition;
-#if DEVICE_TYPE == DEV_CURTAIN
-      if (cz_opt.type[CT_No] == HOZ_DZ3W) {
-        curtain_control_relay(CT_No, OFF, ON, OFF);
-      } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
-        curtain_control_relay(CT_No, OFF, ON, OFF);
       } else if (cz_opt.type[CT_No] == HOZ_DT99) {
-        curtain_control_relay(CT_No, OFF, ON, OFF);
+        curtain_control_relay(CT_No, OFF, OFF, OFF);
       } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
-        curtain_control_relay(CT_No, OFF, ON, OFF);
+        curtain_control_relay(CT_No, ON, ON, OFF);
       } else if (cz_opt.type[CT_No] == VER_220V) {
-        curtain_control_relay(CT_No, OFF, ON, OFF);
+        curtain_control_relay(CT_No, OFF, OFF, OFF);
       }
 #elif DEVICE_TYPE == DEV_ROLLING_DOOR
       if (rd_type == RD_S3DZ1) {
-        curtain_control_relay(CT_No, OFF, ON, ON);
+        curtain_control_relay(CT_No, OFF, OFF, OFF);
       } else if (rd_type == RD_S4DZ1) {
-        curtain_control_relay(CT_No, OFF, ON, OFF);
+        curtain_control_relay(CT_No, OFF, OFF, ON);
       }
 #endif
       curtainData[CT_No].startDelayTimeForCmdStep = clock_time_ms();
-      curtainData[CT_No].cmdStep = 3;
-    }
-    break;
-  case 3:
-    if (clock_time_get_elapsed_time(
-            curtainData[CT_No].startDelayTimeForCmdStep) > DEFAULT_PULL_DELAY) {
+      curtainData[CT_No].cmdStep = 1;
+      // Update Level
+      if (curtainData[CT_No].currentPosition !=
+          curtainData[CT_No].curtainLimitTime) {
+        Curtain_UpdateCurtainPosition(CT_No);
+      }
+      break;
+    case 1:
+      if (clock_time_get_elapsed_time(
+              curtainData[CT_No].startDelayTimeForCmdStep) >
+          DEFAULT_PULL_DELAY) {
+#if DEVICE_TYPE == DEV_CURTAIN
+        if (cz_opt.type[CT_No] == HOZ_DZ3W) {
+          curtain_control_relay(CT_No, OFF, ON, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DT99) {
+          curtain_control_relay(CT_No, ON, OFF, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        }
+#elif DEVICE_TYPE == DEV_ROLLING_DOOR
+        if (rd_type == RD_S3DZ1) {
+          curtain_control_relay(CT_No, OFF, OFF, ON);
+        } else if (rd_type == RD_S4DZ1) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        }
+#endif
+        curtainData[CT_No].startDelayTimeForCmdStep = clock_time_ms();
+        curtainData[CT_No].cmdStep = 2;
+      }
+      break;
+    case 2:
+      if (clock_time_get_elapsed_time(
+              curtainData[CT_No].startDelayTimeForCmdStep) >
+          DEFAULT_PULL_DELAY) {
+        curtainData[CT_No].enableCalculatorCurtainPosition = true;
+        curtainData[CT_No].curtainRunningStartTime = clock_time_ms();
+        curtainData[CT_No].startPosition = curtainData[CT_No].currentPosition;
+#if DEVICE_TYPE == DEV_CURTAIN
+        if (cz_opt.type[CT_No] == HOZ_DZ3W) {
+          curtain_control_relay(CT_No, OFF, ON, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
+          curtain_control_relay(CT_No, OFF, ON, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DT99) {
+          curtain_control_relay(CT_No, OFF, ON, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
+          curtain_control_relay(CT_No, OFF, ON, OFF);
+        } else if (cz_opt.type[CT_No] == VER_220V) {
+          curtain_control_relay(CT_No, OFF, ON, OFF);
+        }
+#elif DEVICE_TYPE == DEV_ROLLING_DOOR
+        if (rd_type == RD_S3DZ1) {
+          curtain_control_relay(CT_No, OFF, ON, ON);
+        } else if (rd_type == RD_S4DZ1) {
+          curtain_control_relay(CT_No, OFF, ON, OFF);
+        }
+#endif
+        curtainData[CT_No].startDelayTimeForCmdStep = clock_time_ms();
+        curtainData[CT_No].cmdStep = 3;
+      }
+      break;
+    case 3:
+      if (clock_time_get_elapsed_time(
+              curtainData[CT_No].startDelayTimeForCmdStep) >
+          DEFAULT_PULL_DELAY) {
 #ifdef CZ_EXTENDED_STATE
-      curtainData[CT_No].extended_state = EX_ST_CLOSING;
+        curtainData[CT_No].extended_state = EX_ST_CLOSING;
 #endif
 #if DEVICE_TYPE == DEV_CURTAIN
-      if (cz_opt.type[CT_No] == HOZ_DZ3W) {
-        curtain_control_relay(CT_No, OFF, ON, OFF);
-      } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-      } else if (cz_opt.type[CT_No] == HOZ_DT99) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-        g_tempcloseOrOpenState[CT_No] = CURTAIN_STATE_CLOSE;
-      } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-      }
+        if (cz_opt.type[CT_No] == HOZ_DZ3W) {
+          curtain_control_relay(CT_No, OFF, ON, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DT99) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+          g_tempcloseOrOpenState[CT_No] = CURTAIN_STATE_CLOSE;
+        } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        }
 #elif DEVICE_TYPE == DEV_ROLLING_DOOR
-      if (rd_type == RD_S3DZ1) {
-        curtain_control_relay(CT_No, OFF, OFF, ON);
-      } else if (rd_type == RD_S4DZ1) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-      }
+        if (rd_type == RD_S3DZ1) {
+          curtain_control_relay(CT_No, OFF, OFF, ON);
+        } else if (rd_type == RD_S4DZ1) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        }
 #endif
+        curtainData[CT_No].cmdStep = 0;
+        return CURRENT_CMD_HANDLE_DONE;
+      }
+      break;
+    default:
       curtainData[CT_No].cmdStep = 0;
-      return CURRENT_CMD_HANDLE_DONE;
-    }
-    break;
-  default:
-    curtainData[CT_No].cmdStep = 0;
-    break;
+      break;
   }
   return CURRENT_CMD_HANDLE_NOT_DONE;
 }
@@ -909,129 +914,132 @@ static uint8_t curtain_run_close_command(CurtainNumber_enum CT_No) {
  */
 static uint8_t curtain_run_open_command(CurtainNumber_enum CT_No) {
   switch (curtainData[CT_No].cmdStep) {
-  case 0:
+    case 0:
 #ifdef CZ_EXTENDED_STATE
-    curtainData[CT_No].extended_state = EX_ST_START_OPEN;
+      curtainData[CT_No].extended_state = EX_ST_START_OPEN;
 #endif
-    curtainData[CT_No].curtainState = CURTAIN_STATE_OPEN;
-    curtainData[CT_No].enableCalculatorCurtainPosition = false;
-    curtainData[CT_No].destinationPositionToGoTo =
-        curtainData[CT_No].tempDestinationPositionToGoTo;
-    // curtain_handle_refresh_led((uint16_t)(1 << CT_No));
-    // Relay control
-#if DEVICE_TYPE == DEV_CURTAIN
-    if (cz_opt.type[CT_No] == HOZ_DZ3W) {
-      curtain_control_relay(CT_No, OFF, OFF, OFF);
-    } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
-      curtain_control_relay(CT_No, OFF, OFF, ON);
-    } else if (cz_opt.type[CT_No] == HOZ_DT99) {
-      curtain_control_relay(CT_No, OFF, OFF, OFF);
-    } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
-      curtain_control_relay(CT_No, ON, ON, OFF);
-    } else if (cz_opt.type[CT_No] == VER_220V) {
-      curtain_control_relay(CT_No, OFF, OFF, OFF);
-    }
-#elif DEVICE_TYPE == DEV_ROLLING_DOOR
-    if (rd_type == RD_S3DZ1) {
-      curtain_control_relay(CT_No, OFF, OFF, OFF);
-    } else if (rd_type == RD_S4DZ1) {
-      curtain_control_relay(CT_No, OFF, OFF, ON);
-    }
-#endif
-    curtainData[CT_No].startDelayTimeForCmdStep = clock_time_ms();
-    curtainData[CT_No].cmdStep = 1;
-    // Update Level
-    if (curtainData[CT_No].currentPosition != 0) {
-      Curtain_UpdateCurtainPosition(CT_No);
-    }
-    break;
-  case 1:
-    if (clock_time_get_elapsed_time(
-            curtainData[CT_No].startDelayTimeForCmdStep) > DEFAULT_PULL_DELAY) {
-#if DEVICE_TYPE == DEV_CURTAIN
-      if (cz_opt.type[CT_No] == HOZ_DZ3W) {
-        curtain_control_relay(CT_No, ON, OFF, OFF);
-      } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-      } else if (cz_opt.type[CT_No] == HOZ_DT99) {
-        curtain_control_relay(CT_No, OFF, ON, OFF);
-      } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-      }
-#elif DEVICE_TYPE == DEV_ROLLING_DOOR
-      if (rd_type == RD_S3DZ1) {
-        curtain_control_relay(CT_No, OFF, OFF, ON);
-      } else if (rd_type == RD_S4DZ1) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-      }
-#endif
-      curtainData[CT_No].startDelayTimeForCmdStep = clock_time_ms();
-      curtainData[CT_No].cmdStep = 2;
-    }
-    break;
-  case 2:
-    if (clock_time_get_elapsed_time(
-            curtainData[CT_No].startDelayTimeForCmdStep) > DEFAULT_PULL_DELAY) {
-      curtainData[CT_No].enableCalculatorCurtainPosition = true;
-      curtainData[CT_No].curtainRunningStartTime = clock_time_ms();
-      curtainData[CT_No].startPosition = curtainData[CT_No].currentPosition;
+      curtainData[CT_No].curtainState = CURTAIN_STATE_OPEN;
+      curtainData[CT_No].enableCalculatorCurtainPosition = false;
+      curtainData[CT_No].destinationPositionToGoTo =
+          curtainData[CT_No].tempDestinationPositionToGoTo;
+      // curtain_handle_refresh_led((uint16_t)(1 << CT_No));
       // Relay control
 #if DEVICE_TYPE == DEV_CURTAIN
       if (cz_opt.type[CT_No] == HOZ_DZ3W) {
-        curtain_control_relay(CT_No, ON, OFF, OFF);
+        curtain_control_relay(CT_No, OFF, OFF, OFF);
       } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
-        curtain_control_relay(CT_No, ON, OFF, OFF);
+        curtain_control_relay(CT_No, OFF, OFF, ON);
       } else if (cz_opt.type[CT_No] == HOZ_DT99) {
-        curtain_control_relay(CT_No, ON, OFF, OFF);
+        curtain_control_relay(CT_No, OFF, OFF, OFF);
       } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
-        curtain_control_relay(CT_No, ON, OFF, OFF);
+        curtain_control_relay(CT_No, ON, ON, OFF);
       } else if (cz_opt.type[CT_No] == VER_220V) {
-        curtain_control_relay(CT_No, ON, OFF, OFF);
+        curtain_control_relay(CT_No, OFF, OFF, OFF);
       }
 #elif DEVICE_TYPE == DEV_ROLLING_DOOR
       if (rd_type == RD_S3DZ1) {
-        curtain_control_relay(CT_No, ON, OFF, ON);
+        curtain_control_relay(CT_No, OFF, OFF, OFF);
       } else if (rd_type == RD_S4DZ1) {
-        curtain_control_relay(CT_No, ON, OFF, OFF);
+        curtain_control_relay(CT_No, OFF, OFF, ON);
       }
 #endif
       curtainData[CT_No].startDelayTimeForCmdStep = clock_time_ms();
-      curtainData[CT_No].cmdStep = 3;
-    }
-    break;
+      curtainData[CT_No].cmdStep = 1;
+      // Update Level
+      if (curtainData[CT_No].currentPosition != 0) {
+        Curtain_UpdateCurtainPosition(CT_No);
+      }
+      break;
+    case 1:
+      if (clock_time_get_elapsed_time(
+              curtainData[CT_No].startDelayTimeForCmdStep) >
+          DEFAULT_PULL_DELAY) {
+#if DEVICE_TYPE == DEV_CURTAIN
+        if (cz_opt.type[CT_No] == HOZ_DZ3W) {
+          curtain_control_relay(CT_No, ON, OFF, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DT99) {
+          curtain_control_relay(CT_No, OFF, ON, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        }
+#elif DEVICE_TYPE == DEV_ROLLING_DOOR
+        if (rd_type == RD_S3DZ1) {
+          curtain_control_relay(CT_No, OFF, OFF, ON);
+        } else if (rd_type == RD_S4DZ1) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        }
+#endif
+        curtainData[CT_No].startDelayTimeForCmdStep = clock_time_ms();
+        curtainData[CT_No].cmdStep = 2;
+      }
+      break;
+    case 2:
+      if (clock_time_get_elapsed_time(
+              curtainData[CT_No].startDelayTimeForCmdStep) >
+          DEFAULT_PULL_DELAY) {
+        curtainData[CT_No].enableCalculatorCurtainPosition = true;
+        curtainData[CT_No].curtainRunningStartTime = clock_time_ms();
+        curtainData[CT_No].startPosition = curtainData[CT_No].currentPosition;
+        // Relay control
+#if DEVICE_TYPE == DEV_CURTAIN
+        if (cz_opt.type[CT_No] == HOZ_DZ3W) {
+          curtain_control_relay(CT_No, ON, OFF, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
+          curtain_control_relay(CT_No, ON, OFF, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DT99) {
+          curtain_control_relay(CT_No, ON, OFF, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
+          curtain_control_relay(CT_No, ON, OFF, OFF);
+        } else if (cz_opt.type[CT_No] == VER_220V) {
+          curtain_control_relay(CT_No, ON, OFF, OFF);
+        }
+#elif DEVICE_TYPE == DEV_ROLLING_DOOR
+        if (rd_type == RD_S3DZ1) {
+          curtain_control_relay(CT_No, ON, OFF, ON);
+        } else if (rd_type == RD_S4DZ1) {
+          curtain_control_relay(CT_No, ON, OFF, OFF);
+        }
+#endif
+        curtainData[CT_No].startDelayTimeForCmdStep = clock_time_ms();
+        curtainData[CT_No].cmdStep = 3;
+      }
+      break;
 
-  case 3:
-    if (clock_time_get_elapsed_time(
-            curtainData[CT_No].startDelayTimeForCmdStep) > DEFAULT_PULL_DELAY) {
+    case 3:
+      if (clock_time_get_elapsed_time(
+              curtainData[CT_No].startDelayTimeForCmdStep) >
+          DEFAULT_PULL_DELAY) {
 #ifdef CZ_EXTENDED_STATE
-      curtainData[CT_No].extended_state = EX_ST_OPENNING;
+        curtainData[CT_No].extended_state = EX_ST_OPENNING;
 #endif
 #if DEVICE_TYPE == DEV_CURTAIN
-      if (cz_opt.type[CT_No] == HOZ_DZ3W) {
-        curtain_control_relay(CT_No, ON, OFF, OFF);
-      } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-      } else if (cz_opt.type[CT_No] == HOZ_DT99) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-        g_tempcloseOrOpenState[CT_No] = CURTAIN_STATE_OPEN;
-      } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-      }
+        if (cz_opt.type[CT_No] == HOZ_DZ3W) {
+          curtain_control_relay(CT_No, ON, OFF, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DZ4W) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        } else if (cz_opt.type[CT_No] == HOZ_DT99) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+          g_tempcloseOrOpenState[CT_No] = CURTAIN_STATE_OPEN;
+        } else if (cz_opt.type[CT_No] == HOZ_DZ3WP) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        }
 #elif DEVICE_TYPE == DEV_ROLLING_DOOR
-      if (rd_type == RD_S3DZ1) {
-        curtain_control_relay(CT_No, OFF, OFF, ON);
-      } else if (rd_type == RD_S4DZ1) {
-        curtain_control_relay(CT_No, OFF, OFF, OFF);
-      }
+        if (rd_type == RD_S3DZ1) {
+          curtain_control_relay(CT_No, OFF, OFF, ON);
+        } else if (rd_type == RD_S4DZ1) {
+          curtain_control_relay(CT_No, OFF, OFF, OFF);
+        }
 #endif
-      curtainData[CT_No].cmdStep = 0;
-      return CURRENT_CMD_HANDLE_DONE;
-    }
-    break;
+        curtainData[CT_No].cmdStep = 0;
+        return CURRENT_CMD_HANDLE_DONE;
+      }
+      break;
 
-  default:
-    curtainData[CT_No].cmdStep = 0;
-    break;
+    default:
+      curtainData[CT_No].cmdStep = 0;
+      break;
   }
   return CURRENT_CMD_HANDLE_NOT_DONE;
 }
@@ -1047,15 +1055,15 @@ static void curtain_handle_command(CurtainNumber_enum CT_No) {
 
   if (curtainData[CT_No].currentCmd != CURTAIN_CMD_IDLE) {
     switch (curtainData[CT_No].currentCmd) {
-    case CURTAIN_CMD_OPEN:
-      currentCmdHandlerStatus = curtain_run_open_command(CT_No);
-      break;
-    case CURTAIN_CMD_CLOSE:
-      currentCmdHandlerStatus = curtain_run_close_command(CT_No);
-      break;
-    case CURTAIN_CMD_STOP:
-      currentCmdHandlerStatus = curtain_run_stop_command(CT_No);
-      break;
+      case CURTAIN_CMD_OPEN:
+        currentCmdHandlerStatus = curtain_run_open_command(CT_No);
+        break;
+      case CURTAIN_CMD_CLOSE:
+        currentCmdHandlerStatus = curtain_run_close_command(CT_No);
+        break;
+      case CURTAIN_CMD_STOP:
+        currentCmdHandlerStatus = curtain_run_stop_command(CT_No);
+        break;
     }
     if (currentCmdHandlerStatus == CURRENT_CMD_HANDLE_DONE) {
       curtainData[CT_No].currentCmd = CURTAIN_CMD_IDLE;
@@ -1158,34 +1166,37 @@ static void curtain_handle_goto_specified_position(CurtainNumber_enum CT_No) {
  */
 static void curtain_handle_min_max_position(CurtainNumber_enum CT_No) {
   switch (curtainData[CT_No].curtainState) {
-  case CURTAIN_STATE_OPEN:
-    curtainData[CT_No].currentPosition =
-        curtainData[CT_No].startPosition -
-        clock_time_get_elapsed_time(curtainData[CT_No].curtainRunningStartTime);
-    if ((int32_t)curtainData[CT_No].currentPosition <= 0) {
-      curtainData[CT_No].currentPosition = 0;
-      curtainData[CT_No].sendStep = MIN_STEP;
+    case CURTAIN_STATE_OPEN:
+      curtainData[CT_No].currentPosition =
+          curtainData[CT_No].startPosition -
+          clock_time_get_elapsed_time(
+              curtainData[CT_No].curtainRunningStartTime);
+      if ((int32_t)curtainData[CT_No].currentPosition <= 0) {
+        curtainData[CT_No].currentPosition = 0;
+        curtainData[CT_No].sendStep = MIN_STEP;
 #ifdef CZ_EXTENDED_STATE
-      curtainData[CT_No].extended_state = EX_ST_OPENNED;
+        curtainData[CT_No].extended_state = EX_ST_OPENNED;
 #endif
-      Curtain_HandleLimitPosition(CT_No); // Min Position
-    }
-    break;
+        Curtain_HandleLimitPosition(CT_No);  // Min Position
+      }
+      break;
 
-  case CURTAIN_STATE_CLOSE:
-    curtainData[CT_No].currentPosition =
-        curtainData[CT_No].startPosition +
-        clock_time_get_elapsed_time(curtainData[CT_No].curtainRunningStartTime);
-    if (curtainData[CT_No].currentPosition >=
-        curtainData[CT_No].curtainLimitTime) {
-      curtainData[CT_No].currentPosition = curtainData[CT_No].curtainLimitTime;
-      curtainData[CT_No].sendStep = MAX_STEP;
+    case CURTAIN_STATE_CLOSE:
+      curtainData[CT_No].currentPosition =
+          curtainData[CT_No].startPosition +
+          clock_time_get_elapsed_time(
+              curtainData[CT_No].curtainRunningStartTime);
+      if (curtainData[CT_No].currentPosition >=
+          curtainData[CT_No].curtainLimitTime) {
+        curtainData[CT_No].currentPosition =
+            curtainData[CT_No].curtainLimitTime;
+        curtainData[CT_No].sendStep = MAX_STEP;
 #ifdef CZ_EXTENDED_STATE
-      curtainData[CT_No].extended_state = EX_ST_CLOSED;
+        curtainData[CT_No].extended_state = EX_ST_CLOSED;
 #endif
-      Curtain_HandleLimitPosition(CT_No); // Max Position
-    }
-    break;
+        Curtain_HandleLimitPosition(CT_No);  // Max Position
+      }
+      break;
   }
 }
 
@@ -1209,21 +1220,21 @@ static void Curtain_HandleSendLevel(CurtainNumber_enum CT_No) {
           (curtainData[CT_No].currentPosition < (temp + stepToSendLevel))) {
         if (curtainData[CT_No].sendStep != j) {
           switch (curtainData[CT_No].curtainState) {
-          case CURTAIN_STATE_OPEN:
-            if (curtainData[CT_No].currentPosition <=
-                (temp + (stepToSendLevel >> 1))) {
-              Curtain_UpdateCurtainPosition(CT_No);
-              curtainData[CT_No].sendStep = j;
-            }
-            break;
+            case CURTAIN_STATE_OPEN:
+              if (curtainData[CT_No].currentPosition <=
+                  (temp + (stepToSendLevel >> 1))) {
+                Curtain_UpdateCurtainPosition(CT_No);
+                curtainData[CT_No].sendStep = j;
+              }
+              break;
 
-          case CURTAIN_STATE_CLOSE:
-            if (curtainData[CT_No].currentPosition >=
-                (temp + (stepToSendLevel >> 1))) {
-              Curtain_UpdateCurtainPosition(CT_No);
-              curtainData[CT_No].sendStep = j;
-            }
-            break;
+            case CURTAIN_STATE_CLOSE:
+              if (curtainData[CT_No].currentPosition >=
+                  (temp + (stepToSendLevel >> 1))) {
+                Curtain_UpdateCurtainPosition(CT_No);
+                curtainData[CT_No].sendStep = j;
+              }
+              break;
           }
         }
         return;
@@ -1462,9 +1473,9 @@ uint8_t curtain_get_curret_level(uint8_t CT_No) {
  * @retval Curtain position per char
  */
 static uint8_t curtain_get_curtain_position_per_char(CurtainNumber_enum CT_No,
-                                                     uint8_t *pos_present,
-                                                     uint8_t *pos_target,
-                                                     uint8_t *state) {
+                                                     uint8_t* pos_present,
+                                                     uint8_t* pos_target,
+                                                     uint8_t* state) {
   if (CT_No < NUMBER_CURTAIN) {
     *pos_present = (uint8_t)(((curtainData[CT_No].currentPosition) * 0xFF) /
                              curtainData[CT_No].curtainLimitTime);
@@ -1633,7 +1644,7 @@ static void curtain_control_binding_group(uint8_t model_idx) {
                 if ((temp_binding != BT_MESH_ADDR_UNASSIGNED) &&
                     (temp_binding == binding_adr)) {
                   // MANUAL CONTROL
-                  update_control_message_params(
+                  net_msg_update_control_message_parameter(
                       i, bt_mesh_primary_addr() + model_idx, binding_adr,
                       G_ONOFF_SET);
                   // Send to MCU
@@ -1669,20 +1680,28 @@ static void curtain_control_binding_group(uint8_t model_idx) {
 
         uint8_t len = sizeof(vd_cmd_g_level_set_t);
         uint8_t par[len + 1];
-        memcpy((uint8_t *)&par, (uint8_t *)&vd_level_set, len);
+        memcpy((uint8_t*)&par, (uint8_t*)&vd_level_set, len);
         if (force_control_binding[model_idx] == true) {
           par[len] = 0x0;
           len++;
           force_control_binding[model_idx] = false;
         }
         if (last_level_binding[model_idx] != vd_level_set.level) {
-          mesh_tx_cmd_rsp(G_LEVEL_SET_NOACK, (uint8_t *)par, len,
+          mesh_tx_cmd_rsp(G_LEVEL_SET_NOACK, (uint8_t*)par, len,
                           bt_mesh_primary_addr() + model_idx, binding_adr, 0,
                           0);
-          last_level_binding[model_idx] = vd_level_set.level;
-          LOG_INF("BINDING CONTROL: level=%d", vd_level_set.level);
         }
       }
     }
+  }
+}
+
+void curtain_set_opt(uint8_t idx, uint8_t type, uint32_t limit_time_ms) {
+  if (idx < ELE_CNT) {
+    cz_opt.type[idx] = type;
+    cz_opt.limit_time[idx] = limit_time_ms;
+    curtainData[idx].curtainLimitTime = limit_time_ms;
+    LOG_INF("KNX SYNC: Curtain %d, Type=%d, LimitTime=%u ms", idx, type,
+            limit_time_ms);
   }
 }

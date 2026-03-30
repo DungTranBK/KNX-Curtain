@@ -168,7 +168,7 @@ SecurityInterfaceObject::SecurityInterfaceObject() {
       new DataProperty(
           PID_TOOL_KEY, true, PDT_GENERIC_16, 1, ReadLv3 | WriteLv0,
           (uint8_t*)_fdsk),  // default is FDSK // ETS changes this property
-                             // during programming from FDSK to some random key!
+      // during programming from FDSK to some random key!
       new DataProperty(PID_SECURITY_REPORT, true, PDT_BITSET8, 1,
                        ReadLv3 | WriteLv0, _secReport),  // Not implemented
       new DataProperty(PID_SECURITY_REPORT_CONTROL, true,
@@ -216,14 +216,21 @@ const uint8_t* SecurityInterfaceObject::restore(const uint8_t* buffer) {
 
   const uint8_t* result = InterfaceObject::restore(buffer);
 
+  if (!_securityModeEnabled) {
+    LOG_INF(
+        "SecurityMode disabled: Force RE-INITIALIZING Tool Key with Active "
+        "FDSK from Flash");
+    property(PID_TOOL_KEY)->write(1, 1, _fdsk);
+  }
+
   LOG_INF("=== Security Interface Object Restored ===");
   LOG_INF("LoadState: %d, SecurityModeEnabled: %d", _state,
           _securityModeEnabled);
-  LOG_HEXDUMP_INF(_fdsk, 16, "FDSK (hardcoded):");
+  LOG_HEXDUMP_INF(_fdsk, 16, "Current FDSK Buffer:");
 
   const uint8_t* toolKey = propertyData(PID_TOOL_KEY);
   if (toolKey != nullptr) {
-    LOG_HEXDUMP_INF(toolKey, 16, "Tool Key (current):");
+    LOG_HEXDUMP_INF(toolKey, 16, "Tool Key Property:");
   } else {
     LOG_WRN("Tool Key property is NULL!");
   }
@@ -422,8 +429,8 @@ void SecurityInterfaceObject::masterReset(EraseCode eraseCode,
 
 void SecurityInterfaceObject::setFDSK(const uint8_t fdsk[16]) {
   memcpy(_fdsk, fdsk, 16);
-  LOG_INF("FDSK updated from provisioning data");
-  LOG_HEXDUMP_INF(_fdsk, 16, "New FDSK:");
+  LOG_INF("FDSK updated from provisioning data (Source of Truth established)");
+  LOG_HEXDUMP_INF(_fdsk, 16, "Active FDSK:");
 }
 
 // const uint8_t* SecurityInterfaceObject::toolKey() {

@@ -16,6 +16,7 @@ class SecurityInterfaceObject : public InterfaceObject {
    * On subsequent boots, the restored Tool Key from EEPROM takes precedence.
    */
   static void setFDSK(const uint8_t fdsk[16]);
+  static const uint8_t* fdsk() { return _fdsk; }
 
   void masterReset(EraseCode eraseCode, uint8_t channel) override;
 

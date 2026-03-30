@@ -250,6 +250,7 @@ void BauSystemB::restartRequestIndication(Priority priority,
     applicationLayer().restartResponse(
         AckRequested, priority, hopType, secCtrl, errorCode,
         (errorCode == 0) ? kRestartProcessTime : 0);
+    if (_beforeRestart != 0) _beforeRestart();
     doMasterReset(eraseCode, channel);
   } else {
     // Cannot happen as restartType is just one bit
@@ -539,7 +540,8 @@ void BauSystemB::functionPropertyCommandIndication(
   InterfaceObject* obj = getInterfaceObject(objectIndex);
 
   if (obj) {
-    if (obj->property((PropertyID)propertyId)->Type() == PDT_FUNCTION) {
+    Property* prop = obj->property((PropertyID)propertyId);
+    if (prop && prop->Type() == PDT_FUNCTION) {
       obj->command((PropertyID)propertyId, data, length, resultData,
                    resultLength);
       handled = true;
@@ -585,7 +587,8 @@ void BauSystemB::functionPropertyStateIndication(
   InterfaceObject* obj = getInterfaceObject(objectIndex);
 
   if (obj) {
-    if (obj->property((PropertyID)propertyId)->Type() == PDT_FUNCTION) {
+    Property* prop = obj->property((PropertyID)propertyId);
+    if (prop && prop->Type() == PDT_FUNCTION) {
       obj->state((PropertyID)propertyId, data, length, resultData,
                  resultLength);
       handled = true;
@@ -626,44 +629,47 @@ void BauSystemB::functionPropertyExtCommandIndication(
   InterfaceObject* obj = getInterfaceObject(objectType, objectInstance);
 
   if (obj) {
-    PropertyDataType propType = obj->property((PropertyID)propertyId)->Type();
+    Property* prop = obj->property((PropertyID)propertyId);
+    if (prop) {
+      PropertyDataType propType = prop->Type();
 
-    if (propType == PDT_FUNCTION) {
-      // The first byte is reserved and 0 for PDT_FUNCTION
-      uint8_t reservedByte = data[0];
+      if (propType == PDT_FUNCTION) {
+        // The first byte is reserved and 0 for PDT_FUNCTION
+        uint8_t reservedByte = data[0];
 
-      if (reservedByte != 0x00) {
-        resultData[0] = ReturnCodes::DataVoid;
+        if (reservedByte != 0x00) {
+          resultData[0] = ReturnCodes::DataVoid;
+        } else {
+          resultLength = sizeof(
+              resultData);  // tell the callee the maximum size of the buffer
+          obj->command((PropertyID)propertyId, data, length, resultData,
+                       resultLength);
+          // resultLength was modified by the callee
+        }
+      } else if (propType == PDT_CONTROL) {
+        uint8_t count = 1;
+        // write the event
+        obj->writeProperty((PropertyID)propertyId, 1, data, count);
+
+        if (count == 1) {
+          // Read the current state (one byte only) for the response
+          obj->readProperty((PropertyID)propertyId, 1, count, &resultData[1]);
+          resultLength = count ? 2 : 1;
+          resultData[0] = count ? ReturnCodes::Success : ReturnCodes::DataVoid;
+        } else {
+          resultData[0] = ReturnCodes::AddressVoid;
+        }
       } else {
-        resultLength = sizeof(
-            resultData);  // tell the callee the maximum size of the buffer
-        obj->command((PropertyID)propertyId, data, length, resultData,
-                     resultLength);
-        // resultLength was modified by the callee
-      }
-    } else if (propType == PDT_CONTROL) {
-      uint8_t count = 1;
-      // write the event
-      obj->writeProperty((PropertyID)propertyId, 1, data, count);
-
-      if (count == 1) {
-        // Read the current state (one byte only) for the response
-        obj->readProperty((PropertyID)propertyId, 1, count, &resultData[1]);
-        resultLength = count ? 2 : 1;
-        resultData[0] = count ? ReturnCodes::Success : ReturnCodes::DataVoid;
-      } else {
-        resultData[0] = ReturnCodes::AddressVoid;
+        resultData[0] = ReturnCodes::DataTypeConflict;
       }
     } else {
-      resultData[0] = ReturnCodes::DataTypeConflict;
+      resultData[0] = ReturnCodes::GenericError;
     }
-  } else {
-    resultData[0] = ReturnCodes::GenericError;
-  }
 
-  applicationLayer().functionPropertyExtStateResponse(
-      AckRequested, priority, hopType, asap, secCtrl, objectType,
-      objectInstance, propertyId, resultData, resultLength);
+    applicationLayer().functionPropertyExtStateResponse(
+        AckRequested, priority, hopType, asap, secCtrl, objectType,
+        objectInstance, propertyId, resultData, resultLength);
+  }
 }
 
 void BauSystemB::functionPropertyExtStateIndication(
@@ -679,37 +685,40 @@ void BauSystemB::functionPropertyExtStateIndication(
   InterfaceObject* obj = getInterfaceObject(objectType, objectInstance);
 
   if (obj) {
-    PropertyDataType propType = obj->property((PropertyID)propertyId)->Type();
+    Property* prop = obj->property((PropertyID)propertyId);
+    if (prop) {
+      PropertyDataType propType = prop->Type();
 
-    if (propType == PDT_FUNCTION) {
-      // The first byte is reserved and 0 for PDT_FUNCTION
-      uint8_t reservedByte = data[0];
+      if (propType == PDT_FUNCTION) {
+        // The first byte is reserved and 0 for PDT_FUNCTION
+        uint8_t reservedByte = data[0];
 
-      if (reservedByte != 0x00) {
-        resultData[0] = ReturnCodes::DataVoid;
+        if (reservedByte != 0x00) {
+          resultData[0] = ReturnCodes::DataVoid;
+        } else {
+          resultLength = sizeof(
+              resultData);  // tell the callee the maximum size of the buffer
+          obj->state((PropertyID)propertyId, data, length, resultData,
+                     resultLength);
+          // resultLength was modified by the callee
+        }
+      } else if (propType == PDT_CONTROL) {
+        uint8_t count = 1;
+        // Read the current state (one byte only) for the response
+        obj->readProperty((PropertyID)propertyId, 1, count, &resultData[1]);
+        resultLength = count ? 2 : 1;
+        resultData[0] = count ? ReturnCodes::Success : ReturnCodes::DataVoid;
       } else {
-        resultLength = sizeof(
-            resultData);  // tell the callee the maximum size of the buffer
-        obj->state((PropertyID)propertyId, data, length, resultData,
-                   resultLength);
-        // resultLength was modified by the callee
+        resultData[0] = ReturnCodes::DataTypeConflict;
       }
-    } else if (propType == PDT_CONTROL) {
-      uint8_t count = 1;
-      // Read the current state (one byte only) for the response
-      obj->readProperty((PropertyID)propertyId, 1, count, &resultData[1]);
-      resultLength = count ? 2 : 1;
-      resultData[0] = count ? ReturnCodes::Success : ReturnCodes::DataVoid;
     } else {
-      resultData[0] = ReturnCodes::DataTypeConflict;
+      resultData[0] = ReturnCodes::GenericError;
     }
-  } else {
-    resultData[0] = ReturnCodes::GenericError;
-  }
 
-  applicationLayer().functionPropertyExtStateResponse(
-      AckRequested, priority, hopType, asap, secCtrl, objectType,
-      objectInstance, propertyId, resultData, resultLength);
+    applicationLayer().functionPropertyExtStateResponse(
+        AckRequested, priority, hopType, asap, secCtrl, objectType,
+        objectInstance, propertyId, resultData, resultLength);
+  }
 }
 
 void BauSystemB::individualAddressReadIndication(
@@ -737,9 +746,9 @@ void BauSystemB::individualAddressSerialNumberReadIndication(
     Priority priority, HopCountType hopType, const SecurityControl& secCtrl,
     uint8_t* knxSerialNumber) {
   // If the received serial number matches our serial number
-  // then send a response with the serial number. The domain address is set to 0
-  // for closed media. An open medium BAU has to override this method and
-  // provide a proper domain address.
+  // then send a response with the serial number. The domain address is set
+  // to 0 for closed media. An open medium BAU has to override this method
+  // and provide a proper domain address.
   if (!memcmp(knxSerialNumber, _deviceObj.propertyData(PID_SERIAL_NUMBER), 6)) {
     uint8_t emptyDomainAddress[2] = {0x00};
     applicationLayer().IndividualAddressSerialNumberReadResponse(
@@ -842,8 +851,8 @@ void BauSystemB::systemNetworkParameterReadIndication(
     case NM_Read_SerialNumber_By_PowerReset:  // NM_Read_SerialNumber_By_PowerReset
       break;
 
-    case NM_Read_SerialNumber_By_ManufacturerSpecific:  // Manufacturer specific
-                                                        // use of
+    case NM_Read_SerialNumber_By_ManufacturerSpecific:  // Manufacturer
+                                                        // specific use of
                                                         // A_SystemNetworkParameter_Read
       break;
   }
@@ -870,8 +879,8 @@ void BauSystemB::propertyValueRead(ObjectType objectType,
     if (startIndex > 0)
       size = elementSize * numberOfElements;
     else
-      size = sizeof(uint16_t);  // size of property array entry 0 which contains
-                                // the current number of elements
+      size = sizeof(uint16_t);  // size of property array entry 0 which
+                                // contains the current number of elements
 
     *data = new uint8_t[size];
     obj->readProperty((PropertyID)propertyId, startIndex, elementCount, *data);

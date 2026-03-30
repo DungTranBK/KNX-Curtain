@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <KNX xmlns="http://knx.org/xml/project/20">
-  <MasterData Id="MD-1" Version="479" Signature="UpM2taawNgIJEQ/bfRyn9ZcLRJ9CipXeAaS1JlAFz2pdA5qatYZnmiN24jelTMHNFfXhlivtZWyTBKnbYokaJ0YAxcMp7TlQ3C6tHlVE7+CFGDl9SYadAjUl/HWt5QSKBYRTqAUlO62Cdkp+Z6eo+Py5qZ2ZmT09DxErdiq+SCI=">
+  <MasterData Id="MD-1" Version="486" Signature="XdRz6slbnBdDMiw5v32rxe43gwavT0ZmoK0bCWOV4uqJDH3R9drZEH7bkVx9IHcD9/PwfqVbe5Y95utPlkO8szlZGC8nPU1OuI7QJcUAT0/PgIH+Hd3W00rx/SXsXG1l1BG5DV1u0h6YnFxlz8xErc265iyBcMp9kC4+PUt0+1w=">
     <DatapointTypes>
       <DatapointType Id="DPT-1" Number="1" Name="1.xxx" Text="1-bit" SizeInBit="1" PDT="PDT-50">
         <DatapointSubtypes>
@@ -11340,7 +11340,16 @@ displayOrderNumber='';for(var n=0;n&lt;rawOrderNumber.length;n++){r=rawOrderNumb
       <Manufacturer Id="M-02AC" KnxManufacturerId="684" Name="LENGEN" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Inactive" />
       <Manufacturer Id="M-02AD" KnxManufacturerId="685" Name="Shenzhen EXC-LED Technology Co.,LTD" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Inactive" />
       <Manufacturer Id="M-02AE" KnxManufacturerId="686" Name="Vibroxx-FZCO" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
-      <Manufacturer Id="M-02AF" KnxManufacturerId="687" Name="Suzhou Hongyun Intelligent TechnologyCo., Ltd" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
+      <Manufacturer Id="M-02AF" KnxManufacturerId="687" Name="Suzhou Hongyun Intelligent TechnologyCo., Ltd" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active">
+        <PublicKeys>
+          <PublicKey Id="M-02AF_K-1" Number="1" Purpose="Falcon">
+            <RSAKeyValue>
+              <Modulus>yLiUVBmjwRiiVEyFEtZaGaJt01WKKpSbEKCMDePkKj9W3zHRGv1OClimLYHrjk3B9lwmRzsWZLnVU64+6vFJPT7XPNn/yJ2/GNe6QFN18o0L4epsJSfBRJOnxw5HauttV4gu7Ay/YYXgaLmgSi4dIxr9D6kGbdcUd7kFB49feJU=</Modulus>
+              <Exponent>AQAB</Exponent>
+            </RSAKeyValue>
+          </PublicKey>
+        </PublicKeys>
+      </Manufacturer>
       <Manufacturer Id="M-02B0" KnxManufacturerId="688" Name="Passiv Energie GmbH" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
       <Manufacturer Id="M-02B1" KnxManufacturerId="689" Name="Payne Technologies Ltd" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Inactive" />
       <Manufacturer Id="M-02B2" KnxManufacturerId="690" Name="Guangdong Yozewit Intelligent Technology Co.,Ltd." DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
@@ -11523,7 +11532,7 @@ displayOrderNumber='';for(var n=0;n&lt;rawOrderNumber.length;n++){r=rawOrderNumb
       <Manufacturer Id="M-0343" KnxManufacturerId="835" Name="Micronic Korea Co., Ltd." DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
       <Manufacturer Id="M-0344" KnxManufacturerId="836" Name="Robustel Limited" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
       <Manufacturer Id="M-0345" KnxManufacturerId="837" Name="Lexa LIFESTYLE" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
-      <Manufacturer Id="M-0346" KnxManufacturerId="838" Name="casambi" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
+      <Manufacturer Id="M-0346" KnxManufacturerId="838" Name="Casambi Technologies Oy" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
       <Manufacturer Id="M-0347" KnxManufacturerId="839" Name="BELCAB UK LTD" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
       <Manufacturer Id="M-0348" KnxManufacturerId="840" Name="Channel Smart Buildings" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
       <Manufacturer Id="M-0349" KnxManufacturerId="841" Name="Nanjing Kleven Electronic Technology Co., Ltd" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
@@ -11533,6 +11542,13 @@ displayOrderNumber='';for(var n=0;n&lt;rawOrderNumber.length;n++){r=rawOrderNumb
       <Manufacturer Id="M-034D" KnxManufacturerId="845" Name="VOKA Vogtländisches Kabelwerk GmbH" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
       <Manufacturer Id="M-034E" KnxManufacturerId="846" Name="Qingdao Maisi Intelligent Technology Co.,Ltd" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
       <Manufacturer Id="M-034F" KnxManufacturerId="847" Name="Chongqing Mexin Messon Doors Industry Co., Ltd., " DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
+      <Manufacturer Id="M-0350" KnxManufacturerId="848" Name="Holfmann Culture Art Co.,LTD" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
+      <Manufacturer Id="M-0351" KnxManufacturerId="849" Name="Guangzhou Baite IoT Technology Co., Ltd" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
+      <Manufacturer Id="M-0352" KnxManufacturerId="850" Name="OWL Automata" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
+      <Manufacturer Id="M-0353" KnxManufacturerId="851" Name="Automated Pty Ltd" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
+      <Manufacturer Id="M-0354" KnxManufacturerId="852" Name="HIKVISION" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
+      <Manufacturer Id="M-0355" KnxManufacturerId="853" Name="Wiren Board" DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
+      <Manufacturer Id="M-0356" KnxManufacturerId="854" Name="DEGSON TECHNOLOGY CO LTD." DefaultLanguage="en-US" ImportRestriction="Own" MemberStatus="Active" />
       <Manufacturer Id="M-ABB2" KnxManufacturerId="43954" Name="ABB - reserved" CompatibilityGroup="2" DefaultLanguage="en-US" ImportRestriction="Group" ImportGroup="Group-ABB" MemberStatus="Active">
         <PublicKeys>
           <PublicKey Id="M-ABB2_K-1" Number="1" Purpose="">

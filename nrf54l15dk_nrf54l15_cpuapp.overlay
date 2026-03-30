@@ -143,6 +143,19 @@
 };
 /delete-node/ &{/pin-controller/spi00_default/group1/};
 
+&cpuapp_rram {
+    partitions {
+        compatible = "fixed-partitions";
+        #address-cells = <1>;
+        #size-cells = <1>;
+
+        knx_provision: partition@154000 {
+            label = "knx_provision";
+            reg = <0x154000 0x1000>;
+        };
+    };
+};
+
 &spi00 {
     /delete-property/ cs-gpios;
     zephyr,deferred-init;

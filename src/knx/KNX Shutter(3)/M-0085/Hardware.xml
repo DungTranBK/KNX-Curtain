@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<KNX CreatedBy="kaenx-creator" ToolVersion="1.0.0" xmlns="http://knx.org/xml/project/20">
+  <ManufacturerData>
+    <Manufacturer RefId="M-0085">
+      <Hardware>
+        <Hardware Id="M-0085_H-SH.2D4RL.2D2026-1" Name="Lumi Shutter Actuator 4 Relays" SerialNumber="SH-4RL-2026" VersionNumber="1" BusCurrent="10" HasIndividualAddress="1" HasApplicationProgram="1">
+          <Products>
+            <Product Id="M-0085_H-SH.2D4RL.2D2026-1_P-SH001" Text="Lumi Shutter Actuator 4 Relays" OrderNumber="SH001" IsRailMounted="1" DefaultLanguage="en-US" Hash="nKrCSVz27N66VDjz423jlG1un3Y=">
+              <RegistrationInfo RegistrationStatus="Registered" RegistrationSignature="X9lt7hwEwDAY9IvFumkqJ/WbtQscVB5phXzjS4VcgD1goBrg2YH0IvecPnWWqiDYfuA8YeytH7P2poMRlqV5mGOakXVBmvIUn+2QjR7611k5qvc/cPm4kS/go1u+M/9fS8CiluQv5AI+nKcl0as7JmNKS8ZIkUnNPHibTYdXcN0=" />
+            </Product>
+          </Products>
+          <Hardware2Programs>
+            <Hardware2Program Id="M-0085_H-SH.2D4RL.2D2026-1_HP-0001-13-C12C" MediumTypes="MT-0" Hash="neNOGHYi6QpVcBqVMmEAo0pAHZ8=">
+              <ApplicationProgramRef RefId="M-0085_A-0001-13-C12C" />
+              <RegistrationInfo RegistrationStatus="Registered" RegistrationNumber="0001/119" RegistrationSignature="DQWRXh8tdZR0ZkDTq06Ev4MBFBApyU4XeP/iJ814JWmsDIbkoZot0K3VtfkfZZiHCmiDETvJjM7PoEYHbnrH/NNCU+FghagBsOSqnUUQkgsu7vpKVz64Qox47P+srAyOVmqoKIdH4YgKW51wAVP1JOIAIpVwSXF4W9NFpAD0Gdk=" />
+            </Hardware2Program>
+          </Hardware2Programs>
+        </Hardware>
+      </Hardware>
+      <Languages>
+        <Language Identifier="en-US">
+          <TranslationUnit RefId="M-0085_H-SH.2D4RL.2D2026-1_P-SH001">
+            <TranslationElement RefId="M-0085_H-SH.2D4RL.2D2026-1_P-SH001">
+              <Translation AttributeName="Text" Text="Lumi Shutter Actuator 4 Relays" />
+            </TranslationElement>
+          </TranslationUnit>
+        </Language>
+      </Languages>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>

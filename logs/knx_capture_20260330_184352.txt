@@ -1,0 +1,22 @@
+[00:00:47.058,107] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=1, IA=0x1301[0m
+[00:00:57.097,977] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=1, IA=0x1301[0m
+[00:00:58.596,279] [0m<inf> knx_adapter: DEBUG: GO_SH_SAPBP (3) UPDATED! current flag=0[0m
+[00:00:58.596,306] [0m<inf> knx_adapter: KNX -> Position: 0% (shutter_config.enable_position=0)[0m
+[00:00:58.596,313] [0m<inf> app: KNX -> SHUTTER SET POSITION: 0%[0m
+[00:00:58.596,319] [0m<inf> net_message: handle_mesh_cmd_sig_g_level_set: idx=0, op=0x0000[0m
+[00:00:58.596,330] [0m<inf> curtain: curtain_control_curtain_by_app: CT_No=0, CmdId=2, pos=0[0m
+[00:00:58.596,336] [0m<inf> curtain: RUN[0m
+[00:00:58.596,342] [0m<inf> curtain: ...MIN[0m
+[00:00:58.596,348] [0m<inf> net_message: CURTAIN CONTROL: 2, 0[0m
+[00:00:58.597,191] [0m<inf> curtain: **************Control RL: 0, 1, 0[0m
+[00:00:58.898,242] [0m<inf> curtain: **************Control RL: 0, 0, 0[0m
+[00:00:59.199,398] [0m<inf> curtain: **************Control RL: 1, 0, 0[0m
+[00:00:59.199,451] [0m<inf> curtain: StorePos: save_one rc=0, pos=[0, 19999][0m
+[00:00:59.199,475] [0m<inf> curtain: curtain_update_device_status: 0, P: 0, T: 0, ST: 2[0m
+[00:00:59.199,483] [0m<inf> app: KNX: app_handle_curtain_update_level: curtain_idx=0, current_position=0[0m
+[00:00:59.199,514] [1;31m<err> vendor_model: Device not provisioned, cannot send mesh_tx_cmd_rsp[0m
+[00:00:59.199,521] [0m<inf> net_message: 
+ ########## Send Curtain Level: 0, 0[0m
+[00:00:59.500,323] [0m<inf> curtain: **************Control RL: 0, 0, 0[0m
+[00:01:06.384,057] [0m<inf> default_network: Default Network: CLOSED | Main Network: NOT_PROVISIONED[0m
+[00:01:07.128,507] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=1, IA=0x1301[0m
