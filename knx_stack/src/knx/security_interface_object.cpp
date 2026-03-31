@@ -221,6 +221,26 @@ const uint8_t* SecurityInterfaceObject::restore(const uint8_t* buffer) {
         "SecurityMode disabled: Force RE-INITIALIZING Tool Key with Active "
         "FDSK from Flash");
     property(PID_TOOL_KEY)->write(1, 1, _fdsk);
+  } else {
+    // After wipe config, EEPROM is 0xFF -> _securityModeEnabled is restored
+    // as 0xFF (true), but Tool Key was never initialized (all zeros).
+    // Always check and fix this case.
+    const uint8_t* toolKey = propertyData(PID_TOOL_KEY);
+    if (toolKey != nullptr) {
+      bool allZero = true;
+      for (int i = 0; i < 16; i++) {
+        if (toolKey[i] != 0) {
+          allZero = false;
+          break;
+        }
+      }
+      if (allZero) {
+        LOG_WRN(
+            "Tool Key is ALL ZEROS despite SecurityMode=enabled! "
+            "Re-initializing with FDSK (post-wipe recovery)");
+        property(PID_TOOL_KEY)->write(1, 1, _fdsk);
+      }
+    }
   }
 
   LOG_INF("=== Security Interface Object Restored ===");
@@ -442,6 +462,24 @@ void SecurityInterfaceObject::setFDSK(const uint8_t fdsk[16]) {
 const uint8_t* SecurityInterfaceObject::toolKey() {
   // There is only one tool key
   const uint8_t* toolKey = propertyData(PID_TOOL_KEY);
+
+  // Safety net: if Tool Key is all-zeros (e.g. after wipe config where
+  // _securityModeEnabled was restored as 0xFF=true), fall back to FDSK.
+  if (toolKey != nullptr) {
+    bool allZero = true;
+    for (int i = 0; i < 16; i++) {
+      if (toolKey[i] != 0) {
+        allZero = false;
+        break;
+      }
+    }
+    static const uint8_t zeroKey[16] = {0};
+    if (allZero && memcmp(_fdsk, zeroKey, 16) != 0) {
+      LOG_WRN("toolKey() -> Tool Key is ALL ZEROS, returning FDSK instead!");
+      return _fdsk;
+    }
+  }
+
   return toolKey;
 }
 

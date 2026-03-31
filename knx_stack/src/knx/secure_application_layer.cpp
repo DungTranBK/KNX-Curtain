@@ -1348,6 +1348,10 @@ bool SecureApplicationLayer::decrypt(uint8_t* plainApdu,
 
       LOG_ERR("!!! MAC MISMATCH (auth): calc=0x%08X, recv=0x%08X",
               calculatedMac, mac);
+      LOG_HEXDUMP_ERR(SecurityInterfaceObject::fdsk(), 16, "Active FDSK:");
+      LOG_HEXDUMP_ERR(key, 16, "Active KEY (Used for decrypt):");
+      const uint8_t* serial = _deviceObj.propertyData(PID_SERIAL_NUMBER);
+      if (serial) LOG_HEXDUMP_ERR(serial, 6, "Device Serial:");
 
       return false;
     }
@@ -1403,6 +1407,10 @@ bool SecureApplicationLayer::decrypt(uint8_t* plainApdu,
 
       LOG_ERR("!!! MAC MISMATCH (conf+auth): calc=0x%08X, decrypt=0x%08X",
               calculatedMac, decryptedMac);
+      LOG_HEXDUMP_ERR(SecurityInterfaceObject::fdsk(), 16, "Active FDSK:");
+      LOG_HEXDUMP_ERR(key, 16, "Active KEY (Used for decrypt):");
+      const uint8_t* serial = _deviceObj.propertyData(PID_SERIAL_NUMBER);
+      if (serial) LOG_HEXDUMP_ERR(serial, 6, "Device Serial:");
 
       return false;
     }

@@ -29,6 +29,7 @@
 #endif
 
 #include <zephyr/logging/log.h>
+#include <zephyr/settings/settings.h>
 LOG_MODULE_REGISTER(knx_adapter, CONFIG_LOG_DEFAULT_LEVEL);
 
 // ============================================================================
@@ -39,6 +40,8 @@ extern "C" {
 extern void app_knx_shutter_move(bool going_down);
 extern void app_knx_shutter_stop(void);
 extern void app_knx_shutter_set_position(uint8_t percent);
+extern int app_get_curtain_current_position(uint8_t curtain_idx,
+                                            uint8_t* position);
 }
 
 // ============================================================================
@@ -114,9 +117,25 @@ static void load_shutter_params(void) {
   // --- Scene assignments (10 scenes, 2 bytes each) ---
   for (uint8_t i = 0; i < KNX_MAX_SCENES; i++) {
     uint8_t byte0 = knx->paramByte(PARAM_SCENE_ACTIVE_NUM(i));
-    shutter_config.scenes[i].active = (byte0 & SCENE_ACTIVE_MASK) != 0;
-    shutter_config.scenes[i].num = byte0 & SCENE_NUM_MASK;
+    shutter_config.scenes[i].active = (byte0 != SCENE_NOT_ACTIVE_VAL);
+    shutter_config.scenes[i].num =
+        (byte0 != SCENE_NOT_ACTIVE_VAL) ? SCENE_VAL_TO_NUM(byte0) : 0;
     shutter_config.scenes[i].pos = knx->paramByte(PARAM_SCENE_POS(i));
+  }
+
+  // --- OVERRIDE WITH LEARNED SCENES FROM NVS ---
+  for (uint8_t i = 0; i < KNX_MAX_SCENES; i++) {
+    if (!shutter_config.scenes[i].active) continue;
+
+    char key[32];
+    snprintf(key, sizeof(key), "app/scene/%d", i);
+    uint8_t saved_pos;
+    ssize_t len = settings_load_one(key, &saved_pos, 1);
+    if (len == 1) {
+      LOG_INF("  Scene %c: overriding pos %u%% -> %u%% (from NVS)", 'A' + i,
+              shutter_config.scenes[i].pos, saved_pos);
+      shutter_config.scenes[i].pos = saved_pos;
+    }
   }
 
   // --- Log configuration ---
@@ -152,18 +171,45 @@ static void load_shutter_params(void) {
 
 /**
  * @brief Process incoming scene command (DPT 18.001)
- * @details Scene positions are pre-configured in ETS. On recall, we look up
- *          the matching scene and call set_position() with the configured %.
- *          Store commands are ignored (ETS manages scene positions).
  * @param raw_value Raw byte from GO6 SCENE
  */
 static void process_scene_command(uint8_t raw_value) {
-  if (DPT18_IS_STORE(raw_value)) {
-    LOG_DBG("Scene STORE ignored (ETS-managed)");
+  uint8_t scene_num = DPT18_SCENE_NUM(raw_value);
+  bool is_store = DPT18_IS_STORE(raw_value);
+
+  if (is_store) {
+    if (!shutter_config.enable_scene_store) {
+      LOG_WRN("Scene STORE ignored (SLME disabled)");
+      return;
+    }
+
+    // Find configured scene slot matching this number
+    for (uint8_t i = 0; i < KNX_MAX_SCENES; i++) {
+      if (!shutter_config.scenes[i].active) continue;
+      if (shutter_config.scenes[i].num != scene_num) continue;
+
+      // Get current position from app
+      uint8_t current_pos = 0;
+      if (app_get_curtain_current_position(0, &current_pos) == 0) {
+        // Convert 0-255 back to 0-100%
+        uint8_t knx_pos = (uint8_t)((uint16_t)current_pos * 100 / 255);
+        shutter_config.scenes[i].pos = knx_pos;
+
+        // Save to NVS
+        char key[32];
+        snprintf(key, sizeof(key), "app/scene/%d", i);
+        settings_save_one(key, &knx_pos, 1);
+
+        LOG_INF("Scene %c STORED: num=%u, new_pos=%u%%", 'A' + i, scene_num,
+                knx_pos);
+      }
+      return;
+    }
+    LOG_WRN("Scene STORE: num=%u not configured, ignoring", scene_num);
     return;
   }
 
-  uint8_t scene_num = DPT18_SCENE_NUM(raw_value);
+  // --- RECALL ---
   LOG_INF("Scene RECALL: num=%u", scene_num);
 
   // Search through configured scenes for matching number
@@ -177,7 +223,7 @@ static void process_scene_command(uint8_t raw_value) {
     return;
   }
 
-  LOG_DBG("Scene num=%u not configured, ignoring", scene_num);
+  LOG_DBG("Scene RECALL: num=%u not configured, ignoring", scene_num);
 }
 
 // ============================================================================
@@ -268,30 +314,28 @@ int knx_adapter_init(void) {
   k_work_init_delayable(&knx_prog_led_blink_work,
                         knx_prog_led_blink_work_handler);
 
+  // --- Step 0: Read Provisioning Data (MUST BE BEFORE NEW KNXFACADE) ---
+  // This ensures SecurityInterfaceObject constructor sees the correct FDSK
+  // and initializes PID_TOOL_KEY property correctly (mirroring hardcode).
+  knx_provision_data_t prov;
+  bool has_provision = knx_provision_read(&prov);
+  if (has_provision) {
+    LOG_INF("Provisioning data FOUND at boot - Setting FDSK");
+    SecurityInterfaceObject::setFDSK(prov.fdsk);
+  } else {
+    LOG_WRN("No provisioning data found - using hardcoded defaults");
+  }
+
   knx = new KnxFacade<NordicPlatform, Bau07B0>();
   if (!knx) return -ENOMEM;
 
-  knx_platform = &knx->platform();
-
-  // =========================================================================
-  // BOOT ORDER (KNX Standard Requirement):
-  // Load ALL config & sequence numbers from NVS FIRST, THEN enable UART.
-  // Enabling UART before readMemory() risks processing incoming KNX frames
-  // with seq=0 → security failure / replay protection reject.
-  // =========================================================================
-
-  // --- Provisioning: Read FDSK + Serial from flash partition ---
-  knx_provision_data_t prov;
-  if (knx_provision_read(&prov)) {
-    LOG_INF("Provisioning data FOUND");
+  if (has_provision) {
     knx->bauNumber(knx_provision_get_bau_number(&prov));
-    SecurityInterfaceObject::setFDSK(prov.fdsk);
   } else {
-    LOG_WRN("No provisioning data — using hardcoded defaults (dev mode)");
     knx->bauNumber(KNX_BAU_NUMBER_DEFAULT);
-    // FDSK uses hardcoded fallback in SecurityInterfaceObject
-    // (security_interface_object.cpp)
   }
+
+  knx_platform = &knx->platform();
 
   // Explicitly log the active FDSK for verification as requested by user
   LOG_INF("FINAL ACTIVE FDSK for boot:");

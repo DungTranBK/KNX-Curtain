@@ -10,9 +10,9 @@
             </Product>
           </Products>
           <Hardware2Programs>
-            <Hardware2Program Id="M-0085_H-SH.2D4RL.2D2026-1_HP-0001-13-C12C" MediumTypes="MT-0" Hash="neNOGHYi6QpVcBqVMmEAo0pAHZ8=">
-              <ApplicationProgramRef RefId="M-0085_A-0001-13-C12C" />
-              <RegistrationInfo RegistrationStatus="Registered" RegistrationNumber="0001/119" RegistrationSignature="DQWRXh8tdZR0ZkDTq06Ev4MBFBApyU4XeP/iJ814JWmsDIbkoZot0K3VtfkfZZiHCmiDETvJjM7PoEYHbnrH/NNCU+FghagBsOSqnUUQkgsu7vpKVz64Qox47P+srAyOVmqoKIdH4YgKW51wAVP1JOIAIpVwSXF4W9NFpAD0Gdk=" />
+            <Hardware2Program Id="M-0085_H-SH.2D4RL.2D2026-1_HP-0001-01-B112" MediumTypes="MT-0" Hash="+ZfVPQ1kxxtM1bpVq26C2JbUTWI=">
+              <ApplicationProgramRef RefId="M-0085_A-0001-01-B112" />
+              <RegistrationInfo RegistrationStatus="Registered" RegistrationNumber="0001/11" RegistrationSignature="drKoE+N9Ywc11c0u31LP2Xp9aeXRXD6gqNFAKSOHFgAyem3TjDJqCmIEzTFtOJew6m224fpa2FQandcafANX70dltcUbAAPCN76hwHh13/X8WE0oA4TpkdJAQEzwzUG15ymdstcwuJ/uvEzGJz6TvpULndUqkXoNma+Yp7gNgAI=" />
             </Hardware2Program>
           </Hardware2Programs>
         </Hardware>

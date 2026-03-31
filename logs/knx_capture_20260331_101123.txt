@@ -1,0 +1,1838 @@
+[00:16:04.095,290] [1;33m<wrn> sec_app_layer: <<< TX Connected PLAIN tsap=0x110B APCI=0x0340 (DevDescResp) len=3[0m
+[00:16:04.095,313] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        40 07 b0 00                                      |@...             [0m
+[00:16:04.095,322] [1;33m<wrn> sec_app_layer: <<< TX TPDU: seq_num=0x00, type=0x02[0m
+[00:16:07.231,366] [0m<inf> sec_app_layer: >>> decrypt: SYNC_REQ from 0x110B to 0x0000, len=12, toolAccess=1, authOnly=0[0m
+[00:16:07.231,387] [0m<inf> sec_app_layer: >>> syncReq: Checking Serial Number match[0m
+[00:16:07.231,400] [0m<inf> sec_app_layer: Serial from ETS:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:16:07.231,413] [0m<inf> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:16:07.231,433] [0m<inf> sec_app_layer: >>> syncReq ACCEPTED: serial matches[0m
+[00:16:07.231,455] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x0000, grp=1, tpci=0x03, extFmt=0[0m
+[00:16:07.231,468] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        68 3e ce 94 ac b2                                |h>....           [0m
+[00:16:07.231,663] [0m<inf> sec_app_layer: >>> receivedSyncRequest from 0x110B to 0x0000[0m
+[00:16:07.231,673] [0m<inf> sec_app_layer: >>> Sending SyncResponse to 0x0000 (isGroup=1)[0m
+[00:16:07.231,679] [0m<inf> sec_app_layer: >>> sendSyncResponse() to 0x0000[0m
+[00:16:07.231,918] [0m<inf> sec_app_layer: >>> Sending SyncResponse via BROADCAST[0m
+[00:16:07.231,966] [0m<inf> sec_app_layer: >>> SyncResponse SENT successfully![0m
+[00:16:07.231,972] [1;33m<wrn> sec_app_layer: >>> SyncRequest from 0x110B handled OK (sends SyncResponse, returns false by design)[0m
+[00:16:07.278,043] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=1, IA=0x1303[0m
+[00:16:08.602,608] [1;33m<wrn> sec_app_layer: <<< TX Connected PLAIN tsap=0x110B APCI=0x0340 (DevDescResp) len=3[0m
+[00:16:08.602,632] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        40 07 b0 00                                      |@...             [0m
+[00:16:08.602,640] [1;33m<wrn> sec_app_layer: <<< TX TPDU: seq_num=0x00, type=0x02[0m
+[00:16:08.721,029] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=0 pid=56 start=1 reqCnt=1 -> elemCnt=1 size=2[0m
+[00:16:08.721,082] [1;33m<wrn> sec_app_layer: <<< TX Connected PLAIN tsap=0x110B APCI=0x03D6 (PropValueResp) len=7[0m
+[00:16:08.721,095] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 00 38 10 01 00 fe 00                          |..8.....         [0m
+[00:16:08.721,103] [1;33m<wrn> sec_app_layer: <<< TX TPDU: seq_num=0x00, type=0x02[0m
+
+
+[00:16:08.887,810] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=22[0m
+[00:16:08.887,858] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=10, toolAccess=1, authOnly=0[0m
+[00:16:08.887,884] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252DE, lastValid=0x3C7E1252DD, expected=0x3C7E1252DE[0m
+[00:16:08.887,900] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x4B, extFmt=0[0m
+[00:16:08.887,914] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        5b a1 35 e3 83 bf ce fb  57 b8                   |[.5..... W.      [0m
+[00:16:08.888,183] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=10): 01 D4 00 11 00 10 33 00 00 01 [0m
+[00:16:08.888,190] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:08.888,200] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x01D4 len=9[0m
+[00:16:08.888,214] [1;33m<wrn> bau_systemB: >>> FuncPropCmd: obj=0x0011.1 prop=51 len=3 data[0]=0x00[0m
+[00:16:08.888,225] [1;33m<wrn> bau_systemB: >>> FuncPropCmd data:
+                                      00 00 01                                         |...              [0m
+
+
+[00:16:08.888,284] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x01D6 (FuncPropExtStateResp) len=8[0m
+[00:16:08.888,296] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 00 11 00 10 33 00 00  00                      |.....3.. .       [0m
+[00:16:08.888,524] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xE2C2 (58050) [toolAccess=1][0m
+[00:16:08.888,537] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=21[0m
+
+
+[00:16:09.123,912] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=38[0m
+[00:16:09.123,963] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=26, toolAccess=1, authOnly=0[0m
+[00:16:09.123,979] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252DF, lastValid=0x3C7E1252DE, expected=0x3C7E1252DF[0m
+[00:16:09.123,995] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x4F, extFmt=0[0m
+[00:16:09.124,015] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        ad cb dc cc c9 32 11 83  b9 e0 b4 a1 f7 56 3c 35 |.....2.. .....V<5
+                                        4d d1 4b 70 0d 9b af ac  ee b6                   |M.Kp.... ..      [0m
+[00:16:09.124,468] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=26): 01 CE 00 11 00 10 38 01 00 01 3F EA CF CF 99 E5 8C AE B8 AD A3 BB CC 37 F8 97 [0m
+[00:16:09.124,475] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:09.124,489] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x01CE len=25[0m
+[00:16:09.124,505] [1;33m<wrn> bau_systemB: !!! PropExtWrite: type=0x0011 inst=1 prop=56 start=1 cnt=1 len=16 cfm=1[0m
+
+
+[00:16:09.124,566] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x01CF (PropExtValueWriteConResp) len=10[0m
+[00:16:09.124,579] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        cf 00 11 00 10 38 01 00  01 00 00                |.....8.. ...     [0m
+[00:16:09.124,807] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xE2C3 (58051) [toolAccess=1][0m
+[00:16:09.124,821] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=23[0m
+
+
+[00:16:09.344,152] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=28[0m
+[00:16:09.344,201] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=16, toolAccess=1, authOnly=0[0m
+[00:16:09.344,217] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252E0, lastValid=0x3C7E1252DF, expected=0x3C7E1252E0[0m
+[00:16:09.344,232] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x53, extFmt=0[0m
+[00:16:09.344,246] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        d9 42 54 49 b3 41 a1 41  df 25 bc 82 65 31 b0 c7 |.BTI.A.A .%..e1..[0m
+[00:16:09.344,648] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=16): 01 CE 00 11 00 10 3B 01 00 01 00 3C 7E 42 09 64 [0m
+[00:16:09.344,661] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:09.344,672] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x01CE len=15[0m
+[00:16:09.344,687] [1;33m<wrn> bau_systemB: !!! PropExtWrite: type=0x0011 inst=1 prop=59 start=1 cnt=1 len=6 cfm=1[0m
+
+
+[00:16:09.344,750] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x01CF (PropExtValueWriteConResp) len=10[0m
+[00:16:09.344,762] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        cf 00 11 00 10 3b 01 00  01 00 00                |.....;.. ...     [0m
+[00:16:09.344,990] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xE2C4 (58052) [toolAccess=1][0m
+[00:16:09.345,004] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=23[0m
+
+
+[00:16:09.546,319] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=18[0m
+[00:16:09.546,366] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=6, toolAccess=1, authOnly=0[0m
+[00:16:09.546,381] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252E1, lastValid=0x3C7E1252E0, expected=0x3C7E1252E1[0m
+[00:16:09.546,396] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x57, extFmt=0[0m
+[00:16:09.546,410] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        df 8f ef 37 79 fe                                |...7y.           [0m
+[00:16:09.546,657] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=6): 03 D5 00 0B 10 01 [0m
+[00:16:09.546,669] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:09.546,679] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D5 len=5[0m
+[00:16:09.546,697] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=0 pid=11 start=1 reqCnt=1 -> elemCnt=1 size=6[0m
+[00:16:09.546,711] [1;33m<wrn> bau_systemB: >>> Prop Read Data (HEX):
+                                      00 85 00 00 00 0b                                |......           [0m
+
+
+[00:16:09.546,766] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=11[0m
+[00:16:09.546,779] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 00 0b 10 01 00 85 00  00 00 0b 00             |........ ....    [0m
+[00:16:09.547,007] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xE2C5 (58053) [toolAccess=1][0m
+[00:16:09.547,022] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=24[0m
+
+
+[00:16:09.751,677] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=16[0m
+[00:16:09.751,722] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=4, toolAccess=1, authOnly=0[0m
+[00:16:09.751,738] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252E2, lastValid=0x3C7E1252E1, expected=0x3C7E1252E2[0m
+[00:16:09.751,752] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x5B, extFmt=0[0m
+[00:16:09.751,766] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        0a 5a 84 8a                                      |.Z..             [0m
+[00:16:09.752,003] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=4): 03 81 01 00 [0m
+[00:16:09.752,015] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:09.752,025] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x0381 len=3[0m
+
+
+[00:16:09.752,082] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03A1 (Unknown) len=4[0m
+[00:16:09.752,094] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        a1 00 00 03 00                                   |.....            [0m
+[00:16:09.752,321] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xE2C6 (58054) [toolAccess=1][0m
+[00:16:09.752,334] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=17[0m
+[00:16:09.752,412] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::writeMemory() ENTERED[0m
+[00:16:09.752,445] [1;31m<err> nordic_platform: >>> writeNonVolatileMemory(addr=0) [FIX VERIFIED]: First 2 bytes [0x00 0x02][0m
+[00:16:09.752,490] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be34): Saved 16 bytes. _state=1, _size=28, rel_addr=0x00000938[0m
+[00:16:09.752,506] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 1c 00 00 09  38 00 01 00 85 00 01 13 |........ 8.......[0m
+[00:16:09.752,521] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002bec4): Saved 9 bytes. _state=1, _size=14, rel_addr=0x00000954[0m
+[00:16:09.752,532] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  54                      |........ T       [0m
+[00:16:09.752,545] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be70): Saved 9 bytes. _state=1, _size=14, rel_addr=0x00000964[0m
+[00:16:09.752,557] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  64                      |........ d       [0m
+[00:16:09.752,570] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be98): Saved 9 bytes. _state=1, _size=26, rel_addr=0x00000974[0m
+[00:16:09.752,584] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 1a 00 00 09  74                      |........ t       [0m
+[00:16:09.752,592] [0m<inf> nordic_platform: commitNonVolatileMemory called -> commitToEeprom[0m
+[00:16:09.752,599] [0m<inf> nordic_platform: >>> commitToEeprom: Saving 4096 bytes in 8 chunks[0m
+[00:16:09.752,612] [0m<inf> nordic_platform: First 20 bytes to save:
+                                          00 02 00 85 00 00 00 00  00 00 00 01 13 03 00 01 |........ ........
+                                          00 00 01 60                                      |...`             [0m
+[00:16:09.752,651] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/0', size=512)...[0m
+[00:16:09.753,759] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:09.753,766] [0m<inf> nordic_platform: >>> Chunk 0 saved OK to Settings[0m
+[00:16:09.753,808] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/1', size=512)...[0m
+[00:16:09.753,920] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:09.753,926] [0m<inf> nordic_platform: >>> Chunk 1 saved OK to Settings[0m
+[00:16:09.753,962] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/2', size=512)...[0m
+[00:16:09.754,070] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:09.754,076] [0m<inf> nordic_platform: >>> Chunk 2 saved OK to Settings[0m
+[00:16:09.754,112] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/3', size=512)...[0m
+[00:16:09.754,220] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:09.754,226] [0m<inf> nordic_platform: >>> Chunk 3 saved OK to Settings[0m
+[00:16:09.754,262] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/4', size=512)...[0m
+[00:16:09.754,372] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:09.754,378] [0m<inf> nordic_platform: >>> Chunk 4 saved OK to Settings[0m
+[00:16:09.754,414] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/5', size=512)...[0m
+[00:16:09.754,525] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:09.754,531] [0m<inf> nordic_platform: >>> Chunk 5 saved OK to Settings[0m
+[00:16:09.754,567] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/6', size=512)...[0m
+[00:16:09.754,676] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:09.754,682] [0m<inf> nordic_platform: >>> Chunk 6 saved OK to Settings[0m
+[00:16:09.754,718] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/7', size=512)...[0m
+[00:16:09.754,836] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:09.754,842] [0m<inf> nordic_platform: >>> Chunk 7 saved OK to Settings[0m
+[00:16:09.754,848] [0m<inf> nordic_platform: >>> Settings: ALL 8 chunks saved successfully![0m
+[00:16:09.754,855] [1;31m<err> nordic_platform: >>> [REBOOT] NordicPlatform::restart() - ASYNCHRONOUS REBOOT REQUESTED![0m
+[00:16:09.754,860] [0m<inf> nordic_platform: >>> Rebooting in 1000 ms...[0m
+*** Booting nRF Connect SDK v3.0.1-9eb5615da66b ***
+*** Using Zephyr OS v4.0.99-77f865b8f8d0 ***
+[00:16:10.773,477] [0m<inf> lumi_debug_main_c: === Bluetooth Mesh Relay Node Starting ===[0m
+[00:16:10.773,531] [0m<inf> fast_provision: MAC settings handler registered[0m
+[00:16:10.773,550] [0m<inf> fast_provision: MAC initialized early: E6:27:EA:1C:DC:D1[0m
+[00:16:10.775,259] [0m<inf> fs_nvs: 8 Sectors of 4096 bytes[0m
+[00:16:10.775,266] [0m<inf> fs_nvs: alloc wra: 5, f80[0m
+[00:16:10.775,272] [0m<inf> fs_nvs: data wra: 5, 620[0m
+[00:16:10.775,344] [0m<inf> bt_sdc_hci_driver: SoftDevice Controller build revision: 
+                                            89 9a 50 8a 95 01 9c 58  fc 39 d2 c1 10 04 ee 02 |..P....X .9......
+                                            64 ce 25 be                                      |d.%.             [0m
+[00:16:10.776,986] [0m<inf> bt_hci_core: HW Platform: Nordic Semiconductor (0x0002)[0m
+[00:16:10.777,002] [0m<inf> bt_hci_core: HW Variant: nRF54Lx (0x0005)[0m
+[00:16:10.777,016] [0m<inf> bt_hci_core: Firmware: Standard Bluetooth controller (0x00) Version 137.20634 Build 2617349514[0m
+[00:16:10.777,193] [0m<inf> bt_hci_core: No ID address. App must call settings_load()[0m
+[00:16:10.777,201] [0m<inf> lumi_debug_main_c: Bluetooth initialized[0m
+[00:16:10.777,206] [0m<inf> lumi_debug_main_c: TX Power: +8 dBm[0m
+[00:16:10.777,219] [0m<inf> dk_bt_mesh_prov_custom: Device UUID generated with PID: 0x0BF2, Version: 1.0.0[0m
+[00:16:10.777,234] [0m<inf> dk_bt_mesh_prov_custom: Device UUID:
+                                                 e4 27 0b f2 dc 91 ae 08  1b d8 01 00 00 6e 51 f7 |.'...... .....nQ.[0m
+[00:16:10.777,284] [0m<inf> fast_provision: Fast Provision model init: key slots=2[0m
+[00:16:10.777,291] [0m<inf> fast_provision:   ✓ Bound DEFAULT_APPKEY_INDEX (0x0001) to slot 0 (default network)[0m
+[00:16:10.777,297] [0m<inf> fast_provision: Fast Provision model bind status:[0m
+[00:16:10.777,318] [0m<inf> fast_provision:     - Default network (AppKey 0x0001): BOUND[0m
+[00:16:10.777,337] [0m<inf> fast_provision:     - Main network (AppKey 0x0000): NOT BOUND (will bind after provisioning)[0m
+[00:16:10.777,366] [1;33m<wrn> bt_mesh_access: Unused space in relation list: 10[0m
+[00:16:10.778,808] [0m<inf> mesh_node: Mesh stack initialized (CPS Diagnostic):[0m
+[00:16:10.778,815] [0m<inf> mesh_node:   Elements: 4[0m
+[00:16:10.778,825] [0m<inf> mesh_node:   Element 0 (loc 0x0000): 7 SIG, 2 VND[0m
+[00:16:10.778,833] [0m<inf> mesh_node:   Element 1 (loc 0x0000): 1 SIG, 1 VND[0m
+[00:16:10.778,841] [0m<inf> mesh_node:   Element 2 (loc 0x0000): 1 SIG, 1 VND[0m
+[00:16:10.778,849] [0m<inf> mesh_node:   Element 3 (loc 0x0000): 1 SIG, 1 VND[0m
+[00:16:10.778,858] [0m<inf> mesh_node: Mesh stack initialized[0m
+[00:16:10.779,166] [0m<inf> curtain: settings[opt] loaded OK: key=0x00, type=[1,0], limit=[20000,0][0m
+[00:16:10.779,209] [0m<inf> curtain: settings[pos] loaded OK: 13412, 256[0m
+[00:16:10.779,333] [0m<inf> bt_hci_core: Identity: D1:DC:1C:EA:27:E6 (random)[0m
+[00:16:10.779,349] [0m<inf> bt_hci_core: HCI: version 6.0 (0x0e) revision 0x30f3, manufacturer 0x0059[0m
+[00:16:10.779,364] [0m<inf> bt_hci_core: LMP: version 6.0 (0x0e) subver 0x30f3[0m
+[00:16:10.781,573] [0m<inf> lumi_debug_main_c: Main initialization complete, waiting for Bluetooth ready...[0m
+[00:16:10.781,591] [0m<inf> app: Super loop started[0m
+[00:16:10.791,924] [0m<inf> relay: Power-on relay delay finished (0 ms)[0m
+[00:16:12.281,859] [0m<inf> fast_provision: Fast Provision context initialized from model[0m
+[00:16:12.281,889] [0m<inf> fast_provision: MAC and device key initialized: E6:27:EA:1C:DC:D1[0m
+[00:16:12.281,897] [0m<inf> fast_provision: Fast provision enabled (main network not provisioned)[0m
+[00:16:12.281,913] [0m<inf> fast_provision: Fast Provision work queue started[0m
+[00:16:12.281,921] [0m<inf> dk_bt_mesh_prov_custom: Provisioning toggle enabled - waiting for user input (default: DISABLED)[0m
+[00:16:12.281,951] [0m<inf> lumi_debug_main_c: Device MAC Address:
+                                            e4 27 ea 1c dc 91                                |.'....           [0m
+[00:16:12.281,957] [0m<inf> lumi_debug_main_c: Hardware initialized successfully[0m
+[00:16:12.282,191] [0m<inf> curtain: settings[pos] loaded OK: 13412, 256[0m
+[00:16:12.282,237] [0m<inf> curtain: RestorePos: load_subtree rc=0, loaded=1[0m
+[00:16:12.282,244] [0m<inf> curtain: RESTORE CURRENT POS: [13412, 0][0m
+[00:16:12.282,470] [0m<inf> curtain: settings[opt] loaded OK: key=0x00, type=[1,0], limit=[20000,0][0m
+[00:16:12.282,532] [0m<inf> curtain: RestoreOpt: load_subtree rc=0, loaded=1[0m
+[00:16:12.282,541] [0m<inf> curtain: RestoreOpt: TYPE=[1, 0], LIMIT=[20000, 0][0m
+[00:16:12.282,548] [0m<inf> knx_adapter: Initializing KNX Shutter Adapter...[0m
+[00:16:12.283,287] [0m<inf> sec_if_obj: === SecurityInterfaceObject CONSTRUCTED ===[0m
+[00:16:12.283,304] [0m<inf> sec_if_obj: FDSK (hardcoded):
+                                     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:16:12.283,310] [0m<inf> sec_if_obj: Tool Key initialized with FDSK (will be shown after restore)[0m
+[00:16:12.283,315] [0m<inf> sec_if_obj: ============================================[0m
+[00:16:12.283,534] [0m<dbg> knx_prov: knx_provision_read: Reading 28 bytes from flash offset 0x00154000[0m
+[00:16:12.283,554] [0m<dbg> knx_prov: knx_provision_read: RAW provision data:
+                                   50 58 4e 4b 01 00 85 00  00 00 0b 1a a0 3e 78 33 |PXNK.... .....>x3
+                                   25 9f 70 da be 76 4b 2e  82 5b 5b b4             |%.p..vK. .[[.    [0m
+[00:16:12.283,562] [0m<dbg> knx_prov: knx_provision_read:   Magic:   0x4B4E5850 (expected 0x4B4E5850)[0m
+[00:16:12.283,569] [0m<dbg> knx_prov: knx_provision_read:   Version: 0x01 (expected 0x01)[0m
+[00:16:12.283,591] [0m<dbg> knx_prov: knx_provision_read:   CRC8: stored=0xB4, calculated=0xB4[0m
+[00:16:12.283,597] [0m<inf> knx_prov: Provision: Valid data found![0m
+[00:16:12.283,608] [0m<inf> knx_prov: Serial:
+                                   00 85 00 00 00 0b                                |......           [0m
+[00:16:12.283,620] [0m<inf> knx_prov: FDSK:
+                                   1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:16:12.283,626] [0m<inf> knx_adapter: Provisioning data FOUND[0m
+[00:16:12.283,636] [0m<inf> sec_if_obj: FDSK updated from provisioning data (Source of Truth established)[0m
+[00:16:12.283,648] [0m<inf> sec_if_obj: Active FDSK:
+                                     1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:16:12.283,654] [0m<inf> knx_adapter: FINAL ACTIVE FDSK for boot:[0m
+[00:16:12.283,665] [0m<inf> knx_adapter: Active FDSK:
+                                      1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:16:12.283,701] [0m<inf> knx_adapter: [BOOT] Step 1/3 - Loading KNX config from NVS...[0m
+[00:16:12.283,932] [0m<inf> nordic_platform: >>> EEPROM buffer using static memory: 4096 bytes (Subtree Load Optimized)[0m
+[00:16:12.284,021] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 7 (512 bytes)[0m
+[00:16:12.284,087] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 6 (512 bytes)[0m
+[00:16:12.284,155] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 5 (512 bytes)[0m
+[00:16:12.284,224] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 4 (512 bytes)[0m
+[00:16:12.284,290] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 3 (512 bytes)[0m
+[00:16:12.284,356] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 2 (512 bytes)[0m
+[00:16:12.284,422] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 1 (512 bytes)[0m
+[00:16:12.284,520] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 0 (512 bytes)[0m
+[00:16:12.284,624] [0m<inf> knx_adapter: [BOOT] Step 2/3 - Restoring KNX memory (seq numbers, keys, config)...[0m
+[00:16:12.284,693] [0m<inf> sec_if_obj: === Security Interface Object Restored ===[0m
+[00:16:12.284,699] [0m<inf> sec_if_obj: LoadState: 1, SecurityModeEnabled: 1[0m
+[00:16:12.284,714] [0m<inf> sec_if_obj: Current FDSK Buffer:
+                                     1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:16:12.284,728] [0m<inf> sec_if_obj: Tool Key Property:
+                                     3f ea cf cf 99 e5 8c ae  b8 ad a3 bb cc 37 f8 97 |?....... .....7..[0m
+[00:16:12.284,792] [1;33m<wrn> cbprintf_package: (unsigned) char * used for %p argument. It's recommended to cast it to void * because it may cause misbehavior in certain configurations. String:"!!! TableObject::restore (obj %p): Restored %d bytes. _state=%d, _size=%u, rel_addr=0x%08X, _data=%p" argument:5[0m
+[00:16:12.284,811] [1;33m<wrn> table_obj: !!! TableObject::restore (obj 0x2002be34): Restored 16 bytes. _state=1, _size=28, rel_addr=0x00000938, _data=0x2001d107[0m
+[00:16:12.284,824] [1;33m<wrn> table_obj: RESTORED TABLE_OBJ DATA:
+                                    01 00 00 00 1c 00 00 09  38 00 01 00 85 00 01 13 |........ 8.......[0m
+[00:16:12.284,891] [1;33m<wrn> cbprintf_package: (unsigned) char * used for %p argument. It's recommended to cast it to void * because it may cause misbehavior in certain configurations. String:"!!! TableObject::restore (obj %p): Restored %d bytes. _state=%d, _size=%u, rel_addr=0x%08X, _data=%p" argument:5[0m
+[00:16:12.284,911] [1;33m<wrn> table_obj: !!! TableObject::restore (obj 0x2002bec4): Restored 9 bytes. _state=1, _size=14, rel_addr=0x00000954, _data=0x2001d123[0m
+[00:16:12.284,923] [1;33m<wrn> table_obj: RESTORED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  54                      |........ T       [0m
+[00:16:12.284,933] [1;33m<wrn> grp_obj_tab: !!! GroupObjectTableObject::initGroupObjects: _tableData=0x2001d123, goCount=6[0m
+[00:16:12.284,945] [1;33m<wrn> grp_obj_tab: _tableData content:
+                                      00 06 17 00 17 00 17 07  4f 00 4f 07 17 07 ff ff |........ O.O.....[0m
+[00:16:12.285,068] [1;33m<wrn> cbprintf_package: (unsigned) char * used for %p argument. It's recommended to cast it to void * because it may cause misbehavior in certain configurations. String:"!!! TableObject::restore (obj %p): Restored %d bytes. _state=%d, _size=%u, rel_addr=0x%08X, _data=%p" argument:5[0m
+[00:16:12.285,087] [1;33m<wrn> table_obj: !!! TableObject::restore (obj 0x2002be70): Restored 9 bytes. _state=1, _size=14, rel_addr=0x00000964, _data=0x2001d133[0m
+[00:16:12.285,099] [1;33m<wrn> table_obj: RESTORED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  64                      |........ d       [0m
+[00:16:12.285,165] [1;33m<wrn> cbprintf_package: (unsigned) char * used for %p argument. It's recommended to cast it to void * because it may cause misbehavior in certain configurations. String:"!!! TableObject::restore (obj %p): Restored %d bytes. _state=%d, _size=%u, rel_addr=0x%08X, _data=%p" argument:5[0m
+[00:16:12.285,184] [1;33m<wrn> table_obj: !!! TableObject::restore (obj 0x2002be98): Restored 9 bytes. _state=1, _size=26, rel_addr=0x00000974, _data=0x2001d143[0m
+[00:16:12.285,196] [1;33m<wrn> table_obj: RESTORED TABLE_OBJ DATA:
+                                    01 00 00 00 1a 00 00 09  74                      |........ t       [0m
+[00:16:12.285,226] [0m<inf> nordic_platform: KNX UART device ready: uart@4a000 (TX=P2.08, RX=P2.07)
+[0m
+[00:16:12.285,235] [0m<inf> nordic_platform: UART configured to 19200 8E1 via API[0m
+[00:16:12.285,245] [0m<inf> nordic_platform: Flushed 7 garbage bytes from UART RX FIFO[0m
+[00:16:12.285,250] [0m<inf> nordic_platform: KNX UART configured with ISR-triggered polling mode[0m
+[00:16:12.286,843] [1;31m<err> nordic_platform: UART Error: 5[0m
+[00:16:12.289,140] [0m<inf> knx_adapter: [BOOT] Step 3/3 - Enabling UART (KNX bus ready to receive)...[0m
+[00:16:12.289,161] [0m<inf> nordic_platform: KNX UART device ready: uart@4a000 (TX=P2.08, RX=P2.07)
+[0m
+[00:16:12.289,169] [0m<inf> nordic_platform: UART configured to 19200 8E1 via API[0m
+[00:16:12.289,176] [0m<inf> nordic_platform: KNX UART configured with ISR-triggered polling mode[0m
+[00:16:12.289,183] [0m<inf> knx_adapter: Device configured. Loading Shutter Parameters...[0m
+[00:16:12.289,192] [0m<inf> knx_adapter: DEBUG: EnableFlags Byte (Offset 6): 0x20[0m
+[00:16:12.289,214] [0m<inf> knx_adapter: Shutter Config: MotorType=1, TravelTime=30[0m
+[00:16:12.289,220] [0m<inf> knx_adapter:   EnableScene=0, EnableSceneStore=0[0m
+[00:16:12.289,230] [0m<inf> curtain: KNX SYNC: Curtain 0, Type=0, LimitTime=30000 ms[0m
+[00:16:12.289,248] [0m<inf> knx_adapter: KNX Shutter Adapter Initialized Successfully[0m
+[00:16:12.289,424] [0m<inf> relay: Relay module initialized (4 channels, latching, 2-wire)[0m
+[00:16:12.289,435] [0m<inf> button: Button module initialized with 1 buttons[0m
+[00:16:12.289,719] [0m<inf> led_ev: +++led_ev_handle: 0[0m
+[00:16:12.289,732] [0m<inf> led_ev: LED_POWER_ON[0m
+[00:16:12.290,012] [0m<inf> execution_scene: Execution scene restored[0m
+[00:16:12.290,032] [0m<inf> pre_update: Pre-update channel 0: interval 1548 s[0m
+[00:16:12.290,292] [0m<inf> sw_binding: binding_init: done[0m
+[00:16:12.290,353] [0m<inf> curtain: StorePos: save_one rc=0, pos=[13412, 536995464][0m
+[00:16:12.290,366] [0m<inf> curtain: **************Control RL: 0, 0, 0[0m
+[00:16:12.290,387] [0m<inf> curtain: curtain_update_device_status: 0, P: 114, T: 114, ST: 6[0m
+[00:16:12.290,394] [0m<inf> app: KNX: app_handle_curtain_update_level: curtain_idx=0, current_position=114[0m
+[00:16:12.290,422] [0m<inf> knx_adapter: Position -> KNX: 44%[0m
+[00:16:12.592,263] [0m<inf> curtain: **************Control RL: 1, 0, 1[0m
+[00:16:12.790,526] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=1, IA=0x1303[0m
+[00:16:12.790,557] [1;31m<err> vendor_model: Device not provisioned, cannot send mesh_tx_cmd_rsp[0m
+[00:16:12.790,564] [0m<inf> net_message: 
+ ########## Send Curtain Level: 0, 114[0m
+[00:16:13.151,012] [1;33m<wrn> sec_app_layer: <<< TX Connected PLAIN tsap=0x110B APCI=0x0340 (DevDescResp) len=3[0m
+[00:16:13.151,027] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        40 07 b0 00                                      |@...             [0m
+[00:16:13.151,034] [1;33m<wrn> sec_app_layer: <<< TX TPDU: seq_num=0x00, type=0x02[0m
+[00:16:13.269,498] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=0 pid=56 start=1 reqCnt=1 -> elemCnt=1 size=2[0m
+[00:16:13.269,551] [1;33m<wrn> sec_app_layer: <<< TX Connected PLAIN tsap=0x110B APCI=0x03D6 (PropValueResp) len=7[0m
+[00:16:13.269,564] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 00 38 10 01 00 fe 00                          |..8.....         [0m
+[00:16:13.269,571] [1;33m<wrn> sec_app_layer: <<< TX TPDU: seq_num=0x00, type=0x02[0m
+
+
+[00:16:13.436,954] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=24[0m
+[00:16:13.437,003] [0m<inf> sec_app_layer: >>> decrypt: SYNC_REQ from 0x110B to 0x1303, len=12, toolAccess=1, authOnly=0[0m
+[00:16:13.437,014] [0m<inf> sec_app_layer: >>> syncReq: Checking Serial Number match[0m
+[00:16:13.437,026] [0m<inf> sec_app_layer: Serial from ETS:
+                                        00 00 00 00 00 00                                |......           [0m
+[00:16:13.437,039] [0m<inf> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:16:13.437,059] [0m<inf> sec_app_layer: >>> syncReq ACCEPTED: serial is wildcard[0m
+[00:16:13.437,079] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x4B, extFmt=0[0m
+[00:16:13.437,092] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        7f 15 ea e0 3e ac                                |....>.           [0m
+[00:16:13.437,286] [0m<inf> sec_app_layer: >>> receivedSyncRequest from 0x110B to 0x1303[0m
+[00:16:13.437,306] [0m<inf> sec_app_layer: >>> Sending SyncResponse to 0x110B (isGroup=0)[0m
+[00:16:13.437,312] [0m<inf> sec_app_layer: >>> sendSyncResponse() to 0x110B[0m
+[00:16:13.437,540] [0m<inf> sec_app_layer: >>> Sending SyncResponse via CONNECTED[0m
+[00:16:13.437,617] [0m<inf> sec_app_layer: >>> SyncResponse SENT successfully![0m
+[00:16:13.437,624] [1;33m<wrn> sec_app_layer: >>> SyncRequest from 0x110B handled OK (sends SyncResponse, returns false by design)[0m
+[00:16:13.437,630] [1;33m<wrn> sec_app_layer: >>> SyncService (connected) tsap=0x110B processed internally[0m
+
+
+[00:16:13.642,628] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=19[0m
+[00:16:13.642,676] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=7, toolAccess=1, authOnly=0[0m
+[00:16:13.642,691] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252E3, lastValid=0x3C7E1252E2, expected=0x3C7E1252E3[0m
+[00:16:13.642,706] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x4F, extFmt=0[0m
+[00:16:13.642,720] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        71 ca 13 36 b5 57 ac                             |q..6.W.          [0m
+[00:16:13.642,973] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=7): 03 D1 00 FF FF FF FF [0m
+[00:16:13.642,980] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:13.642,990] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D1 len=6[0m
+
+
+[00:16:13.643,054] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D2 (AuthorizeResp) len=2[0m
+[00:16:13.643,067] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d2 00 00                                         |...              [0m
+[00:16:13.643,292] [0m<inf> sec_app_layer: >>> TX SeqNum: 0x32 (50) [toolAccess=1][0m
+[00:16:13.643,304] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=15[0m
+
+
+[00:16:13.815,917] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=17[0m
+[00:16:13.815,964] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=5, toolAccess=1, authOnly=0[0m
+[00:16:13.815,980] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252E4, lastValid=0x3C7E1252E3, expected=0x3C7E1252E4[0m
+[00:16:13.815,995] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x53, extFmt=0[0m
+[00:16:13.816,008] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        28 7b c4 ef 70                                   |({..p            [0m
+[00:16:13.816,251] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=5): 03 D8 02 17 00 [0m
+[00:16:13.816,258] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:13.816,267] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D8 len=4[0m
+[00:16:13.816,284] [1;33m<wrn> bau_systemB: >>> PropDescRead: obj=2 pid=23 pidx=1 -> maxElem=512 type=20 writeEn=0 access=0x30[0m
+
+
+[00:16:13.816,348] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D9 (PropDescResp) len=8[0m
+[00:16:13.816,360] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d9 02 17 01 14 02 00 30  00                      |.......0 .       [0m
+[00:16:13.816,588] [0m<inf> sec_app_layer: >>> TX SeqNum: 0x33 (51) [toolAccess=1][0m
+[00:16:13.816,601] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=21[0m
+
+
+[00:16:14.008,726] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=18[0m
+[00:16:14.008,774] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=6, toolAccess=1, authOnly=0[0m
+[00:16:14.008,789] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252E5, lastValid=0x3C7E1252E4, expected=0x3C7E1252E5[0m
+[00:16:14.008,804] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x57, extFmt=0[0m
+[00:16:14.008,818] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        c4 4c eb e5 03 82                                |.L....           [0m
+[00:16:14.009,065] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=6): 03 D5 00 0B 10 01 [0m
+[00:16:14.009,072] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:14.009,082] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D5 len=5[0m
+[00:16:14.009,100] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=0 pid=11 start=1 reqCnt=1 -> elemCnt=1 size=6[0m
+[00:16:14.009,124] [1;33m<wrn> bau_systemB: >>> Prop Read Data (HEX):
+                                      00 85 00 00 00 0b                                |......           [0m
+
+
+[00:16:14.009,180] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=11[0m
+[00:16:14.009,192] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 00 0b 10 01 00 85 00  00 00 0b 00             |........ ....    [0m
+[00:16:14.009,422] [0m<inf> sec_app_layer: >>> TX SeqNum: 0x34 (52) [toolAccess=1][0m
+[00:16:14.009,436] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=24[0m
+
+
+[00:16:14.208,781] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=18[0m
+[00:16:14.208,828] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=6, toolAccess=1, authOnly=0[0m
+[00:16:14.208,844] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252E6, lastValid=0x3C7E1252E5, expected=0x3C7E1252E6[0m
+[00:16:14.208,859] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x5B, extFmt=0[0m
+[00:16:14.208,872] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        12 7a 9c 43 12 cc                                |.z.C..           [0m
+[00:16:14.209,119] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=6): 03 D5 00 0C 10 01 [0m
+[00:16:14.209,127] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:14.209,136] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D5 len=5[0m
+[00:16:14.209,155] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=0 pid=12 start=1 reqCnt=1 -> elemCnt=1 size=2[0m
+[00:16:14.209,176] [1;33m<wrn> bau_systemB: >>> Prop Read Data (HEX):
+                                      00 85                                            |..               [0m
+
+
+[00:16:14.209,231] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=7[0m
+[00:16:14.209,244] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 00 0c 10 01 00 85 00                          |........         [0m
+[00:16:14.209,497] [0m<inf> sec_app_layer: >>> TX SeqNum: 0x35 (53) [toolAccess=1][0m
+[00:16:14.209,511] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=20[0m
+
+
+[00:16:14.402,750] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=18[0m
+[00:16:14.402,797] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=6, toolAccess=1, authOnly=0[0m
+[00:16:14.402,812] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252E7, lastValid=0x3C7E1252E6, expected=0x3C7E1252E7[0m
+[00:16:14.402,827] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x5F, extFmt=0[0m
+[00:16:14.402,840] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        71 10 de ce c5 48                                |q....H           [0m
+[00:16:14.403,089] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=6): 03 D5 00 19 10 01 [0m
+[00:16:14.403,096] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:14.403,111] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D5 len=5[0m
+[00:16:14.403,130] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=0 pid=25 start=1 reqCnt=1 -> elemCnt=1 size=2[0m
+[00:16:14.403,143] [1;33m<wrn> bau_systemB: >>> Prop Read Data (HEX):
+                                      00 01                                            |..               [0m
+
+
+[00:16:14.403,198] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=7[0m
+[00:16:14.403,211] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 00 19 10 01 00 01 00                          |........         [0m
+[00:16:14.403,440] [0m<inf> sec_app_layer: >>> TX SeqNum: 0x36 (54) [toolAccess=1][0m
+[00:16:14.403,453] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=20[0m
+
+
+[00:16:14.592,825] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=18[0m
+[00:16:14.592,871] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=6, toolAccess=1, authOnly=0[0m
+[00:16:14.592,887] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252E8, lastValid=0x3C7E1252E7, expected=0x3C7E1252E8[0m
+[00:16:14.592,902] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x63, extFmt=0[0m
+[00:16:14.592,915] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        33 5a 7f 2b e1 41                                |3Z.+.A           [0m
+[00:16:14.593,162] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=6): 03 D5 00 4E 10 01 [0m
+[00:16:14.593,174] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:14.593,184] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D5 len=5[0m
+[00:16:14.593,206] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=0 pid=78 start=1 reqCnt=1 -> elemCnt=1 size=6[0m
+[00:16:14.593,219] [1;33m<wrn> bau_systemB: >>> Prop Read Data (HEX):
+                                      00 00 00 00 00 00                                |......           [0m
+
+
+[00:16:14.593,274] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=11[0m
+[00:16:14.593,287] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 00 4e 10 01 00 00 00  00 00 00 00             |..N..... ....    [0m
+[00:16:14.593,516] [0m<inf> sec_app_layer: >>> TX SeqNum: 0x37 (55) [toolAccess=1][0m
+[00:16:14.593,530] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=24[0m
+
+
+[00:16:14.792,831] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=18[0m
+[00:16:14.792,878] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=6, toolAccess=1, authOnly=0[0m
+[00:16:14.792,893] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252E9, lastValid=0x3C7E1252E8, expected=0x3C7E1252E9[0m
+[00:16:14.792,909] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x67, extFmt=0[0m
+[00:16:14.792,927] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        f0 c2 f7 9c 3a 52                                |....:R           [0m
+[00:16:14.793,174] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=6): 03 D5 00 0F 10 01 [0m
+[00:16:14.793,181] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:14.793,190] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D5 len=5[0m
+[00:16:14.793,210] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=0 pid=15 start=1 reqCnt=1 -> elemCnt=1 size=10[0m
+[00:16:14.793,222] [1;33m<wrn> bau_systemB: >>> Prop Read Data (HEX):
+                                      53 48 30 30 31 20 20 20  20 20                   |SH001            [0m
+
+
+[00:16:14.793,279] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=15[0m
+[00:16:14.793,291] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 00 0f 10 01 53 48 30  30 31 20 20 20 20 20 00 |.....SH0 01     .[0m
+[00:16:14.793,651] [0m<inf> sec_app_layer: >>> TX SeqNum: 0x38 (56) [toolAccess=1][0m
+[00:16:14.793,667] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=28[0m
+
+
+[00:16:15.118,661] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=28[0m
+[00:16:15.118,711] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=16, toolAccess=1, authOnly=0[0m
+[00:16:15.118,726] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252EA, lastValid=0x3C7E1252E9, expected=0x3C7E1252EA[0m
+[00:16:15.118,742] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x6B, extFmt=0[0m
+[00:16:15.118,756] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        21 fb 19 a6 40 e7 ba 70  cf ab 48 a9 ae 8d 1f 08 |!...@..p ..H.....[0m
+[00:16:15.119,157] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=16): 03 D7 05 05 10 01 04 00 00 00 00 00 00 00 00 00 [0m
+[00:16:15.119,164] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:15.119,176] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D7 len=15[0m
+[00:16:15.119,189] [1;33m<wrn> bau_systemB: !!! PropWrite: obj=5, prop=5, start=1, count=1, len=10[0m
+[00:16:15.119,211] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=5 pid=5 start=1 reqCnt=1 -> elemCnt=0 size=0[0m
+
+
+[00:16:15.119,267] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=5[0m
+[00:16:15.119,280] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 05 05 00 01 00                                |......           [0m
+[00:16:15.119,507] [0m<inf> sec_app_layer: >>> TX SeqNum: 0x39 (57) [toolAccess=1][0m
+[00:16:15.119,519] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=18[0m
+
+
+[00:16:15.327,699] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=28[0m
+[00:16:15.327,748] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=16, toolAccess=1, authOnly=0[0m
+[00:16:15.327,764] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252EB, lastValid=0x3C7E1252EA, expected=0x3C7E1252EB[0m
+[00:16:15.327,779] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x6F, extFmt=0[0m
+[00:16:15.327,793] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        a2 f2 72 3c 31 b7 f3 64  55 71 d5 24 06 a8 62 c7 |..r<1..d Uq.$..b.[0m
+[00:16:15.328,194] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=16): 03 D7 04 05 10 01 04 00 00 00 00 00 00 00 00 00 [0m
+[00:16:15.328,202] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:15.328,213] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D7 len=15[0m
+[00:16:15.328,226] [1;33m<wrn> bau_systemB: !!! PropWrite: obj=4, prop=5, start=1, count=1, len=10[0m
+[00:16:15.328,247] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL WRITE: event(state)=4[0m
+[00:16:15.328,253] [1;33m<wrn> table_obj: !!! TableObject::loadState CHANGED: 1 -> 0[0m
+[00:16:15.328,262] [1;33m<wrn> table_obj: !!! TableObject::beforeStateChange: Current=1, New=0, UnloadCount=0[0m
+[00:16:15.328,284] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL READ: state=0[0m
+[00:16:15.328,294] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=4 pid=5 start=1 reqCnt=1 -> elemCnt=1 size=1[0m
+
+
+[00:16:15.328,352] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=6[0m
+[00:16:15.328,365] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 04 05 10 01 00 00                             |.......          [0m
+[00:16:15.328,592] [0m<inf> sec_app_layer: >>> TX SeqNum: 0x3A (58) [toolAccess=1][0m
+[00:16:15.328,605] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=19[0m
+
+
+[00:16:15.538,614] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=28[0m
+[00:16:15.538,662] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=16, toolAccess=1, authOnly=0[0m
+[00:16:15.538,678] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252EC, lastValid=0x3C7E1252EB, expected=0x3C7E1252EC[0m
+[00:16:15.538,694] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x73, extFmt=0[0m
+[00:16:15.538,708] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        8b f1 bb 72 cf 57 5d 4e  f6 64 22 26 b6 41 27 a4 |...r.W]N .d"&.A'.[0m
+[00:16:15.539,138] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=16): 03 D7 03 05 10 01 04 00 00 00 00 00 00 00 00 00 [0m
+[00:16:15.539,145] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:15.539,162] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D7 len=15[0m
+[00:16:15.539,175] [1;33m<wrn> bau_systemB: !!! PropWrite: obj=3, prop=5, start=1, count=1, len=10[0m
+[00:16:15.539,184] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL WRITE: event(state)=4[0m
+[00:16:15.539,190] [1;33m<wrn> table_obj: !!! TableObject::loadState CHANGED: 1 -> 0[0m
+[00:16:15.539,199] [1;33m<wrn> table_obj: !!! TableObject::beforeStateChange: Current=1, New=0, UnloadCount=1[0m
+[00:16:15.539,229] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL READ: state=0[0m
+[00:16:15.539,240] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=3 pid=5 start=1 reqCnt=1 -> elemCnt=1 size=1[0m
+
+
+[00:16:15.539,300] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=6[0m
+[1;31m--- 9 messages dropped ---
+[0m[00:16:15.752,196] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=16): 03 D7 02 05 10 01 04 00 00 00 00 00 00 00 00 00 [0m
+[00:16:15.752,203] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:15.752,217] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D7 len=15[0m
+[00:16:15.752,230] [1;33m<wrn> bau_systemB: !!! PropWrite: obj=2, prop=5, start=1, count=1, len=10[0m
+[00:16:15.752,238] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL WRITE: event(state)=4[0m
+[00:16:15.752,245] [1;33m<wrn> table_obj: !!! TableObject::loadState CHANGED: 1 -> 0[0m
+[00:16:15.752,254] [1;33m<wrn> table_obj: !!! TableObject::beforeStateChange: Current=1, New=0, UnloadCount=1[0m
+[00:16:15.752,273] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL READ: state=0[0m
+[00:16:15.752,283] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=2 pid=5 start=1 reqCnt=1 -> elemCnt=1 size=1[0m
+
+
+[00:16:15.752,341] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=6[0m
+[00:16:15.752,353] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 02 05 10 01 00 00                             |.......          [0m
+[00:16:15.752,580] [0m<inf> sec_app_layer: >>> TX SeqNum: 0x3C (60) [toolAccess=1][0m
+[00:16:15.752,593] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=19[0m
+[00:16:15.808,522] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: STARTING PROACTIVE JUMP...[0m
+[00:16:15.808,742] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqTool: 58050 (0xE2C2)[0m
+[1;31m--- 5 messages dropped ---
+[0m[00:16:15.809,653] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqTool: 58050 (0xE2C2)[0m
+[00:16:15.809,696] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqSend: 300000060000 (0x45D965A260)[0m
+[00:16:15.809,776] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: Read ToolSeqNum from Flash = 58050, Isolated = 58050[0m
+[00:16:15.810,326] [0m<inf> nordic_platform: >>> Isolated NVS SAVE SUCCESS: TOOL = 60050 (0xEA92)[0m
+[00:16:15.810,339] [1;33m<wrn> bau_systemB: >>> MEM_TRACE: BauSystemB::writeMemory() called[0m
+[00:16:15.810,345] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::writeMemory() ENTERED[0m
+[00:16:15.810,379] [1;31m<err> nordic_platform: >>> writeNonVolatileMemory(addr=0) [FIX VERIFIED]: First 2 bytes [0x00 0x02][0m
+[00:16:15.810,422] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be34): Saved 16 bytes. _state=0, _size=28, rel_addr=0x00000000[0m
+[00:16:15.810,437] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 1c 00 00 00  00 00 01 00 85 00 01 13 |........ ........[0m
+[00:16:15.810,451] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002bec4): Saved 9 bytes. _state=0, _size=14, rel_addr=0x00000000[0m
+[00:16:15.810,462] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 0e 00 00 00  00                      |........ .       [0m
+[00:16:15.810,476] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be70): Saved 9 bytes. _state=1, _size=14, rel_addr=0x00000964[0m
+[00:16:15.810,488] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  64                      |........ d       [0m
+[1;31m--- 5 messages dropped ---
+[0m[00:16:15.810,604] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/0', size=512)...[0m
+[00:16:15.811,720] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:15.811,727] [0m<inf> nordic_platform: >>> Chunk 0 saved OK to Settings[0m
+[00:16:15.811,770] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/1', size=512)...[0m
+[00:16:15.811,900] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:15.811,907] [0m<inf> nordic_platform: >>> Chunk 1 saved OK to Settings[0m
+[00:16:15.811,944] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/2', size=512)...[0m
+[00:16:15.812,054] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:15.812,060] [0m<inf> nordic_platform: >>> Chunk 2 saved OK to Settings[0m
+[00:16:15.812,097] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/3', size=512)...[0m
+[00:16:15.812,204] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:15.812,211] [0m<inf> nordic_platform: >>> Chunk 3 saved OK to Settings[0m
+[00:16:15.812,247] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/4', size=512)...[0m
+[00:16:15.812,357] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:15.812,363] [0m<inf> nordic_platform: >>> Chunk 4 saved OK to Settings[0m
+[00:16:15.812,399] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/5', size=512)...[0m
+[00:16:15.812,510] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:15.812,516] [0m<inf> nordic_platform: >>> Chunk 5 saved OK to Settings[0m
+[00:16:15.812,551] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/6', size=512)...[0m
+[1;31m--- 5 messages dropped ---
+[0m[00:16:15.812,833] [0m<inf> nordic_platform: >>> Settings: ALL 8 chunks saved successfully![0m
+[00:16:15.812,840] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::saveMemory() called[0m
+[00:16:15.812,845] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::writeMemory() ENTERED[0m
+[00:16:15.812,879] [1;31m<err> nordic_platform: >>> writeNonVolatileMemory(addr=0) [FIX VERIFIED]: First 2 bytes [0x00 0x02][0m
+[00:16:15.812,922] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be34): Saved 16 bytes. _state=0, _size=28, rel_addr=0x00000000[0m
+[00:16:15.812,938] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 1c 00 00 00  00 00 01 00 85 00 01 13 |........ ........[0m
+[00:16:15.812,952] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002bec4): Saved 9 bytes. _state=0, _size=14, rel_addr=0x00000000[0m
+[00:16:15.812,964] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 0e 00 00 00  00                      |........ .       [0m
+[00:16:15.812,977] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be70): Saved 9 bytes. _state=1, _size=14, rel_addr=0x00000964[0m
+[00:16:15.812,989] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  64                      |........ d       [0m
+[00:16:15.813,002] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be98): Saved 9 bytes. _state=0, _size=26, rel_addr=0x00000000[0m
+[00:16:15.813,014] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 1a 00 00 00  00                      |........ .       [0m
+[1;31m--- 14 messages dropped ---
+[0m[00:16:15.813,701] [0m<inf> nordic_platform: >>> Chunk 3 saved OK to Settings[0m
+[00:16:15.813,737] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/4', size=512)...[0m
+[00:16:15.813,847] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:15.813,853] [0m<inf> nordic_platform: >>> Chunk 4 saved OK to Settings[0m
+[00:16:15.813,889] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/5', size=512)...[0m
+[00:16:15.814,012] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:15.814,024] [0m<inf> nordic_platform: >>> Chunk 5 saved OK to Settings[0m
+[00:16:15.814,068] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/6', size=512)...[0m
+[00:16:15.814,187] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:15.814,199] [0m<inf> nordic_platform: >>> Chunk 6 saved OK to Settings[0m
+[00:16:15.814,243] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/7', size=512)...[0m
+[00:16:15.814,370] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:15.814,382] [0m<inf> nordic_platform: >>> Chunk 7 saved OK to Settings[0m
+[00:16:15.814,387] [0m<inf> nordic_platform: >>> Settings: ALL 8 chunks saved successfully![0m
+[00:16:15.814,400] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: JUMP SUCCESSFUL & PERSISTED TO FLASH[0m
+
+
+[00:16:15.966,652] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=28[0m
+[00:16:15.966,701] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=16, toolAccess=1, authOnly=0[0m
+[1;31m--- 4 messages dropped ---
+[0m[00:16:15.967,184] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:15.967,196] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D7 len=15[0m
+[00:16:15.967,209] [1;33m<wrn> bau_systemB: !!! PropWrite: obj=1, prop=5, start=1, count=1, len=10[0m
+[00:16:15.967,218] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL WRITE: event(state)=4[0m
+[00:16:15.967,224] [1;33m<wrn> table_obj: !!! TableObject::loadState CHANGED: 1 -> 0[0m
+[00:16:15.967,233] [1;33m<wrn> table_obj: !!! TableObject::beforeStateChange: Current=1, New=0, UnloadCount=1[0m
+[00:16:15.967,263] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL READ: state=0[0m
+[00:16:15.967,274] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=1 pid=5 start=1 reqCnt=1 -> elemCnt=1 size=1[0m
+
+
+[00:16:15.967,353] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=6[0m
+[00:16:15.967,378] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 01 05 10 01 00 00                             |.......          [0m
+[00:16:15.967,606] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA92 (60050) [toolAccess=1][0m
+[00:16:15.967,628] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=19[0m
+
+
+[00:16:16.180,654] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=29[0m
+[00:16:16.180,704] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=17, toolAccess=1, authOnly=0[0m
+[00:16:16.180,719] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252EF, lastValid=0x3C7E1252EE, expected=0x3C7E1252EF[0m
+[00:16:16.180,735] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x7F, extFmt=0[0m
+[00:16:16.180,749] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        b3 b5 97 47 3c 55 9a 48  d1 b6 84 68 9f ca 12 55 |...G<U.H ...h...U
+                                        aa                                               |.                [0m
+[1;31m--- 3 messages dropped ---
+[0m[00:16:16.181,187] [1;33m<wrn> bau_systemB: >>> FuncPropCmd: obj=0x0011.1 prop=5 len=10 data[0]=0x04[0m
+[00:16:16.181,200] [1;33m<wrn> bau_systemB: >>> FuncPropCmd data:
+                                      04 00 00 00 00 00 00 00  00 00                   |........ ..      [0m
+
+
+[00:16:16.181,281] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x01D6 (FuncPropExtStateResp) len=8[0m
+[00:16:16.181,301] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 00 11 00 10 05 00 00  00                      |........ .       [0m
+[00:16:16.181,544] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA93 (60051) [toolAccess=1][0m
+[00:16:16.181,557] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=21[0m
+
+
+[00:16:16.394,719] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=28[0m
+[00:16:16.394,768] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=16, toolAccess=1, authOnly=0[0m
+[00:16:16.394,784] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252F0, lastValid=0x3C7E1252EF, expected=0x3C7E1252F0[0m
+[00:16:16.394,800] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x43, extFmt=0[0m
+[00:16:16.394,813] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        cf ed 7f 8c 22 7c 94 76  1b 3e f8 83 ab 93 78 47 |...."|.v .>....xG[0m
+[00:16:16.395,214] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=16): 03 D7 04 05 10 01 01 00 00 00 00 00 00 00 00 00 [0m
+[1;31m--- 7 messages dropped ---
+[0m[00:16:16.395,294] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=4 pid=5 start=1 reqCnt=1 -> elemCnt=1 size=1[0m
+
+
+[00:16:16.395,370] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=6[0m
+[00:16:16.395,389] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 04 05 10 01 02 00                             |.......          [0m
+[00:16:16.395,625] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA94 (60052) [toolAccess=1][0m
+[00:16:16.395,644] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=19[0m
+
+
+[00:16:16.606,924] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=28[0m
+[00:16:16.606,998] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=16, toolAccess=1, authOnly=0[0m
+[00:16:16.607,014] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252F1, lastValid=0x3C7E1252F0, expected=0x3C7E1252F1[0m
+[00:16:16.607,030] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x47, extFmt=0[0m
+[00:16:16.607,044] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        4f 2e 94 22 e8 60 f1 7e  f4 0c 50 ff 9e 57 c5 5e |O..".`.~ ..P..W.^[0m
+[00:16:16.607,446] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=16): 03 D7 04 05 10 01 03 0B 00 00 00 1C 00 00 00 00 [0m
+[00:16:16.607,453] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:16.607,464] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D7 len=15[0m
+[00:16:16.607,496] [1;33m<wrn> bau_systemB: !!! PropWrite: obj=4, prop=5, start=1, count=1, len=10[0m
+[1;31m--- 6 messages dropped ---
+[0m[00:16:16.607,600] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL READ: state=2[0m
+[00:16:16.607,615] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=4 pid=5 start=1 reqCnt=1 -> elemCnt=1 size=1[0m
+
+
+[00:16:16.607,689] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=6[0m
+[00:16:16.607,708] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 04 05 10 01 02 00                             |.......          [0m
+[00:16:16.607,945] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA95 (60053) [toolAccess=1][0m
+[00:16:16.607,964] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=19[0m
+
+
+[00:16:16.815,774] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=28[0m
+[00:16:16.815,823] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=16, toolAccess=1, authOnly=0[0m
+[00:16:16.815,839] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252F2, lastValid=0x3C7E1252F1, expected=0x3C7E1252F2[0m
+[00:16:16.815,855] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x4B, extFmt=0[0m
+[00:16:16.815,869] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        30 f9 78 e2 88 28 07 aa  8e ad af a8 0c c8 95 59 |0.x..(.. .......Y[0m
+[00:16:16.816,270] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=16): 03 D7 03 05 10 01 01 00 00 00 00 00 00 00 00 00 [0m
+[00:16:16.816,277] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:16.816,288] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D7 len=15[0m
+[00:16:16.816,302] [1;33m<wrn> bau_systemB: !!! PropWrite: obj=3, prop=5, start=1, count=1, len=10[0m
+[1;31m--- 5 messages dropped ---
+[0m
+
+[00:16:16.816,417] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=6[0m
+[00:16:16.816,439] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 03 05 10 01 02 00                             |.......          [0m
+[00:16:16.816,702] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA96 (60054) [toolAccess=1][0m
+[00:16:16.816,722] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=19[0m
+
+
+[00:16:17.028,777] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=28[0m
+[00:16:17.028,826] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=16, toolAccess=1, authOnly=0[0m
+[00:16:17.028,841] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252F3, lastValid=0x3C7E1252F2, expected=0x3C7E1252F3[0m
+[00:16:17.028,857] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x4F, extFmt=0[0m
+[00:16:17.028,871] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        0a fe a4 47 76 ff 56 b1  cc b4 26 90 9f 48 5f 4f |...Gv.V. ..&..H_O[0m
+[00:16:17.029,300] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=16): 03 D7 03 05 10 01 03 0B 00 00 00 0E 00 00 00 00 [0m
+[00:16:17.029,307] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:17.029,319] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D7 len=15[0m
+[00:16:17.029,332] [1;33m<wrn> bau_systemB: !!! PropWrite: obj=3, prop=5, start=1, count=1, len=10[0m
+[00:16:17.029,340] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL WRITE: event(state)=3[0m
+[00:16:17.029,346] [1;33m<wrn> table_obj: !!! TableObject::loadEventLoading: RECV EVENT 0x03[0m
+[1;31m--- 6 messages dropped ---
+[0m
+
+[00:16:17.029,466] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=6[0m
+[00:16:17.029,491] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 03 05 10 01 02 00                             |.......          [0m
+[00:16:17.029,720] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA97 (60055) [toolAccess=1][0m
+[00:16:17.029,747] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=19[0m
+
+
+[00:16:17.237,873] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=28[0m
+[00:16:17.237,922] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=16, toolAccess=1, authOnly=0[0m
+[00:16:17.237,937] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252F4, lastValid=0x3C7E1252F3, expected=0x3C7E1252F4[0m
+[00:16:17.237,953] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x53, extFmt=0[0m
+[00:16:17.237,967] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        f4 ac 81 c6 6e 63 5b e0  40 fa fe 5c 19 9a 88 38 |....nc[. @..\...8[0m
+[00:16:17.238,396] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=16): 03 D7 01 05 10 01 01 00 00 00 00 00 00 00 00 00 [0m
+[00:16:17.238,403] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:17.238,415] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D7 len=15[0m
+[00:16:17.238,428] [1;33m<wrn> bau_systemB: !!! PropWrite: obj=1, prop=5, start=1, count=1, len=10[0m
+[00:16:17.238,437] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL WRITE: event(state)=1[0m
+[00:16:17.238,443] [1;33m<wrn> table_obj: !!! TableObject::loadState CHANGED: 0 -> 2[0m
+[00:16:17.238,453] [1;33m<wrn> table_obj: !!! TableObject::beforeStateChange: Current=0, New=2, UnloadCount=1[0m
+[00:16:17.238,464] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL READ: state=2[0m
+[00:16:17.238,492] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=1 pid=5 start=1 reqCnt=1 -> elemCnt=1 size=1[0m
+
+
+[00:16:17.238,562] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=6[0m
+[00:16:17.238,582] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 01 05 10 01 02 00                             |.......          [0m
+[00:16:17.238,819] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA98 (60056) [toolAccess=1][0m
+[00:16:17.238,838] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=19[0m
+
+
+[00:16:17.446,834] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=28[0m
+[00:16:17.446,882] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=16, toolAccess=1, authOnly=0[0m
+[00:16:17.446,898] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252F5, lastValid=0x3C7E1252F4, expected=0x3C7E1252F5[0m
+[00:16:17.446,913] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x57, extFmt=0[0m
+[00:16:17.446,927] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        98 6d 39 41 a3 c1 2f e5  0b 6f e7 8b 4c 01 5a fc |.m9A../. .o..L.Z.[0m
+[00:16:17.447,357] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=16): 03 D7 01 05 10 01 03 0B 00 00 00 0E 00 00 00 00 [0m
+[00:16:17.447,364] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:17.447,376] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D7 len=15[0m
+[00:16:17.447,389] [1;33m<wrn> bau_systemB: !!! PropWrite: obj=1, prop=5, start=1, count=1, len=10[0m
+[00:16:17.447,397] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL WRITE: event(state)=3[0m
+[00:16:17.447,404] [1;33m<wrn> table_obj: !!! TableObject::loadEventLoading: RECV EVENT 0x03[0m
+[00:16:17.447,412] [1;33m<wrn> table_obj: !!! TableObject (obj 0x2002be70) RECV LE_ADDITIONAL_LOAD_CONTROLS (0x03)[0m
+[00:16:17.447,418] [1;33m<wrn> table_obj: >>> MEM_TRACE: TableObject::allocTable(size=14) called[0m
+[00:16:17.447,423] [1;33m<wrn> table_obj: !!! TableObject::allocTable: Requested Size=14 bytes[0m
+[00:16:17.447,444] [1;33m<wrn> table_obj: !!! TableObject::allocTable: SUCCESS, 14 bytes allocated[0m
+[00:16:17.447,454] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL READ: state=2[0m
+[00:16:17.447,465] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=1 pid=5 start=1 reqCnt=1 -> elemCnt=1 size=1[0m
+
+
+[00:16:17.447,543] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=6[0m
+[00:16:17.447,562] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 01 05 10 01 02 00                             |.......          [0m
+[00:16:17.447,805] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA99 (60057) [toolAccess=1][0m
+[00:16:17.447,824] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=19[0m
+
+
+[00:16:17.659,892] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=28[0m
+[00:16:17.659,942] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=16, toolAccess=1, authOnly=0[0m
+[00:16:17.659,957] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252F6, lastValid=0x3C7E1252F5, expected=0x3C7E1252F6[0m
+[00:16:17.659,973] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x5B, extFmt=0[0m
+[00:16:17.659,987] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        4f 2d ec b0 c0 61 65 cf  35 39 b0 58 f5 55 85 b6 |O-...ae. 59.X.U..[0m
+[00:16:17.660,416] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=16): 03 D7 02 05 10 01 01 00 00 00 00 00 00 00 00 00 [0m
+[00:16:17.660,423] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:17.660,435] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D7 len=15[0m
+[00:16:17.660,448] [1;33m<wrn> bau_systemB: !!! PropWrite: obj=2, prop=5, start=1, count=1, len=10[0m
+[00:16:17.660,457] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL WRITE: event(state)=1[0m
+[00:16:17.660,463] [1;33m<wrn> table_obj: !!! TableObject::loadState CHANGED: 0 -> 2[0m
+[00:16:17.660,472] [1;33m<wrn> table_obj: !!! TableObject::beforeStateChange: Current=0, New=2, UnloadCount=1[0m
+[00:16:17.660,483] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL READ: state=2[0m
+[00:16:17.660,493] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=2 pid=5 start=1 reqCnt=1 -> elemCnt=1 size=1[0m
+
+
+[00:16:17.660,569] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=6[0m
+[00:16:17.660,588] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 02 05 10 01 02 00                             |.......          [0m
+[00:16:17.660,826] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA9A (60058) [toolAccess=1][0m
+[00:16:17.660,845] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=19[0m
+
+
+[00:16:17.870,932] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=28[0m
+[00:16:17.870,981] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=16, toolAccess=1, authOnly=0[0m
+[00:16:17.870,996] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252F7, lastValid=0x3C7E1252F6, expected=0x3C7E1252F7[0m
+[00:16:17.871,012] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x5F, extFmt=0[0m
+[00:16:17.871,026] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        5a 81 93 e8 29 fc 35 de  80 84 15 16 c3 e9 79 18 |Z...).5. ......y.[0m
+[00:16:17.871,454] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=16): 03 D7 02 05 10 01 03 0B 00 00 00 1A 00 00 00 00 [0m
+[00:16:17.871,461] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:17.871,473] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D7 len=15[0m
+[00:16:17.871,487] [1;33m<wrn> bau_systemB: !!! PropWrite: obj=2, prop=5, start=1, count=1, len=10[0m
+[00:16:17.871,495] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL WRITE: event(state)=3[0m
+[00:16:17.871,501] [1;33m<wrn> table_obj: !!! TableObject::loadEventLoading: RECV EVENT 0x03[0m
+[00:16:17.871,509] [1;33m<wrn> table_obj: !!! TableObject (obj 0x2002be98) RECV LE_ADDITIONAL_LOAD_CONTROLS (0x03)[0m
+[00:16:17.871,515] [1;33m<wrn> table_obj: >>> MEM_TRACE: TableObject::allocTable(size=26) called[0m
+[00:16:17.871,520] [1;33m<wrn> table_obj: !!! TableObject::allocTable: Requested Size=26 bytes[0m
+[00:16:17.871,541] [1;33m<wrn> table_obj: !!! TableObject::allocTable: SUCCESS, 26 bytes allocated[0m
+[00:16:17.871,551] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL READ: state=2[0m
+[00:16:17.871,561] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=2 pid=5 start=1 reqCnt=1 -> elemCnt=1 size=1[0m
+
+
+[00:16:17.871,640] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=6[0m
+[00:16:17.871,659] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 02 05 10 01 02 00                             |.......          [0m
+[00:16:17.871,901] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA9B (60059) [toolAccess=1][0m
+[00:16:17.871,921] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=19[0m
+
+
+[00:16:18.059,181] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=18[0m
+[00:16:18.059,228] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=6, toolAccess=1, authOnly=0[0m
+[00:16:18.059,243] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252F8, lastValid=0x3C7E1252F7, expected=0x3C7E1252F8[0m
+[00:16:18.059,259] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x63, extFmt=0[0m
+[00:16:18.059,272] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        39 63 b2 bc 5c e1                                |9c..\.           [0m
+[00:16:18.059,519] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=6): 03 D5 04 07 10 01 [0m
+[00:16:18.059,526] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:18.059,536] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D5 len=5[0m
+[00:16:18.059,558] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=4 pid=7 start=1 reqCnt=1 -> elemCnt=1 size=4[0m
+
+
+[00:16:18.059,615] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=9[0m
+[00:16:18.059,628] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 04 07 10 01 00 00 09  38 00                   |........ 8.      [0m
+[00:16:18.059,855] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA9C (60060) [toolAccess=1][0m
+[00:16:18.059,868] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=22[0m
+
+
+[00:16:18.258,100] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=19[0m
+[00:16:18.258,147] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=7, toolAccess=1, authOnly=0[0m
+[00:16:18.258,163] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252F9, lastValid=0x3C7E1252F8, expected=0x3C7E1252F9[0m
+[00:16:18.258,178] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x67, extFmt=0[0m
+[00:16:18.258,191] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        79 fd b5 73 a8 b5 c1                             |y..s...          [0m
+[00:16:18.258,445] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=7): 01 FB 01 00 09 38 01 [0m
+[00:16:18.258,452] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:18.258,461] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x01FB len=6[0m
+[00:16:18.258,476] [1;33m<wrn> knx_memory: !!! Memory::writeMemory: relativeAddress=0x00000938, size=1[0m
+[00:16:18.258,488] [1;33m<wrn> knx_memory: MEM WRITE DATA:
+                                     01                                               |.                [0m
+
+
+[00:16:18.258,547] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x01FC (MemExtWriteResp) len=5[0m
+[00:16:18.258,560] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        fc 00 00 09 38 00                                |....8.           [0m
+[00:16:18.258,786] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA9D (60061) [toolAccess=1][0m
+[00:16:18.258,799] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=18[0m
+
+
+[00:16:18.446,974] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=20[0m
+[00:16:18.447,021] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=8, toolAccess=1, authOnly=0[0m
+[00:16:18.447,036] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252FA, lastValid=0x3C7E1252F9, expected=0x3C7E1252FA[0m
+[00:16:18.447,052] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x6B, extFmt=0[0m
+[00:16:18.447,065] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        48 f7 b1 e0 52 d0 f7 ef                          |H...R...         [0m
+[00:16:18.447,351] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=8): 01 FB 02 00 09 3A 00 1E [0m
+[00:16:18.447,358] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:18.447,368] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x01FB len=7[0m
+[00:16:18.447,383] [1;33m<wrn> knx_memory: !!! Memory::writeMemory: relativeAddress=0x0000093A, size=2[0m
+[00:16:18.447,395] [1;33m<wrn> knx_memory: MEM WRITE DATA:
+                                     00 1e                                            |..               [0m
+
+
+[00:16:18.447,454] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x01FC (MemExtWriteResp) len=5[0m
+[00:16:18.447,467] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        fc 00 00 09 3a 00                                |....:.           [0m
+[00:16:18.447,694] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA9E (60062) [toolAccess=1][0m
+[00:16:18.447,707] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=18[0m
+
+
+[00:16:18.679,489] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=40[0m
+[00:16:18.679,542] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=28, toolAccess=1, authOnly=0[0m
+[00:16:18.679,557] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252FB, lastValid=0x3C7E1252FA, expected=0x3C7E1252FB[0m
+[00:16:18.679,573] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x6F, extFmt=0[0m
+[00:16:18.679,588] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        e1 b0 4b d9 e3 28 0a c7  a4 72 33 5b 33 97 2b e6 |..K..(.. .r3[3.+.
+                                        35 11 a4 df 39 70 ad aa  87 8a fc ac             |5...9p.. ....    [0m
+[00:16:18.680,078] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=28): 01 FB 16 00 09 3E 20 00 01 1E 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 [0m
+[00:16:18.680,085] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:18.680,098] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x01FB len=27[0m
+[00:16:18.680,113] [1;33m<wrn> knx_memory: !!! Memory::writeMemory: relativeAddress=0x0000093E, size=22[0m
+[00:16:18.680,127] [1;33m<wrn> knx_memory: MEM WRITE DATA:
+                                     20 00 01 1e 00 00 00 00  00 00 00 00 00 00 00 00 | ....... ........
+                                     00 00 00 00 00 00                                |......           [0m
+
+
+[00:16:18.680,187] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x01FC (MemExtWriteResp) len=5[0m
+[00:16:18.680,199] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        fc 00 00 09 3e 00                                |....>.           [0m
+[00:16:18.680,427] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEA9F (60063) [toolAccess=1][0m
+[00:16:18.680,440] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=18[0m
+[00:16:18.689,714] [0m<inf> relay: Power-on relay delay finished (6381 ms)[0m
+
+
+[00:16:18.866,283] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=18[0m
+[00:16:18.866,329] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=6, toolAccess=1, authOnly=0[0m
+[00:16:18.866,344] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252FC, lastValid=0x3C7E1252FB, expected=0x3C7E1252FC[0m
+[00:16:18.866,360] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x73, extFmt=0[0m
+[00:16:18.866,373] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        03 9f 96 56 54 02                                |...VT.           [0m
+[00:16:18.866,621] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=6): 03 D5 03 07 10 01 [0m
+[00:16:18.866,628] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:18.866,638] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D5 len=5[0m
+[00:16:18.866,657] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=3 pid=7 start=1 reqCnt=1 -> elemCnt=1 size=4[0m
+
+
+[00:16:18.866,714] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=9[0m
+[00:16:18.866,726] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 03 07 10 01 00 00 09  54 00                   |........ T.      [0m
+[00:16:18.866,954] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEAA0 (60064) [toolAccess=1][0m
+[00:16:18.866,967] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=22[0m
+
+
+[00:16:19.090,564] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=32[0m
+[00:16:19.090,616] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=20, toolAccess=1, authOnly=0[0m
+[00:16:19.090,632] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252FD, lastValid=0x3C7E1252FC, expected=0x3C7E1252FD[0m
+[00:16:19.090,647] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x77, extFmt=0[0m
+[00:16:19.090,662] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        aa 8f c8 4f ef a8 87 f7  c6 c1 02 de dd fe dd b5 |...O.... ........
+                                        5c 34 d7 1d                                      |\4..             [0m
+[00:16:19.091,085] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=20): 01 FB 0E 00 09 54 00 06 17 00 17 00 17 07 4F 00 4F 07 17 07 [0m
+[00:16:19.091,092] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:19.091,104] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x01FB len=19[0m
+[00:16:19.091,119] [1;33m<wrn> knx_memory: !!! Memory::writeMemory: relativeAddress=0x00000954, size=14[0m
+[00:16:19.091,131] [1;33m<wrn> knx_memory: MEM WRITE DATA:
+                                     00 06 17 00 17 00 17 07  4f 00 4f 07 17 07       |........ O.O...  [0m
+
+
+[00:16:19.091,191] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x01FC (MemExtWriteResp) len=5[0m
+[00:16:19.091,203] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        fc 00 00 09 54 00                                |....T.           [0m
+[00:16:19.091,431] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEAA1 (60065) [toolAccess=1][0m
+[00:16:19.091,443] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=18[0m
+
+
+[00:16:19.276,316] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=18[0m
+[00:16:19.276,362] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=6, toolAccess=1, authOnly=0[0m
+[00:16:19.276,378] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252FE, lastValid=0x3C7E1252FD, expected=0x3C7E1252FE[0m
+[00:16:19.276,393] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x7B, extFmt=0[0m
+[00:16:19.276,406] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        fc e4 85 30 d9 75                                |...0.u           [0m
+[00:16:19.276,654] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=6): 03 D5 02 07 10 01 [0m
+[00:16:19.276,662] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:19.276,671] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D5 len=5[0m
+[00:16:19.276,690] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=2 pid=7 start=1 reqCnt=1 -> elemCnt=1 size=4[0m
+
+
+[00:16:19.276,748] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=9[0m
+[00:16:19.276,760] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 02 07 10 01 00 00 09  74 00                   |........ t.      [0m
+[00:16:19.276,989] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEAA2 (60066) [toolAccess=1][0m
+[00:16:19.277,002] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=22[0m
+
+
+[00:16:19.529,041] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=44[0m
+[00:16:19.529,094] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=32, toolAccess=1, authOnly=0[0m
+[00:16:19.529,110] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E1252FF, lastValid=0x3C7E1252FE, expected=0x3C7E1252FF[0m
+[00:16:19.529,126] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x7F, extFmt=0[0m
+[00:16:19.529,141] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        ac 46 33 78 9e 87 6f 50  7c a6 cf 48 ae 08 97 5e |.F3x..oP |..H...^
+                                        de d7 6f a9 b7 c6 83 40  4c 60 c6 79 c9 2d ff 38 |..o....@ L`.y.-.8[0m
+[00:16:19.529,725] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=32): 01 FB 1A 00 09 74 00 06 00 02 00 01 00 01 00 02 00 03 00 03 00 06 00 04 00 05 00 05 00 04 00 06 [0m
+[00:16:19.529,733] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:19.529,747] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x01FB len=31[0m
+[00:16:19.529,762] [1;33m<wrn> knx_memory: !!! Memory::writeMemory: relativeAddress=0x00000974, size=26[0m
+[00:16:19.529,775] [1;33m<wrn> knx_memory: MEM WRITE DATA:
+                                     00 06 00 02 00 01 00 01  00 02 00 03 00 03 00 06 |........ ........
+                                     00 04 00 05 00 05 00 04  00 06                   |........ ..      [0m
+
+
+[00:16:19.529,835] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x01FC (MemExtWriteResp) len=5[0m
+[00:16:19.529,847] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        fc 00 00 09 74 00                                |....t.           [0m
+[00:16:19.530,073] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEAA3 (60067) [toolAccess=1][0m
+[00:16:19.530,086] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=18[0m
+
+
+[00:16:19.720,350] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=18[0m
+[00:16:19.720,397] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=6, toolAccess=1, authOnly=0[0m
+[00:16:19.720,412] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E125300, lastValid=0x3C7E1252FF, expected=0x3C7E125300[0m
+[00:16:19.720,428] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x43, extFmt=0[0m
+[00:16:19.720,441] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        b6 ae b8 5f 19 ff                                |..._..           [0m
+[00:16:19.720,689] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=6): 03 D5 01 07 10 01 [0m
+[00:16:19.720,696] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:19.720,705] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x03D5 len=5[0m
+[00:16:19.720,724] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=1 pid=7 start=1 reqCnt=1 -> elemCnt=1 size=4[0m
+
+
+[00:16:19.720,782] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=9[0m
+[00:16:19.720,794] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 01 07 10 01 00 00 09  64 00                   |........ d.      [0m
+[00:16:19.721,022] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEAA4 (60068) [toolAccess=1][0m
+[00:16:19.721,036] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=22[0m
+
+
+[00:16:19.944,584] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=32[0m
+[00:16:19.944,634] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=20, toolAccess=1, authOnly=0[0m
+[00:16:19.944,650] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E125301, lastValid=0x3C7E125300, expected=0x3C7E125301[0m
+[00:16:19.944,666] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x47, extFmt=0[0m
+[00:16:19.944,680] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        7b 28 e2 f6 e3 ec 4b d6  ed 04 a3 7d 54 e0 8f 38 |{(....K. ...}T..8
+                                        b2 ba 5b 8e                                      |..[.             [0m
+[00:16:19.945,101] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=20): 01 FB 0E 00 09 64 00 06 00 01 00 02 00 03 00 04 00 65 00 66 [0m
+[00:16:19.945,108] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:19.945,121] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x01FB len=19[0m
+[00:16:19.945,135] [1;33m<wrn> knx_memory: !!! Memory::writeMemory: relativeAddress=0x00000964, size=14[0m
+[00:16:19.945,148] [1;33m<wrn> knx_memory: MEM WRITE DATA:
+                                     00 06 00 01 00 02 00 03  00 04 00 65 00 66       |........ ...e.f  [0m
+
+
+[00:16:19.945,208] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x01FC (MemExtWriteResp) len=5[0m
+[00:16:19.945,220] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        fc 00 00 09 64 00                                |....d.           [0m
+[00:16:19.945,447] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEAA5 (60069) [toolAccess=1][0m
+[00:16:19.945,460] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=18[0m
+
+
+[00:16:20.155,034] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=29[0m
+[00:16:20.155,083] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=17, toolAccess=1, authOnly=0[0m
+[00:16:20.155,098] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E125302, lastValid=0x3C7E125301, expected=0x3C7E125302[0m
+[00:16:20.155,114] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x4B, extFmt=0[0m
+[00:16:20.155,128] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        42 d0 96 c8 8d a8 35 57  f4 0e a7 8e 7c aa 90 bb |B.....5W ....|...
+                                        0b                                               |.                [0m
+[00:16:20.155,534] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=17): 01 D4 00 11 00 10 05 01 00 00 00 00 00 00 00 00 00 [0m
+[00:16:20.155,542] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:20.155,553] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x01D4 len=16[0m
+[00:16:20.155,567] [1;33m<wrn> bau_systemB: >>> FuncPropCmd: obj=0x0011.1 prop=5 len=10 data[0]=0x01[0m
+[00:16:20.155,579] [1;33m<wrn> bau_systemB: >>> FuncPropCmd data:
+                                      01 00 00 00 00 00 00 00  00 00                   |........ ..      [0m
+[00:16:20.155,593] [0m<inf> sec_if_obj: >>> Security tables CLEARED for fresh download[0m
+[1;31m--- 28 messages dropped ---
+[0m[00:16:20.580,665] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:20.580,676] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x01CE len=15[0m
+[00:16:20.580,692] [1;33m<wrn> bau_systemB: !!! PropExtWrite: type=0x0011 inst=1 prop=61 start=1 cnt=6 len=6 cfm=1[0m
+
+
+[00:16:20.580,754] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x01CF (PropExtValueWriteConResp) len=10[0m
+[00:16:20.580,767] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        cf 00 11 00 10 3d 06 00  01 00 00                |.....=.. ...     [0m
+[00:16:20.580,995] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEAA8 (60072) [toolAccess=1][0m
+[00:16:20.581,009] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=23[0m
+
+
+[00:16:20.807,076] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=29[0m
+[00:16:20.807,126] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=17, toolAccess=1, authOnly=0[0m
+[00:16:20.807,141] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E125305, lastValid=0x3C7E125304, expected=0x3C7E125305[0m
+[00:16:20.807,157] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x57, extFmt=0[0m
+[00:16:20.807,171] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        c0 6a 9a 7a 68 94 b0 62  db 1d cc 50 ed 95 a2 a1 |.j.zh..b ...P....
+                                        eb                                               |.                [0m
+[00:16:20.807,577] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=17): 01 D4 00 11 00 10 05 02 00 00 00 00 00 00 00 00 00 [0m
+[00:16:20.807,584] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[1;31m--- 43 messages dropped ---
+[0m[00:16:21.237,884] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    02 00 00 00 0e 00 00 09  54                      |........ T       [0m
+[00:16:21.237,897] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be70): Saved 9 bytes. _state=2, _size=14, rel_addr=0x00000964[0m
+[00:16:21.237,909] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    02 00 00 00 0e 00 00 09  64                      |........ d       [0m
+[00:16:21.237,922] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be98): Saved 9 bytes. _state=2, _size=26, rel_addr=0x00000974[0m
+[00:16:21.237,934] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    02 00 00 00 1a 00 00 09  74                      |........ t       [0m
+[00:16:21.237,942] [0m<inf> nordic_platform: commitNonVolatileMemory called -> commitToEeprom[0m
+[00:16:21.237,950] [0m<inf> nordic_platform: >>> commitToEeprom: Saving 4096 bytes in 8 chunks[0m
+[00:16:21.237,963] [0m<inf> nordic_platform: First 20 bytes to save:
+                                          00 02 00 85 00 00 00 00  00 00 00 01 13 03 00 01 |........ ........
+                                          00 00 01 60                                      |...`             [0m
+[00:16:21.238,000] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/0', size=512)...[0m
+[00:16:21.239,005] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:21.239,012] [0m<inf> nordic_platform: >>> Chunk 0 saved OK to Settings[0m
+[1;31m--- 50 messages dropped ---
+[0m[00:16:21.449,863] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    02 00 00 00 0e 00 00 09  54                      |........ T       [0m
+[00:16:21.449,883] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be70): Saved 9 bytes. _state=2, _size=14, rel_addr=0x00000964[0m
+[00:16:21.449,900] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    02 00 00 00 0e 00 00 09  64                      |........ d       [0m
+[00:16:21.449,921] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be98): Saved 9 bytes. _state=2, _size=26, rel_addr=0x00000974[0m
+[00:16:21.449,939] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    02 00 00 00 1a 00 00 09  74                      |........ t       [0m
+[00:16:21.449,953] [0m<inf> nordic_platform: commitNonVolatileMemory called -> commitToEeprom[0m
+[00:16:21.449,966] [0m<inf> nordic_platform: >>> commitToEeprom: Saving 4096 bytes in 8 chunks[0m
+[00:16:21.449,984] [0m<inf> nordic_platform: First 20 bytes to save:
+                                          00 02 00 85 00 00 00 00  00 00 00 01 13 03 00 01 |........ ........
+                                          00 00 01 60                                      |...`             [0m
+[00:16:21.450,029] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/0', size=512)...[0m
+[00:16:21.451,139] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:21.451,152] [0m<inf> nordic_platform: >>> Chunk 0 saved OK to Settings[0m
+[00:16:21.451,201] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/1', size=512)...[0m
+[00:16:21.451,312] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[1;31m--- 48 messages dropped ---
+[0m[00:16:21.661,967] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 1c 00 00 09  38 00 01 00 85 00 01 13 |........ 8.......[0m
+[00:16:21.661,989] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002bec4): Saved 9 bytes. _state=1, _size=14, rel_addr=0x00000954[0m
+[00:16:21.662,011] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  54                      |........ T       [0m
+[00:16:21.662,036] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be70): Saved 9 bytes. _state=2, _size=14, rel_addr=0x00000964[0m
+[00:16:21.662,054] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    02 00 00 00 0e 00 00 09  64                      |........ d       [0m
+[00:16:21.662,074] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be98): Saved 9 bytes. _state=2, _size=26, rel_addr=0x00000974[0m
+[00:16:21.662,091] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    02 00 00 00 1a 00 00 09  74                      |........ t       [0m
+[00:16:21.662,105] [0m<inf> nordic_platform: commitNonVolatileMemory called -> commitToEeprom[0m
+[00:16:21.662,113] [0m<inf> nordic_platform: >>> commitToEeprom: Saving 4096 bytes in 8 chunks[0m
+[00:16:21.662,136] [0m<inf> nordic_platform: First 20 bytes to save:
+                                          00 02 00 85 00 00 00 00  00 00 00 01 13 03 00 01 |........ ........
+                                          00 00 01 60                                      |...`             [0m
+[1;31m--- 45 messages dropped ---
+[0m[00:16:21.873,792] [1;33m<wrn> table_obj: !!! TableObject::loadEventLoading: RECV EVENT 0x02[0m
+[00:16:21.873,803] [1;33m<wrn> table_obj: !!! TableObject transition to LS_LOADED[0m
+[00:16:21.873,809] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::saveMemory() called[0m
+[00:16:21.873,820] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::writeMemory() ENTERED[0m
+[00:16:21.873,859] [1;31m<err> nordic_platform: >>> writeNonVolatileMemory(addr=0) [FIX VERIFIED]: First 2 bytes [0x00 0x02][0m
+[00:16:21.873,910] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be34): Saved 16 bytes. _state=1, _size=28, rel_addr=0x00000938[0m
+[00:16:21.873,937] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 1c 00 00 09  38 00 01 00 85 00 01 13 |........ 8.......[0m
+[00:16:21.873,958] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002bec4): Saved 9 bytes. _state=1, _size=14, rel_addr=0x00000954[0m
+[00:16:21.873,976] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  54                      |........ T       [0m
+[00:16:21.873,996] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be70): Saved 9 bytes. _state=2, _size=14, rel_addr=0x00000964[0m
+[00:16:21.874,014] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    02 00 00 00 0e 00 00 09  64                      |........ d       [0m
+[00:16:21.874,040] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be98): Saved 9 bytes. _state=1, _size=26, rel_addr=0x00000974[0m
+[00:16:21.874,057] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 1a 00 00 09  74                      |........ t       [0m
+[00:16:21.874,065] [0m<inf> nordic_platform: commitNonVolatileMemory called -> commitToEeprom[0m
+[00:16:21.874,079] [0m<inf> nordic_platform: >>> commitToEeprom: Saving 4096 bytes in 8 chunks[0m
+[00:16:21.874,102] [0m<inf> nordic_platform: First 20 bytes to save:
+                                          00 02 00 85 00 00 00 00  00 00 00 01 13 03 00 01 |........ ........
+                                          00 00 01 60                                      |...`             [0m
+[00:16:21.874,148] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/0', size=512)...[0m
+[00:16:21.917,189] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:21.917,202] [0m<inf> nordic_platform: >>> Chunk 0 saved OK to Settings[0m
+[00:16:21.917,251] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/1', size=512)...[0m
+[00:16:21.917,395] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:21.917,407] [0m<inf> nordic_platform: >>> Chunk 1 saved OK to Settings[0m
+[00:16:21.917,453] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/2', size=512)...[0m
+[00:16:21.917,571] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:21.917,582] [0m<inf> nordic_platform: >>> Chunk 2 saved OK to Settings[0m
+[00:16:21.917,627] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/3', size=512)...[0m
+[00:16:21.917,744] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:21.917,755] [0m<inf> nordic_platform: >>> Chunk 3 saved OK to Settings[0m
+[00:16:21.917,799] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/4', size=512)...[0m
+[00:16:21.917,908] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:21.917,921] [0m<inf> nordic_platform: >>> Chunk 4 saved OK to Settings[0m
+[00:16:21.917,971] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/5', size=512)...[0m
+[00:16:21.918,090] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:21.918,096] [0m<inf> nordic_platform: >>> Chunk 5 saved OK to Settings[0m
+[00:16:21.918,140] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/6', size=512)...[0m
+[00:16:21.918,259] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:21.918,270] [0m<inf> nordic_platform: >>> Chunk 6 saved OK to Settings[0m
+[00:16:21.918,314] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/7', size=512)...[0m
+[00:16:21.918,582] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:21.918,589] [0m<inf> nordic_platform: >>> Chunk 7 saved OK to Settings[0m
+[00:16:21.918,602] [0m<inf> nordic_platform: >>> Settings: ALL 8 chunks saved successfully![0m
+[00:16:21.918,615] [1;33m<wrn> table_obj: !!! TableObject::loadState CHANGED: 2 -> 1[0m
+[00:16:21.918,628] [1;33m<wrn> table_obj: !!! TableObject::beforeStateChange: Current=2, New=1, UnloadCount=0[0m
+[00:16:21.918,646] [1;33m<wrn> table_obj: !!! PID_LOAD_STATE_CONTROL READ: state=1[0m
+[00:16:21.918,662] [1;33m<wrn> bau_systemB: >>> PropValueRead: obj=1 pid=5 start=1 reqCnt=1 -> elemCnt=1 size=1[0m
+
+
+[00:16:21.918,741] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03D6 (PropValueResp) len=6[0m
+[00:16:21.918,760] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        d6 01 05 10 01 01 00                             |.......          [0m
+[00:16:21.919,003] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEAAE (60078) [toolAccess=1][0m
+[00:16:21.919,016] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=19[0m
+
+
+[00:16:22.101,702] [1;33m<wrn> sec_app_layer: [0x110B->0x1303] len=16[0m
+[00:16:22.101,749] [0m<inf> sec_app_layer: >>> decrypt: DATA from 0x110B to 0x1303, len=4, toolAccess=1, authOnly=0[0m
+[00:16:22.101,764] [0m<inf> sec_app_layer: >>> SeqNum check: received=0x3C7E12530B, lastValid=0x3C7E12530A, expected=0x3C7E12530B[0m
+[00:16:22.101,780] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x1303, grp=0, tpci=0x6F, extFmt=0[0m
+[00:16:22.101,793] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        75 14 e2 51                                      |u..Q             [0m
+[00:16:22.102,030] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS. Payload (len=4): 03 81 01 00 [0m
+[00:16:22.102,037] [0m<inf> sec_app_layer: >>> decrypt: SUCCESS - data ready for processing[0m
+[00:16:22.102,059] [1;33m<wrn> sec_app_layer: >>> Decoded OK! Inner APDU type=0x0381 len=3[0m
+
+
+[00:16:22.102,131] [1;33m<wrn> sec_app_layer: [0x1303->0x110B] APCI=0x03A1 (Unknown) len=4[0m
+[00:16:22.102,150] [1;33m<wrn> sec_app_layer: TX PAYLOAD:
+                                        a1 00 00 03 00                                   |.....            [0m
+[00:16:22.102,385] [0m<inf> sec_app_layer: >>> TX SeqNum: 0xEAAF (60079) [toolAccess=1][0m
+[00:16:22.102,404] [1;33m<wrn> sec_app_layer: <<< TX Connected SECURE OK, encrypted len=17[0m
+[00:16:22.102,489] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::writeMemory() ENTERED[0m
+[00:16:22.102,530] [1;31m<err> nordic_platform: >>> writeNonVolatileMemory(addr=0) [FIX VERIFIED]: First 2 bytes [0x00 0x02][0m
+[00:16:22.102,581] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be34): Saved 16 bytes. _state=1, _size=28, rel_addr=0x00000938[0m
+[00:16:22.102,603] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 1c 00 00 09  38 00 01 00 85 00 01 13 |........ 8.......[0m
+[00:16:22.102,630] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002bec4): Saved 9 bytes. _state=1, _size=14, rel_addr=0x00000954[0m
+[00:16:22.102,647] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  54                      |........ T       [0m
+[00:16:22.102,668] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be70): Saved 9 bytes. _state=1, _size=14, rel_addr=0x00000964[0m
+[00:16:22.102,686] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  64                      |........ d       [0m
+[00:16:22.102,706] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be98): Saved 9 bytes. _state=1, _size=26, rel_addr=0x00000974[0m
+[00:16:22.102,724] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 1a 00 00 09  74                      |........ t       [0m
+[00:16:22.102,737] [0m<inf> nordic_platform: commitNonVolatileMemory called -> commitToEeprom[0m
+[00:16:22.102,750] [0m<inf> nordic_platform: >>> commitToEeprom: Saving 4096 bytes in 8 chunks[0m
+[00:16:22.102,769] [0m<inf> nordic_platform: First 20 bytes to save:
+                                          00 02 00 85 00 00 00 00  00 00 00 01 13 03 00 01 |........ ........
+                                          00 00 01 60                                      |...`             [0m
+[00:16:22.102,820] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/0', size=512)...[0m
+[00:16:22.103,794] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:22.103,808] [0m<inf> nordic_platform: >>> Chunk 0 saved OK to Settings[0m
+[00:16:22.103,862] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/1', size=512)...[0m
+[00:16:22.103,982] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:22.103,994] [0m<inf> nordic_platform: >>> Chunk 1 saved OK to Settings[0m
+[00:16:22.104,039] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/2', size=512)...[0m
+[00:16:22.104,156] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:22.104,162] [0m<inf> nordic_platform: >>> Chunk 2 saved OK to Settings[0m
+[00:16:22.104,212] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/3', size=512)...[0m
+[00:16:22.104,328] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:22.104,334] [0m<inf> nordic_platform: >>> Chunk 3 saved OK to Settings[0m
+[00:16:22.104,379] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/4', size=512)...[0m
+[00:16:22.104,495] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:22.104,512] [0m<inf> nordic_platform: >>> Chunk 4 saved OK to Settings[0m
+[00:16:22.104,556] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/5', size=512)...[0m
+[00:16:22.104,668] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:22.104,681] [0m<inf> nordic_platform: >>> Chunk 5 saved OK to Settings[0m
+[00:16:22.104,725] [0m<inf> nordic_platform: >>�*** Booting nRF Connect SDK v3.0.1-9eb5615da66b ***
+*** Using Zephyr OS v4.0.99-77f865b8f8d0 ***
+[00:16:23.123,819] [0m<inf> lumi_debug_main_c: === Bluetooth Mesh Relay Node Starting ===[0m
+[00:16:23.123,873] [0m<inf> fast_provision: MAC settings handler registered[0m
+[00:16:23.123,892] [0m<inf> fast_provision: MAC initialized early: E6:27:EA:1C:DC:D1[0m
+[00:16:23.125,211] [0m<inf> fs_nvs: 8 Sectors of 4096 bytes[0m
+[00:16:23.125,218] [0m<inf> fs_nvs: alloc wra: 6, ea0[0m
+[00:16:23.125,224] [0m<inf> fs_nvs: data wra: 6, af0[0m
+[00:16:23.125,296] [0m<inf> bt_sdc_hci_driver: SoftDevice Controller build revision: 
+                                            89 9a 50 8a 95 01 9c 58  fc 39 d2 c1 10 04 ee 02 |..P....X .9......
+                                            64 ce 25 be                                      |d.%.             [0m
+[00:16:23.126,938] [0m<inf> bt_hci_core: HW Platform: Nordic Semiconductor (0x0002)[0m
+[00:16:23.126,954] [0m<inf> bt_hci_core: HW Variant: nRF54Lx (0x0005)[0m
+[00:16:23.126,968] [0m<inf> bt_hci_core: Firmware: Standard Bluetooth controller (0x00) Version 137.20634 Build 2617349514[0m
+[00:16:23.127,145] [0m<inf> bt_hci_core: No ID address. App must call settings_load()[0m
+[00:16:23.127,153] [0m<inf> lumi_debug_main_c: Bluetooth initialized[0m
+[00:16:23.127,158] [0m<inf> lumi_debug_main_c: TX Power: +8 dBm[0m
+[00:16:23.127,171] [0m<inf> dk_bt_mesh_prov_custom: Device UUID generated with PID: 0x0BF2, Version: 1.0.0[0m
+[00:16:23.127,186] [0m<inf> dk_bt_mesh_prov_custom: Device UUID:
+                                                 e4 27 0b f2 dc 91 ae 08  1b d8 01 00 00 6e 51 f7 |.'...... .....nQ.[0m
+[00:16:23.127,236] [0m<inf> fast_provision: Fast Provision model init: key slots=2[0m
+[00:16:23.127,243] [0m<inf> fast_provision:   ✓ Bound DEFAULT_APPKEY_INDEX (0x0001) to slot 0 (default network)[0m
+[00:16:23.127,248] [0m<inf> fast_provision: Fast Provision model bind status:[0m
+[00:16:23.127,269] [0m<inf> fast_provision:     - Default network (AppKey 0x0001): BOUND[0m
+[00:16:23.127,289] [0m<inf> fast_provision:     - Main network (AppKey 0x0000): NOT BOUND (will bind after provisioning)[0m
+[00:16:23.127,318] [1;33m<wrn> bt_mesh_access: Unused space in relation list: 10[0m
+[00:16:23.128,760] [0m<inf> mesh_node: Mesh stack initialized (CPS Diagnostic):[0m
+[00:16:23.128,768] [0m<inf> mesh_node:   Elements: 4[0m
+[00:16:23.128,778] [0m<inf> mesh_node:   Element 0 (loc 0x0000): 7 SIG, 2 VND[0m
+[00:16:23.128,786] [0m<inf> mesh_node:   Element 1 (loc 0x0000): 1 SIG, 1 VND[0m
+[00:16:23.128,793] [0m<inf> mesh_node:   Element 2 (loc 0x0000): 1 SIG, 1 VND[0m
+[00:16:23.128,801] [0m<inf> mesh_node:   Element 3 (loc 0x0000): 1 SIG, 1 VND[0m
+[00:16:23.128,811] [0m<inf> mesh_node: Mesh stack initialized[0m
+[00:16:23.129,239] [0m<inf> curtain: settings[opt] loaded OK: key=0x00, type=[1,0], limit=[20000,0][0m
+[00:16:23.129,282] [0m<inf> curtain: settings[pos] loaded OK: 13412, 256[0m
+[00:16:23.129,411] [0m<inf> bt_hci_core: Identity: D1:DC:1C:EA:27:E6 (random)[0m
+[00:16:23.129,428] [0m<inf> bt_hci_core: HCI: version 6.0 (0x0e) revision 0x30f3, manufacturer 0x0059[0m
+[00:16:23.129,443] [0m<inf> bt_hci_core: LMP: version 6.0 (0x0e) subver 0x30f3[0m
+[00:16:23.131,652] [0m<inf> lumi_debug_main_c: Main initialization complete, waiting for Bluetooth ready...[0m
+[00:16:23.131,670] [0m<inf> app: Super loop started[0m
+[00:16:23.141,972] [0m<inf> relay: Power-on relay delay finished (0 ms)[0m
+[00:16:24.632,059] [0m<inf> fast_provision: Fast Provision context initialized from model[0m
+[00:16:24.632,089] [0m<inf> fast_provision: MAC and device key initialized: E6:27:EA:1C:DC:D1[0m
+[00:16:24.632,096] [0m<inf> fast_provision: Fast provision enabled (main network not provisioned)[0m
+[00:16:24.632,113] [0m<inf> fast_provision: Fast Provision work queue started[0m
+[00:16:24.632,120] [0m<inf> dk_bt_mesh_prov_custom: Provisioning toggle enabled - waiting for user input (default: DISABLED)[0m
+[00:16:24.632,150] [0m<inf> lumi_debug_main_c: Device MAC Address:
+                                            e4 27 ea 1c dc 91                                |.'....           [0m
+[00:16:24.632,156] [0m<inf> lumi_debug_main_c: Hardware initialized successfully[0m
+[00:16:24.632,511] [0m<inf> curtain: settings[pos] loaded OK: 13412, 256[0m
+[00:16:24.632,560] [0m<inf> curtain: RestorePos: load_subtree rc=0, loaded=1[0m
+[00:16:24.632,566] [0m<inf> curtain: RESTORE CURRENT POS: [13412, 0][0m
+[00:16:24.632,910] [0m<inf> curtain: settings[opt] loaded OK: key=0x00, type=[1,0], limit=[20000,0][0m
+[00:16:24.632,976] [0m<inf> curtain: RestoreOpt: load_subtree rc=0, loaded=1[0m
+[00:16:24.632,985] [0m<inf> curtain: RestoreOpt: TYPE=[1, 0], LIMIT=[20000, 0][0m
+[00:16:24.632,991] [0m<inf> knx_adapter: Initializing KNX Shutter Adapter...[0m
+[00:16:24.633,755] [0m<inf> sec_if_obj: === SecurityInterfaceObject CONSTRUCTED ===[0m
+[00:16:24.633,773] [0m<inf> sec_if_obj: FDSK (hardcoded):
+                                     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:16:24.633,778] [0m<inf> sec_if_obj: Tool Key initialized with FDSK (will be shown after restore)[0m
+[00:16:24.633,784] [0m<inf> sec_if_obj: ============================================[0m
+[00:16:24.633,977] [0m<dbg> knx_prov: knx_provision_read: Reading 28 bytes from flash offset 0x00154000[0m
+[00:16:24.633,997] [0m<dbg> knx_prov: knx_provision_read: RAW provision data:
+                                   50 58 4e 4b 01 00 85 00  00 00 0b 1a a0 3e 78 33 |PXNK.... .....>x3
+                                   25 9f 70 da be 76 4b 2e  82 5b 5b b4             |%.p..vK. .[[.    [0m
+[00:16:24.634,005] [0m<dbg> knx_prov: knx_provision_read:   Magic:   0x4B4E5850 (expected 0x4B4E5850)[0m
+[00:16:24.634,012] [0m<dbg> knx_prov: knx_provision_read:   Version: 0x01 (expected 0x01)[0m
+[00:16:24.634,034] [0m<dbg> knx_prov: knx_provision_read:   CRC8: stored=0xB4, calculated=0xB4[0m
+[00:16:24.634,040] [0m<inf> knx_prov: Provision: Valid data found![0m
+[00:16:24.634,050] [0m<inf> knx_prov: Serial:
+                                   00 85 00 00 00 0b                                |......           [0m
+[00:16:24.634,062] [0m<inf> knx_prov: FDSK:
+                                   1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:16:24.634,068] [0m<inf> knx_adapter: Provisioning data FOUND[0m
+[00:16:24.634,078] [0m<inf> sec_if_obj: FDSK updated from provisioning data (Source of Truth established)[0m
+[00:16:24.634,091] [0m<inf> sec_if_obj: Active FDSK:
+                                     1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:16:24.634,096] [0m<inf> knx_adapter: FINAL ACTIVE FDSK for boot:[0m
+[00:16:24.634,107] [0m<inf> knx_adapter: Active FDSK:
+                                      1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:16:24.634,144] [0m<inf> knx_adapter: [BOOT] Step 1/3 - Loading KNX config from NVS...[0m
+[00:16:24.634,374] [0m<inf> nordic_platform: >>> EEPROM buffer using static memory: 4096 bytes (Subtree Load Optimized)[0m
+[00:16:24.634,612] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 7 (512 bytes)[0m
+[00:16:24.634,679] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 6 (512 bytes)[0m
+[00:16:24.634,747] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 5 (512 bytes)[0m
+[00:16:24.634,813] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 4 (512 bytes)[0m
+[00:16:24.634,880] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 3 (512 bytes)[0m
+[00:16:24.634,946] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 2 (512 bytes)[0m
+[00:16:24.635,013] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 1 (512 bytes)[0m
+[00:16:24.635,080] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 0 (512 bytes)[0m
+[00:16:24.635,187] [0m<inf> knx_adapter: [BOOT] Step 2/3 - Restoring KNX memory (seq numbers, keys, config)...[0m
+[00:16:24.635,256] [0m<inf> sec_if_obj: === Security Interface Object Restored ===[0m
+[00:16:24.635,262] [0m<inf> sec_if_obj: LoadState: 1, SecurityModeEnabled: 1[0m
+[00:16:24.635,277] [0m<inf> sec_if_obj: Current FDSK Buffer:
+                                     1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:16:24.635,291] [0m<inf> sec_if_obj: Tool Key Property:
+                                     3f ea cf cf 99 e5 8c ae  b8 ad a3 bb cc 37 f8 97 |?....... .....7..[0m
+[00:16:24.635,355] [1;33m<wrn> cbprintf_package: (unsigned) char * used for %p argument. It's recommended to cast it to void * because it may cause misbehavior in certain configurations. String:"!!! TableObject::restore (obj %p): Restored %d bytes. _state=%d, _size=%u, rel_addr=0x%08X, _data=%p" argument:5[0m
+[00:16:24.635,375] [1;33m<wrn> table_obj: !!! TableObject::restore (obj 0x2002be34): Restored 16 bytes. _state=1, _size=28, rel_addr=0x00000938, _data=0x2001d107[0m
+[00:16:24.635,387] [1;33m<wrn> table_obj: RESTORED TABLE_OBJ DATA:
+                                    01 00 00 00 1c 00 00 09  38 00 01 00 85 00 01 13 |........ 8.......[0m
+[00:16:24.635,455] [1;33m<wrn> cbprintf_package: (unsigned) char * used for %p argument. It's recommended to cast it to void * because it may cause misbehavior in certain configurations. String:"!!! TableObject::restore (obj %p): Restored %d bytes. _state=%d, _size=%u, rel_addr=0x%08X, _data=%p" argument:5[0m
+[00:16:24.635,474] [1;33m<wrn> table_obj: !!! TableObject::restore (obj 0x2002bec4): Restored 9 bytes. _state=1, _size=14, rel_addr=0x00000954, _data=0x2001d123[0m
+[00:16:24.635,486] [1;33m<wrn> table_obj: RESTORED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  54                      |........ T       [0m
+[00:16:24.635,496] [1;33m<wrn> grp_obj_tab: !!! GroupObjectTableObject::initGroupObjects: _tableData=0x2001d123, goCount=6[0m
+[00:16:24.635,507] [1;33m<wrn> grp_obj_tab: _tableData content:
+                                      00 06 17 00 17 00 17 07  4f 00 4f 07 17 07 ff ff |........ O.O.....[0m
+[00:16:24.635,631] [1;33m<wrn> cbprintf_package: (unsigned) char * used for %p argument. It's recommended to cast it to void * because it may cause misbehavior in certain configurations. String:"!!! TableObject::restore (obj %p): Restored %d bytes. _state=%d, _size=%u, rel_addr=0x%08X, _data=%p" argument:5[0m
+[00:16:24.635,650] [1;33m<wrn> table_obj: !!! TableObject::restore (obj 0x2002be70): Restored 9 bytes. _state=1, _size=14, rel_addr=0x00000964, _data=0x2001d133[0m
+[00:16:24.635,662] [1;33m<wrn> table_obj: RESTORED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  64                      |........ d       [0m
+[00:16:24.635,728] [1;33m<wrn> cbprintf_package: (unsigned) char * used for %p argument. It's recommended to cast it to void * because it may cause misbehavior in certain configurations. String:"!!! TableObject::restore (obj %p): Restored %d bytes. _state=%d, _size=%u, rel_addr=0x%08X, _data=%p" argument:5[0m
+[00:16:24.635,747] [1;33m<wrn> table_obj: !!! TableObject::restore (obj 0x2002be98): Restored 9 bytes. _state=1, _size=26, rel_addr=0x00000974, _data=0x2001d143[0m
+[00:16:24.635,759] [1;33m<wrn> table_obj: RESTORED TABLE_OBJ DATA:
+                                    01 00 00 00 1a 00 00 09  74                      |........ t       [0m
+[00:16:24.635,789] [0m<inf> nordic_platform: KNX UART device ready: uart@4a000 (TX=P2.08, RX=P2.07)
+[0m
+[00:16:24.635,797] [0m<inf> nordic_platform: UART configured to 19200 8E1 via API[0m
+[00:16:24.635,805] [0m<inf> nordic_platform: KNX UART configured with ISR-triggered polling mode[0m
+[00:16:24.639,701] [0m<inf> knx_adapter: [BOOT] Step 3/3 - Enabling UART (KNX bus ready to receive)...[0m
+[00:16:24.639,721] [0m<inf> nordic_platform: KNX UART device ready: uart@4a000 (TX=P2.08, RX=P2.07)
+[0m
+[00:16:24.639,729] [0m<inf> nordic_platform: UART configured to 19200 8E1 via API[0m
+[00:16:24.639,736] [0m<inf> nordic_platform: KNX UART configured with ISR-triggered polling mode[0m
+[00:16:24.639,744] [0m<inf> knx_adapter: Device configured. Loading Shutter Parameters...[0m
+[00:16:24.639,753] [0m<inf> knx_adapter: DEBUG: EnableFlags Byte (Offset 6): 0x20[0m
+[00:16:24.639,775] [0m<inf> knx_adapter: Shutter Config: MotorType=1, TravelTime=30[0m
+[00:16:24.639,780] [0m<inf> knx_adapter:   EnableScene=0, EnableSceneStore=0[0m
+[00:16:24.639,791] [0m<inf> curtain: KNX SYNC: Curtain 0, Type=0, LimitTime=30000 ms[0m
+[00:16:24.639,808] [0m<inf> knx_adapter: KNX Shutter Adapter Initialized Successfully[0m
+[00:16:24.639,984] [0m<inf> relay: Relay module initialized (4 channels, latching, 2-wire)[0m
+[00:16:24.639,996] [0m<inf> button: Button module initialized with 1 buttons[0m
+[00:16:24.640,427] [0m<inf> led_ev: +++led_ev_handle: 0[0m
+[00:16:24.640,441] [0m<inf> led_ev: LED_POWER_ON[0m
+[00:16:24.640,816] [0m<inf> execution_scene: Execution scene restored[0m
+[00:16:24.640,837] [0m<inf> pre_update: Pre-update channel 0: interval 1927 s[0m
+[00:16:24.641,217] [0m<inf> sw_binding: binding_init: done[0m
+[00:16:24.641,278] [0m<inf> curtain: StorePos: save_one rc=0, pos=[13412, 536995464][0m
+[00:16:24.641,289] [0m<inf> curtain: **************Control RL: 0, 0, 0[0m
+[00:16:24.641,313] [0m<inf> curtain: curtain_update_device_status: 0, P: 114, T: 114, ST: 6[0m
+[00:16:24.641,320] [0m<inf> app: KNX: app_handle_curtain_update_level: curtain_idx=0, current_position=114[0m
+[00:16:24.641,348] [0m<inf> knx_adapter: Position -> KNX: 44%[0m
+[00:16:24.943,239] [0m<inf> curtain: **************Control RL: 1, 0, 1[0m
+[00:16:25.141,438] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=1, IA=0x1303[0m
+[00:16:25.141,469] [1;31m<err> vendor_model: Device not provisioned, cannot send mesh_tx_cmd_rsp[0m
+[00:16:25.141,477] [0m<inf> net_message: 
+ ########## Send Curtain Level: 0, 114[0m
+[00:16:28.177,172] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: STARTING PROACTIVE JUMP...[0m
+[00:16:28.177,519] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqTool: 60050 (0xEA92)[0m
+[00:16:28.177,562] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqSend: 300000060000 (0x45D965A260)[0m
+[00:16:28.177,646] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: Read SeqNum from Flash = 300000060000, Isolated = 300000060000[0m
+[00:16:28.177,657] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: Jump +2000 from 300000060000 (Isolated: 300000060000, Flash: 300000060000). New: 300000062000[0m
+[00:16:28.178,225] [0m<inf> nordic_platform: >>> Isolated NVS SAVE SUCCESS: SEND = 300000062000 (0x45D965AA30)[0m
+[00:16:28.178,568] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqTool: 60050 (0xEA92)[0m
+[00:16:28.178,610] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqSend: 300000062000 (0x45D965AA30)[0m
+[00:16:28.178,693] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: Read ToolSeqNum from Flash = 60050, Isolated = 60050[0m
+[00:16:28.179,228] [0m<inf> nordic_platform: >>> Isolated NVS SAVE SUCCESS: TOOL = 62050 (0xF262)[0m
+[00:16:28.179,251] [1;33m<wrn> bau_systemB: >>> MEM_TRACE: BauSystemB::writeMemory() called[0m
+[00:16:28.179,257] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::writeMemory() ENTERED[0m
+[00:16:28.179,291] [1;31m<err> nordic_platform: >>> writeNonVolatileMemory(addr=0) [FIX VERIFIED]: First 2 bytes [0x00 0x02][0m
+[00:16:28.179,335] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be34): Saved 16 bytes. _state=1, _size=28, rel_addr=0x00000938[0m
+[00:16:28.179,350] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 1c 00 00 09  38 00 01 00 85 00 01 13 |........ 8.......[0m
+[00:16:28.179,365] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002bec4): Saved 9 bytes. _state=1, _size=14, rel_addr=0x00000954[0m
+[00:16:28.179,376] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  54                      |........ T       [0m
+[00:16:28.179,390] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be70): Saved 9 bytes. _state=1, _size=14, rel_addr=0x00000964[0m
+[00:16:28.179,402] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  64                      |........ d       [0m
+[00:16:28.179,415] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be98): Saved 9 bytes. _state=1, _size=26, rel_addr=0x00000974[0m
+[00:16:28.179,427] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 1a 00 00 09  74                      |........ t       [0m
+[00:16:28.179,435] [0m<inf> nordic_platform: commitNonVolatileMemory called -> commitToEeprom[0m
+[00:16:28.179,442] [0m<inf> nordic_platform: >>> commitToEeprom: Saving 4096 bytes in 8 chunks[0m
+[00:16:28.179,454] [0m<inf> nordic_platform: First 20 bytes to save:
+                                          00 02 00 85 00 00 00 00  00 00 00 01 13 03 00 01 |........ ........
+                                          00 00 01 60                                      |...`             [0m
+[00:16:28.179,493] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/0', size=512)...[0m
+[00:16:28.180,414] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.180,421] [0m<inf> nordic_platform: >>> Chunk 0 saved OK to Settings[0m
+[00:16:28.180,463] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/1', size=512)...[0m
+[00:16:28.180,574] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.180,581] [0m<inf> nordic_platform: >>> Chunk 1 saved OK to Settings[0m
+[00:16:28.180,617] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/2', size=512)...[0m
+[00:16:28.180,725] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.180,731] [0m<inf> nordic_platform: >>> Chunk 2 saved OK to Settings[0m
+[00:16:28.180,767] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/3', size=512)...[0m
+[00:16:28.180,876] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.180,882] [0m<inf> nordic_platform: >>> Chunk 3 saved OK to Settings[0m
+[00:16:28.180,917] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/4', size=512)...[0m
+[00:16:28.181,025] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.181,031] [0m<inf> nordic_platform: >>> Chunk 4 saved OK to Settings[0m
+[00:16:28.181,066] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/5', size=512)...[0m
+[00:16:28.181,177] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.181,183] [0m<inf> nordic_platform: >>> Chunk 5 saved OK to Settings[0m
+[00:16:28.181,219] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/6', size=512)...[0m
+[00:16:28.181,328] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.181,334] [0m<inf> nordic_platform: >>> Chunk 6 saved OK to Settings[0m
+[00:16:28.181,370] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/7', size=512)...[0m
+[00:16:28.181,637] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.181,643] [0m<inf> nordic_platform: >>> Chunk 7 saved OK to Settings[0m
+[00:16:28.181,649] [0m<inf> nordic_platform: >>> Settings: ALL 8 chunks saved successfully![0m
+[00:16:28.181,656] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::saveMemory() called[0m
+[00:16:28.181,662] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::writeMemory() ENTERED[0m
+[00:16:28.181,696] [1;31m<err> nordic_platform: >>> writeNonVolatileMemory(addr=0) [FIX VERIFIED]: First 2 bytes [0x00 0x02][0m
+[00:16:28.181,740] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be34): Saved 16 bytes. _state=1, _size=28, rel_addr=0x00000938[0m
+[00:16:28.181,756] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 1c 00 00 09  38 00 01 00 85 00 01 13 |........ 8.......[0m
+[00:16:28.181,770] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002bec4): Saved 9 bytes. _state=1, _size=14, rel_addr=0x00000954[0m
+[00:16:28.181,782] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  54                      |........ T       [0m
+[00:16:28.181,795] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be70): Saved 9 bytes. _state=1, _size=14, rel_addr=0x00000964[0m
+[00:16:28.181,807] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 0e 00 00 09  64                      |........ d       [0m
+[00:16:28.181,820] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be98): Saved 9 bytes. _state=1, _size=26, rel_addr=0x00000974[0m
+[00:16:28.181,832] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    01 00 00 00 1a 00 00 09  74                      |........ t       [0m
+[00:16:28.181,840] [0m<inf> nordic_platform: commitNonVolatileMemory called -> commitToEeprom[0m
+[00:16:28.181,848] [0m<inf> nordic_platform: >>> commitToEeprom: Saving 4096 bytes in 8 chunks[0m
+[00:16:28.181,860] [0m<inf> nordic_platform: First 20 bytes to save:
+                                          00 02 00 85 00 00 00 00  00 00 00 01 13 03 00 01 |........ ........
+                                          00 00 01 60                                      |...`             [0m
+[00:16:28.181,897] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/0', size=512)...[0m
+[00:16:28.182,008] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.182,014] [0m<inf> nordic_platform: >>> Chunk 0 saved OK to Settings[0m
+[00:16:28.182,052] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/1', size=512)...[0m
+[00:16:28.182,160] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.182,166] [0m<inf> nordic_platform: >>> Chunk 1 saved OK to Settings[0m
+[00:16:28.182,202] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/2', size=512)...[0m
+[00:16:28.182,311] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.182,317] [0m<inf> nordic_platform: >>> Chunk 2 saved OK to Settings[0m
+[00:16:28.182,353] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/3', size=512)...[0m
+[00:16:28.182,461] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.182,467] [0m<inf> nordic_platform: >>> Chunk 3 saved OK to Settings[0m
+[00:16:28.182,503] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/4', size=512)...[0m
+[00:16:28.182,610] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.182,616] [0m<inf> nordic_platform: >>> Chunk 4 saved OK to Settings[0m
+[00:16:28.182,651] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/5', size=512)...[0m
+[00:16:28.182,762] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.182,768] [0m<inf> nordic_platform: >>> Chunk 5 saved OK to Settings[0m
+[00:16:28.182,804] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/6', size=512)...[0m
+[00:16:28.182,913] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.182,919] [0m<inf> nordic_platform: >>> Chunk 6 saved OK to Settings[0m
+[00:16:28.182,956] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/7', size=512)...[0m
+[00:16:28.183,223] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:16:28.183,229] [0m<inf> nordic_platform: >>> Chunk 7 saved OK to Settings[0m
+[00:16:28.183,234] [0m<inf> nordic_platform: >>> Settings: ALL 8 chunks saved successfully![0m
+[00:16:28.183,241] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: JUMP SUCCESSFUL & PERSISTED TO FLASH[0m
+[00:16:32.843,687] [0m<inf> relay: Power-on relay delay finished (8197 ms)[0m
+[00:16:35.190,939] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=1, IA=0x1303[0m
+[00:16:44.989,496] [0m<inf> app: 
+ STEP_HOLD_10S_RELEASE[0m
+[00:16:45.192,602] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=1, IA=0x1303[0m
+*** Booting nRF Connect SDK v3.0.1-9eb5615da66b ***
+*** Using Zephyr OS v4.0.99-77f865b8f8d0 ***
+[00:00:00.000,432] [0m<inf> lumi_debug_main_c: === Bluetooth Mesh Relay Node Starting ===[0m
+[00:00:00.000,485] [0m<inf> fast_provision: MAC settings handler registered[0m
+[00:00:00.000,505] [0m<inf> fast_provision: MAC initialized early: E6:27:EA:1C:DC:D1[0m
+[00:00:00.001,891] [0m<inf> fs_nvs: 8 Sectors of 4096 bytes[0m
+[00:00:00.001,898] [0m<inf> fs_nvs: alloc wra: 7, f40[0m
+[00:00:00.001,904] [0m<inf> fs_nvs: data wra: 7, a40[0m
+[00:00:00.001,976] [0m<inf> bt_sdc_hci_driver: SoftDevice Controller build revision: 
+                                            89 9a 50 8a 95 01 9c 58  fc 39 d2 c1 10 04 ee 02 |..P....X .9......
+                                            64 ce 25 be                                      |d.%.             [0m
+[00:00:00.003,618] [0m<inf> bt_hci_core: HW Platform: Nordic Semiconductor (0x0002)[0m
+[00:00:00.003,634] [0m<inf> bt_hci_core: HW Variant: nRF54Lx (0x0005)[0m
+[00:00:00.003,648] [0m<inf> bt_hci_core: Firmware: Standard Bluetooth controller (0x00) Version 137.20634 Build 2617349514[0m
+[00:00:00.003,825] [0m<inf> bt_hci_core: No ID address. App must call settings_load()[0m
+[00:00:00.003,833] [0m<inf> lumi_debug_main_c: Bluetooth initialized[0m
+[00:00:00.003,838] [0m<inf> lumi_debug_main_c: TX Power: +8 dBm[0m
+[00:00:00.003,851] [0m<inf> dk_bt_mesh_prov_custom: Device UUID generated with PID: 0x0BF2, Version: 1.0.0[0m
+[00:00:00.003,866] [0m<inf> dk_bt_mesh_prov_custom: Device UUID:
+                                                 e4 27 0b f2 dc 91 ae 08  1b d8 01 00 00 6e 51 f7 |.'...... .....nQ.[0m
+[00:00:00.003,916] [0m<inf> fast_provision: Fast Provision model init: key slots=2[0m
+[00:00:00.003,923] [0m<inf> fast_provision:   ✓ Bound DEFAULT_APPKEY_INDEX (0x0001) to slot 0 (default network)[0m
+[00:00:00.003,928] [0m<inf> fast_provision: Fast Provision model bind status:[0m
+[00:00:00.003,949] [0m<inf> fast_provision:     - Default network (AppKey 0x0001): BOUND[0m
+[00:00:00.003,969] [0m<inf> fast_provision:     - Main network (AppKey 0x0000): NOT BOUND (will bind after provisioning)[0m
+[00:00:00.003,998] [1;33m<wrn> bt_mesh_access: Unused space in relation list: 10[0m
+[00:00:00.005,441] [0m<inf> mesh_node: Mesh stack initialized (CPS Diagnostic):[0m
+[00:00:00.005,448] [0m<inf> mesh_node:   Elements: 4[0m
+[00:00:00.005,458] [0m<inf> mesh_node:   Element 0 (loc 0x0000): 7 SIG, 2 VND[0m
+[00:00:00.005,466] [0m<inf> mesh_node:   Element 1 (loc 0x0000): 1 SIG, 1 VND[0m
+[00:00:00.005,474] [0m<inf> mesh_node:   Element 2 (loc 0x0000): 1 SIG, 1 VND[0m
+[00:00:00.005,481] [0m<inf> mesh_node:   Element 3 (loc 0x0000): 1 SIG, 1 VND[0m
+[00:00:00.005,491] [0m<inf> mesh_node: Mesh stack initialized[0m
+[00:00:00.005,801] [0m<inf> curtain: settings[opt] loaded OK: key=0x00, type=[1,0], limit=[20000,0][0m
+[00:00:00.005,841] [0m<inf> curtain: settings[pos] loaded OK: 13412, 256[0m
+[00:00:00.005,970] [0m<inf> bt_hci_core: Identity: D1:DC:1C:EA:27:E6 (random)[0m
+[00:00:00.005,987] [0m<inf> bt_hci_core: HCI: version 6.0 (0x0e) revision 0x30f3, manufacturer 0x0059[0m
+[00:00:00.006,001] [0m<inf> bt_hci_core: LMP: version 6.0 (0x0e) subver 0x30f3[0m
+[00:00:00.008,211] [0m<inf> lumi_debug_main_c: Main initialization complete, waiting for Bluetooth ready...[0m
+[00:00:00.008,228] [0m<inf> app: Super loop started[0m
+[00:00:00.018,548] [0m<inf> relay: Power-on relay delay finished (0 ms)[0m
+[00:00:01.508,484] [0m<inf> fast_provision: Fast Provision context initialized from model[0m
+[00:00:01.508,514] [0m<inf> fast_provision: MAC and device key initialized: E6:27:EA:1C:DC:D1[0m
+[00:00:01.508,521] [0m<inf> fast_provision: Fast provision enabled (main network not provisioned)[0m
+[00:00:01.508,537] [0m<inf> fast_provision: Fast Provision work queue started[0m
+[00:00:01.508,545] [0m<inf> dk_bt_mesh_prov_custom: Provisioning toggle enabled - waiting for user input (default: DISABLED)[0m
+[00:00:01.508,575] [0m<inf> lumi_debug_main_c: Device MAC Address:
+                                            e4 27 ea 1c dc 91                                |.'....           [0m
+[00:00:01.508,581] [0m<inf> lumi_debug_main_c: Hardware initialized successfully[0m
+[00:00:01.508,816] [0m<inf> curtain: settings[pos] loaded OK: 13412, 256[0m
+[00:00:01.508,866] [0m<inf> curtain: RestorePos: load_subtree rc=0, loaded=1[0m
+[00:00:01.508,872] [0m<inf> curtain: RESTORE CURRENT POS: [13412, 0][0m
+[00:00:01.509,100] [0m<inf> curtain: settings[opt] loaded OK: key=0x00, type=[1,0], limit=[20000,0][0m
+[00:00:01.509,164] [0m<inf> curtain: RestoreOpt: load_subtree rc=0, loaded=1[0m
+[00:00:01.509,173] [0m<inf> curtain: RestoreOpt: TYPE=[1, 0], LIMIT=[20000, 0][0m
+[00:00:01.509,180] [0m<inf> knx_adapter: Initializing KNX Shutter Adapter...[0m
+[00:00:01.509,919] [0m<inf> sec_if_obj: === SecurityInterfaceObject CONSTRUCTED ===[0m
+[00:00:01.509,936] [0m<inf> sec_if_obj: FDSK (hardcoded):
+                                     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:00:01.509,942] [0m<inf> sec_if_obj: Tool Key initialized with FDSK (will be shown after restore)[0m
+[00:00:01.509,947] [0m<inf> sec_if_obj: ============================================[0m
+[00:00:01.510,165] [0m<dbg> knx_prov: knx_provision_read: Reading 28 bytes from flash offset 0x00154000[0m
+[00:00:01.510,186] [0m<dbg> knx_prov: knx_provision_read: RAW provision data:
+                                   50 58 4e 4b 01 00 85 00  00 00 0b 1a a0 3e 78 33 |PXNK.... .....>x3
+                                   25 9f 70 da be 76 4b 2e  82 5b 5b b4             |%.p..vK. .[[.    [0m
+[00:00:01.510,194] [0m<dbg> knx_prov: knx_provision_read:   Magic:   0x4B4E5850 (expected 0x4B4E5850)[0m
+[00:00:01.510,201] [0m<dbg> knx_prov: knx_provision_read:   Version: 0x01 (expected 0x01)[0m
+[00:00:01.510,223] [0m<dbg> knx_prov: knx_provision_read:   CRC8: stored=0xB4, calculated=0xB4[0m
+[00:00:01.510,228] [0m<inf> knx_prov: Provision: Valid data found![0m
+[00:00:01.510,239] [0m<inf> knx_prov: Serial:
+                                   00 85 00 00 00 0b                                |......           [0m
+[00:00:01.510,251] [0m<inf> knx_prov: FDSK:
+                                   1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:00:01.510,258] [0m<inf> knx_adapter: Provisioning data FOUND[0m
+[00:00:01.510,267] [0m<inf> sec_if_obj: FDSK updated from provisioning data (Source of Truth established)[0m
+[00:00:01.510,280] [0m<inf> sec_if_obj: Active FDSK:
+                                     1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:00:01.510,285] [0m<inf> knx_adapter: FINAL ACTIVE FDSK for boot:[0m
+[00:00:01.510,297] [0m<inf> knx_adapter: Active FDSK:
+                                      1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:00:01.510,335] [0m<inf> knx_adapter: [BOOT] Step 1/3 - Loading KNX config from NVS...[0m
+[00:00:01.510,565] [0m<inf> nordic_platform: >>> EEPROM buffer using static memory: 4096 bytes (Subtree Load Optimized)[0m
+[00:00:01.510,642] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 7 (512 bytes)[0m
+[00:00:01.510,716] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 6 (512 bytes)[0m
+[00:00:01.510,793] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 5 (512 bytes)[0m
+[00:00:01.510,860] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 4 (512 bytes)[0m
+[00:00:01.510,927] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 3 (512 bytes)[0m
+[00:00:01.510,992] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 2 (512 bytes)[0m
+[00:00:01.511,059] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 1 (512 bytes)[0m
+[00:00:01.511,161] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 0 (512 bytes)[0m
+[00:00:01.511,265] [0m<inf> knx_adapter: [BOOT] Step 2/3 - Restoring KNX memory (seq numbers, keys, config)...[0m
+[00:00:01.511,303] [0m<inf> nordic_platform: KNX UART device ready: uart@4a000 (TX=P2.08, RX=P2.07)
+[0m
+[00:00:01.511,312] [0m<inf> nordic_platform: UART configured to 19200 8E1 via API[0m
+[00:00:01.511,319] [0m<inf> nordic_platform: KNX UART configured with ISR-triggered polling mode[0m
+[00:00:01.515,127] [0m<inf> knx_adapter: [BOOT] Step 3/3 - Enabling UART (KNX bus ready to receive)...[0m
+[00:00:01.515,147] [0m<inf> nordic_platform: KNX UART device ready: uart@4a000 (TX=P2.08, RX=P2.07)
+[0m
+[00:00:01.515,155] [0m<inf> nordic_platform: UART configured to 19200 8E1 via API[0m
+[00:00:01.515,162] [0m<inf> nordic_platform: KNX UART configured with ISR-triggered polling mode[0m
+[00:00:01.515,177] [0m<inf> knx_adapter: KNX Shutter Adapter Initialized Successfully[0m
+[00:00:01.515,353] [0m<inf> relay: Relay module initialized (4 channels, latching, 2-wire)[0m
+[00:00:01.515,364] [0m<inf> button: Button module initialized with 1 buttons[0m
+[00:00:01.515,653] [0m<inf> led_ev: +++led_ev_handle: 0[0m
+[00:00:01.515,665] [0m<inf> led_ev: LED_POWER_ON[0m
+[00:00:01.515,947] [0m<inf> execution_scene: Execution scene restored[0m
+[00:00:01.515,968] [0m<inf> pre_update: Pre-update channel 0: interval 1763 s[0m
+[00:00:01.516,232] [0m<inf> sw_binding: binding_init: done[0m
+[00:00:01.516,292] [0m<inf> curtain: StorePos: save_one rc=0, pos=[13412, 536995464][0m
+[00:00:01.516,302] [0m<inf> curtain: **************Control RL: 0, 1, 0[0m
+[00:00:01.516,323] [0m<inf> curtain: curtain_update_device_status: 0, P: 171, T: 171, ST: 6[0m
+[00:00:01.516,331] [0m<inf> app: KNX: app_handle_curtain_update_level: curtain_idx=0, current_position=171[0m
+[00:00:01.818,183] [0m<inf> curtain: **************Control RL: 0, 0, 0[0m
+[00:00:02.016,366] [1;31m<err> vendor_model: Device not provisioned, cannot send mesh_tx_cmd_rsp[0m
+[00:00:02.016,374] [0m<inf> net_message: 
+ ########## Send Curtain Level: 0, 171[0m
+[00:00:05.062,001] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: STARTING PROACTIVE JUMP...[0m
+[00:00:05.062,228] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqTool: 62050 (0xF262)[0m
+[00:00:05.062,271] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqSend: 300000062000 (0x45D965AA30)[0m
+[00:00:05.062,378] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: Read SeqNum from Flash = 0, Isolated = 300000062000[0m
+[00:00:05.062,386] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: Isolated NVS had more recent value. Using it.[0m
+[00:00:05.062,396] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: Jump +2000 from 300000062000 (Isolated: 300000062000, Flash: 300000062000). New: 300000064000[0m
+[00:00:05.062,986] [0m<inf> nordic_platform: >>> Isolated NVS SAVE SUCCESS: SEND = 300000064000 (0x45D965B200)[0m
+[00:00:05.063,210] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqTool: 62050 (0xF262)[0m
+[00:00:05.063,252] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqSend: 300000064000 (0x45D965B200)[0m
+[00:00:05.063,333] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: Read ToolSeqNum from Flash = 0, Isolated = 62050[0m
+[00:00:05.063,351] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: Isolated NVS had more recent Tool value. Using it.[0m
+[00:00:05.063,924] [0m<inf> nordic_platform: >>> Isolated NVS SAVE SUCCESS: TOOL = 64050 (0xFA32)[0m
+[00:00:05.063,938] [1;33m<wrn> bau_systemB: >>> MEM_TRACE: BauSystemB::writeMemory() called[0m
+[00:00:05.063,943] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::writeMemory() ENTERED[0m
+[00:00:05.063,977] [1;31m<err> nordic_platform: >>> writeNonVolatileMemory(addr=0) [FIX VERIFIED]: First 2 bytes [0x00 0x02][0m
+[00:00:05.064,020] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be34): Saved 16 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:00:05.064,034] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00 00 01 00 85 00 01 13 |........ ........[0m
+[00:00:05.064,048] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002bec4): Saved 9 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:00:05.064,060] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:00:05.064,074] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be70): Saved 9 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:00:05.064,086] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:00:05.064,100] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be98): Saved 9 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:00:05.064,111] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:00:05.064,119] [0m<inf> nordic_platform: commitNonVolatileMemory called -> commitToEeprom[0m
+[00:00:05.064,126] [0m<inf> nordic_platform: >>> commitToEeprom: Saving 4096 bytes in 8 chunks[0m
+[00:00:05.064,139] [0m<inf> nordic_platform: First 20 bytes to save:
+                                          00 02 00 85 00 00 00 00  00 00 00 01 ff ff 00 01 |........ ........
+                                          00 00 01 60                                      |...`             [0m
+[00:00:05.064,177] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/0', size=512)...[0m
+[00:00:05.065,248] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.065,255] [0m<inf> nordic_platform: >>> Chunk 0 saved OK to Settings[0m
+[00:00:05.065,297] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/1', size=512)...[0m
+[00:00:05.065,408] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.065,414] [0m<inf> nordic_platform: >>> Chunk 1 saved OK to Settings[0m
+[00:00:05.065,450] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/2', size=512)...[0m
+[00:00:05.065,559] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.065,565] [0m<inf> nordic_platform: >>> Chunk 2 saved OK to Settings[0m
+[00:00:05.065,601] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/3', size=512)...[0m
+[00:00:05.065,709] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.065,715] [0m<inf> nordic_platform: >>> Chunk 3 saved OK to Settings[0m
+[00:00:05.065,751] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/4', size=512)...[0m
+[00:00:05.065,859] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.065,865] [0m<inf> nordic_platform: >>> Chunk 4 saved OK to Settings[0m
+[00:00:05.065,901] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/5', size=512)...[0m
+[00:00:05.066,015] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.066,021] [0m<inf> nordic_platform: >>> Chunk 5 saved OK to Settings[0m
+[00:00:05.066,058] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/6', size=512)...[0m
+[00:00:05.066,171] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.066,177] [0m<inf> nordic_platform: >>> Chunk 6 saved OK to Settings[0m
+[00:00:05.066,214] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/7', size=512)...[0m
+[00:00:05.066,323] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.066,329] [0m<inf> nordic_platform: >>> Chunk 7 saved OK to Settings[0m
+[00:00:05.066,334] [0m<inf> nordic_platform: >>> Settings: ALL 8 chunks saved successfully![0m
+[00:00:05.066,342] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::saveMemory() called[0m
+[00:00:05.066,347] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::writeMemory() ENTERED[0m
+[00:00:05.066,381] [1;31m<err> nordic_platform: >>> writeNonVolatileMemory(addr=0) [FIX VERIFIED]: First 2 bytes [0x00 0x02][0m
+[00:00:05.066,423] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be34): Saved 16 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:00:05.066,439] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00 00 01 00 85 00 01 13 |........ ........[0m
+[00:00:05.066,453] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002bec4): Saved 9 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:00:05.066,465] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:00:05.066,478] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be70): Saved 9 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:00:05.066,490] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:00:05.066,502] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be98): Saved 9 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:00:05.066,514] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:00:05.066,522] [0m<inf> nordic_platform: commitNonVolatileMemory called -> commitToEeprom[0m
+[00:00:05.066,530] [0m<inf> nordic_platform: >>> commitToEeprom: Saving 4096 bytes in 8 chunks[0m
+[00:00:05.066,542] [0m<inf> nordic_platform: First 20 bytes to save:
+                                          00 02 00 85 00 00 00 00  00 00 00 01 ff ff 00 01 |........ ........
+                                          00 00 01 60                                      |...`             [0m
+[00:00:05.066,579] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/0', size=512)...[0m
+[00:00:05.066,723] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.066,728] [0m<inf> nordic_platform: >>> Chunk 0 saved OK to Settings[0m
+[00:00:05.066,768] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/1', size=512)...[0m
+[00:00:05.066,876] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.066,882] [0m<inf> nordic_platform: >>> Chunk 1 saved OK to Settings[0m
+[00:00:05.066,918] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/2', size=512)...[0m
+[00:00:05.067,027] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.067,033] [0m<inf> nordic_platform: >>> Chunk 2 saved OK to Settings[0m
+[00:00:05.067,069] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/3', size=512)...[0m
+[00:00:05.067,176] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.067,182] [0m<inf> nordic_platform: >>> Chunk 3 saved OK to Settings[0m
+[00:00:05.067,241] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/4', size=512)...[0m
+[00:00:05.067,353] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.067,359] [0m<inf> nordic_platform: >>> Chunk 4 saved OK to Settings[0m
+[00:00:05.067,396] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/5', size=512)...[0m
+[00:00:05.067,511] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.067,517] [0m<inf> nordic_platform: >>> Chunk 5 saved OK to Settings[0m
+[00:00:05.067,553] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/6', size=512)...[0m
+[00:00:05.067,667] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.067,673] [0m<inf> nordic_platform: >>> Chunk 6 saved OK to Settings[0m
+[00:00:05.067,709] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/7', size=512)...[0m
+[00:00:05.067,818] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:00:05.067,824] [0m<inf> nordic_platform: >>> Chunk 7 saved OK to Settings[0m
+[00:00:05.067,829] [0m<inf> nordic_platform: >>> Settings: ALL 8 chunks saved successfully![0m
+[00:00:05.067,837] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: JUMP SUCCESSFUL & PERSISTED TO FLASH[0m
+[00:00:10.042,678] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=0, IA=0xffff[0m
+[00:00:10.065,222] [0m<inf> relay: Power-on relay delay finished (8541 ms)[0m
+[00:00:15.584,259] [0m<inf> knx_adapter: KNX Programming Mode: ON[0m
+[00:00:19.513,738] [0m<inf> sec_app_layer: >>> decrypt: SYNC_REQ from 0x110B to 0x0000, len=12, toolAccess=1, authOnly=0[0m
+[00:00:19.513,760] [0m<inf> sec_app_layer: >>> syncReq: Checking Serial Number match[0m
+[00:00:19.513,773] [0m<inf> sec_app_layer: Serial from ETS:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:00:19.513,786] [0m<inf> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:00:19.513,805] [0m<inf> sec_app_layer: >>> syncReq ACCEPTED: serial matches[0m
+[00:00:19.513,826] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x0000, grp=1, tpci=0x03, extFmt=0[0m
+[00:00:19.513,839] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        d7 35 0b 4b 23 22                                |.5.K#"           [0m
+[00:00:19.514,032] [1;31m<err> sec_app_layer: !!! MAC MISMATCH (conf+auth): calc=0xDC0C03D2, decrypt=0xE2FD6448[0m
+[00:00:19.514,045] [1;31m<err> sec_app_layer: Active FDSK:
+                                        1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:00:19.514,057] [1;31m<err> sec_app_layer: Active KEY (Used for decrypt):
+                                        00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:00:19.514,081] [1;31m<err> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:00:20.088,855] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=0, IA=0xffff[0m
+[00:00:25.531,296] [0m<inf> sec_app_layer: >>> decrypt: SYNC_REQ from 0x110B to 0x0000, len=12, toolAccess=1, authOnly=0[0m
+[00:00:25.531,318] [0m<inf> sec_app_layer: >>> syncReq: Checking Serial Number match[0m
+[00:00:25.531,331] [0m<inf> sec_app_layer: Serial from ETS:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:00:25.531,343] [0m<inf> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:00:25.531,363] [0m<inf> sec_app_layer: >>> syncReq ACCEPTED: serial matches[0m
+[00:00:25.531,384] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x0000, grp=1, tpci=0x03, extFmt=0[0m
+[00:00:25.531,397] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        d7 35 0b 4b 23 22                                |.5.K#"           [0m
+[00:00:25.531,589] [1;31m<err> sec_app_layer: !!! MAC MISMATCH (conf+auth): calc=0xDC0C03D2, decrypt=0xE2FD6448[0m
+[00:00:25.531,602] [1;31m<err> sec_app_layer: Active FDSK:
+                                        1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:00:25.531,615] [1;31m<err> sec_app_layer: Active KEY (Used for decrypt):
+                                        00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:00:25.531,639] [1;31m<err> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:00:30.116,598] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=0, IA=0xffff[0m
+[00:00:31.508,634] [0m<inf> default_network: Default Network: CLOSED | Main Network: NOT_PROVISIONED[0m
+[00:00:31.542,588] [0m<inf> sec_app_layer: >>> decrypt: SYNC_REQ from 0x110B to 0x0000, len=12, toolAccess=1, authOnly=0[0m
+[00:00:31.542,601] [0m<inf> sec_app_layer: >>> syncReq: Checking Serial Number match[0m
+[00:00:31.542,613] [0m<inf> sec_app_layer: Serial from ETS:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:00:31.542,626] [0m<inf> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:00:31.542,645] [0m<inf> sec_app_layer: >>> syncReq ACCEPTED: serial matches[0m
+[00:00:31.542,666] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x0000, grp=1, tpci=0x03, extFmt=0[0m
+[00:00:31.542,679] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        9e f3 1f 7c eb d3                                |...|..           [0m
+[00:00:31.542,872] [1;31m<err> sec_app_layer: !!! MAC MISMATCH (conf+auth): calc=0xE4FE1296, decrypt=0x3D2DB684[0m
+[00:00:31.542,887] [1;31m<err> sec_app_layer: Active FDSK:
+                                        1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:00:31.542,910] [1;31m<err> sec_app_layer: Active KEY (Used for decrypt):
+                                        00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:00:31.542,923] [1;31m<err> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:00:37.556,766] [0m<inf> sec_app_layer: >>> decrypt: SYNC_REQ from 0x110B to 0x0000, len=12, toolAccess=1, authOnly=0[0m
+[00:00:37.556,788] [0m<inf> sec_app_layer: >>> syncReq: Checking Serial Number match[0m
+[00:00:37.556,801] [0m<inf> sec_app_layer: Serial from ETS:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:00:37.556,813] [0m<inf> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:00:37.556,832] [0m<inf> sec_app_layer: >>> syncReq ACCEPTED: serial matches[0m
+[00:00:37.556,853] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x0000, grp=1, tpci=0x03, extFmt=0[0m
+[00:00:37.556,866] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        9e f3 1f 7c eb d3                                |...|..           [0m
+[00:00:37.557,059] [1;31m<err> sec_app_layer: !!! MAC MISMATCH (conf+auth): calc=0xE4FE1296, decrypt=0x3D2DB684[0m
+[00:00:37.557,072] [1;31m<err> sec_app_layer: Active FDSK:
+                                        1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:00:37.557,084] [1;31m<err> sec_app_layer: Active KEY (Used for decrypt):
+                                        00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:00:37.557,108] [1;31m<err> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:00:40.150,027] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=0, IA=0xffff[0m
+[00:00:50.198,615] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=0, IA=0xffff[0m
+[00:01:00.200,758] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=0, IA=0xffff[0m
+[00:01:01.508,728] [0m<inf> default_network: Default Network: CLOSED | Main Network: NOT_PROVISIONED[0m

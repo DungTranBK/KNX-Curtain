@@ -250,7 +250,6 @@ void BauSystemB::restartRequestIndication(Priority priority,
     applicationLayer().restartResponse(
         AckRequested, priority, hopType, secCtrl, errorCode,
         (errorCode == 0) ? kRestartProcessTime : 0);
-    if (_beforeRestart != 0) _beforeRestart();
     doMasterReset(eraseCode, channel);
   } else {
     // Cannot happen as restartType is just one bit

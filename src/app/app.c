@@ -313,6 +313,13 @@ void app_handle_curtain_update_level(uint8_t curtain_idx,
   // Convert 0x00-0xFF back to 0-100% for KNX feedback
   uint8_t knx_pct = (uint8_t)((uint16_t)current_position * 100 / 255);
   knx_send_position_status(knx_pct);
+
+  // Send limit status on GO5 (MoveStatus)
+  if (knx_pct == 0) {
+    knx_send_direction_feedback(false);  // Report UP/OPEN limit
+  } else if (knx_pct == 100) {
+    knx_send_direction_feedback(true);  // Report DOWN/CLOSED limit
+  }
 }
 
 /**

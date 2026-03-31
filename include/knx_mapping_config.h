@@ -24,7 +24,7 @@ extern "C" {
 #define KNX_HARDWARE_VERSION 0x01
 #define KNX_ORDER_NUMBER {'S', 'H', '0', '0', '1', ' ', ' ', ' ', ' ', ' '}
 #define KNX_APP_NUMBER 0x0001
-#define KNX_APP_VERSION 0x13  // ApplicationVersion="19" (Updated to match XML)
+#define KNX_APP_VERSION 0x01  // ApplicationVersion="1" (Matched to XML)
 
 // PID 13: [MID_H, MID_L, AppNum_H, AppNum_L, AppVer]
 #define KNX_PID13_PROG_VERSION                                                 \
@@ -46,8 +46,8 @@ extern "C" {
 #define GO_SH_MUD 1    // Move Up/Down       (1 bit, Write)
 #define GO_SH_STOP 2   // Stop               (1 bit, Write)
 #define GO_SH_SAPBP 3  // Set Position %     (1 byte, Write)
-#define GO_SH_IMUD 4   // Direction Feedback  (1 bit, Transmit)
-#define GO_SH_CAPBP 5  // Current Position %  (1 byte, Transmit)
+#define GO_SH_CAPBP 4  // Current Position %  (1 byte, Transmit)
+#define GO_SH_IMUD 5   // Direction Feedback  (1 bit, Transmit)
 #define GO_SH_SCENE 6  // Scene Control       (1 byte, Write)
 
 // ============================================================================
@@ -63,10 +63,8 @@ extern "C" {
 //   Offset 6 bit2  : EnableScene     (1 bit)
 //   Offset 7 bit0  : EnableSceneStore (1 bit)
 //   Offset 8-27    : Scene A-J       (10 × 2 bytes each)
-//   Offset 8-27    : Scene A-J       (10 × 2 bytes each)
 //     Each scene:
-//       Byte0 bit7   : Active (1 bit)
-//       Byte0 bit0-6 : Scene Number (7 bits, 0-63)
+//       Byte0        : Scene Number (1-64, 0=Inactive)
 //       Byte1        : Target Position % (0-100)
 
 // --- Basic Parameters ---
@@ -83,16 +81,15 @@ extern "C" {
 #define PARAM_SCENE_BASE 8
 #define PARAM_SCENE_STRIDE 2
 
-// Scene byte 0: [bit7=Active][bit6:0=SceneNum]
+// Scene byte 0: Scene Number (1-64). 0 = not active.
 // Scene byte 1: TargetPos (0-100)
 #define PARAM_SCENE_ACTIVE_NUM(i) \
   (PARAM_SCENE_BASE + ((i) * PARAM_SCENE_STRIDE))
 #define PARAM_SCENE_POS(i) (PARAM_SCENE_BASE + ((i) * PARAM_SCENE_STRIDE) + 1)
 
-// Bit masks for scene byte 0
-#define SCENE_ACTIVE_BIT 7      // BitOffset in XML
-#define SCENE_ACTIVE_MASK 0x80  // (1 << 7)
-#define SCENE_NUM_MASK 0x7F     // bits 0-6
+// Scene number mapping: Bus Scene Number = PARAM_VAL - 1
+#define SCENE_NOT_ACTIVE_VAL 0
+#define SCENE_VAL_TO_NUM(val) ((val) - 1)
 
 // ============================================================================
 // 4. ENUMS

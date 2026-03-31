@@ -290,6 +290,12 @@ NordicPlatform::NordicPlatform()
     sys_reboot(SYS_REBOOT_COLD);
   });
 
+  // Initialize reboot work
+  k_work_init_delayable(&_reboot_work, [](struct k_work* work) {
+    LOG_ERR("!!! [REBOOT] ASYNCHRONOUS REBOOT EXECUTING NOW !!!");
+    sys_reboot(SYS_REBOOT_COLD);
+  });
+
   // Register settings handler for optimized loading
   static struct settings_handler knx_handler = {
       .name = "knx",
