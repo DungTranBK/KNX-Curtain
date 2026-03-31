@@ -21,6 +21,7 @@
 #include "knx/device_object.h"
 #include "knx/property.h"
 #include "knx/security_interface_object.h"
+#include "knx/table_object.h"
 #include "knx_facade.h"
 #include "nordic_platform.h"
 
@@ -55,6 +56,7 @@ static bool initialized = false;
 
 static struct k_work_delayable knx_work;
 static struct k_work_delayable knx_prog_led_blink_work;
+static struct k_work_delayable knx_prog_timeout_work;
 
 K_MUTEX_DEFINE(knx_stack_mutex);
 
@@ -94,6 +96,19 @@ static void rx_trigger_callback(void) {
 }
 
 /**
+ * @brief Called when ETS unloads tables (before re-downloading).
+ *        Clears learned scene positions from NVS so new ETS values take effect.
+ */
+static void knx_on_tables_unload(void) {
+  LOG_INF(">>> Tables unloaded (ETS download): clearing learned scenes");
+  for (uint8_t i = 0; i < KNX_MAX_SCENES; i++) {
+    char key[32];
+    snprintf(key, sizeof(key), "app/scene/%d", i);
+    settings_delete(key);
+  }
+}
+
+/**
  * @brief Load all parameters from KNX stack into shutter_config struct
  */
 static void load_shutter_params(void) {
@@ -104,15 +119,20 @@ static void load_shutter_params(void) {
   // TravelTime: 2 bytes, big-endian
   shutter_config.travel_time_sec = knx->paramWord(PARAM_TRAVEL_TIME);
 
-  // --- Enable flags (bit-packed at offset 6) ---
-  uint8_t enable_byte = knx->paramByte(PARAM_ENABLE_FLAGS);
-  LOG_INF("DEBUG: EnableFlags Byte (Offset 6): 0x%02X", enable_byte);
-  shutter_config.enable_scene = (enable_byte >> PARAM_ENABLE_SCENE_BIT) & 1;
+  // --- Enable flags ---
+  // IMPORTANT: paramBit(offset, bitOffset) uses (7-bitOffset) internally,
+  // matching ETS XML BitOffset convention (0=MSB, 7=LSB).
+  // EnableScene:      XML Offset=6, BitOffset=2
+  // EnableSceneStore: XML Offset=7, BitOffset=0
+  uint8_t raw_byte6 = knx->paramByte(PARAM_ENABLE_FLAGS);
+  uint8_t raw_byte7 = knx->paramByte(PARAM_ENABLE_SCENE_STORE_BYTE);
+  LOG_INF("DEBUG: raw Byte[6]=0x%02X, raw Byte[7]=0x%02X", raw_byte6,
+          raw_byte7);
 
-  // --- Scene store enable flag (bit-packed at offset 7) ---
-  uint8_t flags2 = knx->paramByte(PARAM_ENABLE_SCENE_STORE_BYTE);
+  shutter_config.enable_scene =
+      knx->paramBit(PARAM_ENABLE_FLAGS, PARAM_ENABLE_SCENE_BIT);
   shutter_config.enable_scene_store =
-      (flags2 >> PARAM_ENABLE_SCENE_STORE_BIT) & 1;
+      knx->paramBit(PARAM_ENABLE_SCENE_STORE_BYTE, PARAM_ENABLE_SCENE_STORE_BIT);
 
   // --- Scene assignments (10 scenes, 2 bytes each) ---
   for (uint8_t i = 0; i < KNX_MAX_SCENES; i++) {
@@ -177,6 +197,18 @@ static void process_scene_command(uint8_t raw_value) {
   uint8_t scene_num = DPT18_SCENE_NUM(raw_value);
   bool is_store = DPT18_IS_STORE(raw_value);
 
+  LOG_INF(">>> SCENE CMD: raw=0x%02X, scene_num=%u, is_store=%d",
+          raw_value, scene_num, is_store);
+
+  // Debug: dump all configured scenes for comparison
+  for (uint8_t d = 0; d < KNX_MAX_SCENES; d++) {
+    if (shutter_config.scenes[d].active) {
+      LOG_INF("    Slot %c: active=1, num=%u, pos=%u%%",
+              'A' + d, shutter_config.scenes[d].num,
+              shutter_config.scenes[d].pos);
+    }
+  }
+
   if (is_store) {
     if (!shutter_config.enable_scene_store) {
       LOG_WRN("Scene STORE ignored (SLME disabled)");
@@ -202,28 +234,35 @@ static void process_scene_command(uint8_t raw_value) {
 
         LOG_INF("Scene %c STORED: num=%u, new_pos=%u%%", 'A' + i, scene_num,
                 knx_pos);
+      } else {
+        LOG_ERR("Scene STORE: failed to get current position!");
       }
       return;
     }
-    LOG_WRN("Scene STORE: num=%u not configured, ignoring", scene_num);
+    LOG_WRN("Scene STORE: num=%u not configured in any slot, ignoring",
+            scene_num);
     return;
   }
 
   // --- RECALL ---
-  LOG_INF("Scene RECALL: num=%u", scene_num);
+  LOG_INF("Scene RECALL: searching for num=%u", scene_num);
 
   // Search through configured scenes for matching number
   for (uint8_t i = 0; i < KNX_MAX_SCENES; i++) {
     if (!shutter_config.scenes[i].active) continue;
-    if (shutter_config.scenes[i].num != scene_num) continue;
+    if (shutter_config.scenes[i].num != scene_num) {
+      LOG_DBG("  Slot %c: num=%u != %u, skip", 'A' + i,
+              shutter_config.scenes[i].num, scene_num);
+      continue;
+    }
 
     uint8_t target_pos = shutter_config.scenes[i].pos;
-    LOG_INF("  Scene %c: set_position(%u%%)", 'A' + i, target_pos);
+    LOG_INF("  >>> MATCH Slot %c: set_position(%u%%)", 'A' + i, target_pos);
     app_knx_shutter_set_position(target_pos);
     return;
   }
 
-  LOG_DBG("Scene RECALL: num=%u not configured, ignoring", scene_num);
+  LOG_WRN("Scene RECALL: num=%u NOT FOUND in any slot!", scene_num);
 }
 
 // ============================================================================
@@ -236,14 +275,16 @@ static void knx_work_handler(struct k_work* work) {
   k_mutex_lock(&knx_stack_mutex, K_FOREVER);
   knx->loop();
 
-  static uint32_t last_log = 0;
-  if (k_uptime_get_32() - last_log > 10000) {
-    last_log = k_uptime_get_32();
-    LOG_INF("KNX Loop Heartbeat: Configured=%d, IA=0x%04x", knx->configured(),
-            knx->individualAddress());
-  }
-
   if (knx->configured()) {
+    static uint32_t last_log = 0;
+    if (k_uptime_get_32() - last_log > 10000) {
+      last_log = k_uptime_get_32();
+      LOG_INF("KNX Heartbeat: Conf=%d, IA=0x%04x, EnableScene=%d, GO6_flag=%d",
+              knx->configured(), knx->individualAddress(),
+              shutter_config.enable_scene,
+              (int)knx->getGroupObject(GO_SH_SCENE).commFlag());
+    }
+
     // Debug: log if GO3 is updated even if flags are not checked yet
     if (knx->getGroupObject(GO_SH_SAPBP).commFlag() == ComFlag::Updated) {
       LOG_INF("DEBUG: GO_SH_SAPBP (3) UPDATED! current flag=%d",
@@ -274,11 +315,22 @@ static void knx_work_handler(struct k_work* work) {
     }
 
     // --- GO6: SCENE (DPT 18.001) ---
-    if (shutter_config.enable_scene) {
-      if (knx->getGroupObject(GO_SH_SCENE).commFlag() == ComFlag::Updated) {
-        uint8_t scene_val = (uint8_t)knx->getGroupObject(GO_SH_SCENE).value();
+    // IMPORTANT: Must use valueRef() to get raw byte with Store bit (bit 7).
+    // value() decodes DPT 18.001 and returns only scene number (bits 0-5),
+    // stripping the Store/Learn flag!
+    {
+      ComFlag scene_flag = knx->getGroupObject(GO_SH_SCENE).commFlag();
+      if (scene_flag == ComFlag::Updated) {
+        uint8_t* raw_ptr = knx->getGroupObject(GO_SH_SCENE).valueRef();
+        uint8_t scene_val = raw_ptr ? raw_ptr[0] : 0;
         knx->getGroupObject(GO_SH_SCENE).commFlag(ComFlag::Ok);
-        process_scene_command(scene_val);
+        LOG_INF("*** GO6 SCENE UPDATED: raw=0x%02X, enable_scene=%d",
+                scene_val, shutter_config.enable_scene);
+        if (shutter_config.enable_scene) {
+          process_scene_command(scene_val);
+        } else {
+          LOG_WRN("GO6 received but enable_scene=FALSE, ignoring!");
+        }
       }
     }
   }
@@ -301,6 +353,11 @@ static void knx_prog_led_blink_work_handler(struct k_work* work) {
   k_work_schedule(&knx_prog_led_blink_work, K_SECONDS(5));
 }
 
+static void knx_prog_timeout_work_handler(struct k_work* work) {
+  LOG_INF("KNX Programming Mode timeout (5 minutes) reached. Exiting...");
+  knx_set_prog_mode(false);
+}
+
 // ============================================================================
 // 6. PUBLIC API
 // ============================================================================
@@ -313,6 +370,8 @@ int knx_adapter_init(void) {
   k_work_init_delayable(&knx_work, knx_work_handler);
   k_work_init_delayable(&knx_prog_led_blink_work,
                         knx_prog_led_blink_work_handler);
+  k_work_init_delayable(&knx_prog_timeout_work,
+                        knx_prog_timeout_work_handler);
 
   // --- Step 0: Read Provisioning Data (MUST BE BEFORE NEW KNXFACADE) ---
   // This ensures SecurityInterfaceObject constructor sees the correct FDSK
@@ -371,6 +430,9 @@ int knx_adapter_init(void) {
   // reboot)
   knx->bau().beforeRestartCallback(knx_wipe_config);
 
+  // Register callback to clear learned scenes when ETS unloads tables
+  TableObject::beforeTablesUnloadCallback(knx_on_tables_unload);
+
   // Step 1: Load NVS memory (EEPROM buffer: config, keys, group objects)
   LOG_INF("[BOOT] Step 1/3 - Loading KNX config from NVS...");
   knx_platform->getNonVolatileMemoryStart();
@@ -391,8 +453,25 @@ int knx_adapter_init(void) {
   knx_platform->setupUart();
 
   if (knx->configured()) {
-    LOG_INF("Device configured. Loading Shutter Parameters...");
+    LOG_INF("KNX Status: [CONFIGURED] - Loading Shutter Parameters...");
     load_shutter_params();
+
+    // --- Detailed Configuration log ---
+    const char* motor_str = "Unknown";
+    switch (shutter_config.motor_type) {
+      case 1: motor_str = "HOZ_DZ3W"; break;
+      case 2: motor_str = "HOZ_DZ4W"; break;
+      case 3: motor_str = "HOZ_DT99"; break;
+      case 4: motor_str = "ROLLER_DZ3W"; break;
+      case 5: motor_str = "ROLLER_DZ4W"; break;
+    }
+
+    LOG_INF("===== KNX SHUTTER CONFIGURATION =====");
+    LOG_INF("  Curtain Type      : %u (%s)", shutter_config.motor_type, motor_str);
+    LOG_INF("  Travel Time       : %u seconds", shutter_config.travel_time_sec);
+    LOG_INF("  Scenes Handling   : %s", shutter_config.enable_scene ? "ENABLED" : "DISABLED");
+    LOG_INF("  Scene Storage     : %s", shutter_config.enable_scene_store ? "ENABLED (Learning OK)" : "DISABLED (Read-only)");
+    LOG_INF("======================================");
 
     // Setup DPTs for Group Objects
     knx->getGroupObject(GO_SH_MUD).dataPointType(DPT_UpDown);
@@ -403,6 +482,8 @@ int knx_adapter_init(void) {
     if (shutter_config.enable_scene) {
       knx->getGroupObject(GO_SH_SCENE).dataPointType(DPT_SceneControl);
     }
+  } else {
+    LOG_WRN("KNX Status: [NOT CONFIGURED] - Waiting for ETS download.");
   }
 
   k_work_reschedule(&knx_work, K_MSEC(100));
@@ -428,8 +509,10 @@ bool knx_toggle_prog_mode(void) {
     led_blink_color(1 << CONFIG_LED_IDX_KNX, LED_COLOR_PINK, 1,
                     LAST_STATE_REFRESH_LED, 300);
     k_work_schedule(&knx_prog_led_blink_work, K_SECONDS(5));
+    k_work_schedule(&knx_prog_timeout_work, K_MINUTES(5));
   } else {
     k_work_cancel_delayable(&knx_prog_led_blink_work);
+    k_work_cancel_delayable(&knx_prog_timeout_work);
     led_blink_color(1 << CONFIG_LED_IDX_KNX, LED_COLOR_RED, 1,
                     LAST_STATE_REFRESH_LED, 300);
   }
@@ -454,8 +537,10 @@ void knx_set_prog_mode(bool enable) {
     led_blink_color(1 << CONFIG_LED_IDX_KNX, LED_COLOR_PINK, 1,
                     LAST_STATE_REFRESH_LED, 300);
     k_work_schedule(&knx_prog_led_blink_work, K_SECONDS(5));
+    k_work_schedule(&knx_prog_timeout_work, K_MINUTES(5));
   } else {
     k_work_cancel_delayable(&knx_prog_led_blink_work);
+    k_work_cancel_delayable(&knx_prog_timeout_work);
     led_blink_color(1 << CONFIG_LED_IDX_KNX, LED_COLOR_RED, 1,
                     LAST_STATE_REFRESH_LED, 300);
   }
@@ -481,6 +566,7 @@ void knx_log_device_info(void) {
 
 void knx_wipe_config(void) {
   LOG_WRN("!!! KNX FACTORY RESET REQUESTED !!!");
+
   k_work_cancel_delayable(&knx_work);
   k_msleep(100);
   initialized = false;
@@ -491,6 +577,7 @@ void knx_wipe_config(void) {
     memset(eeprom, 0xFF, size);
     knx_platform->commitNonVolatileMemory();
   }
+
   sys_reboot(0);
 }
 

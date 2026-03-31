@@ -231,6 +231,17 @@ void BauSystemBDevice::groupValueReadAppLayerConfirm(
 void BauSystemBDevice::groupValueWriteIndication(
     uint16_t asap, Priority priority, HopCountType hopType,
     const SecurityControl &secCtrl, uint8_t *data, uint8_t dataLength) {
+  // DEBUG: Log ALL incoming group write telegrams
+  print(">>> BAU WriteInd: ASAP=");
+  print(asap);
+  print(" len=");
+  print(dataLength);
+  if (dataLength > 0 && data != nullptr) {
+    print(" data[0]=0x");
+    print(data[0], HEX);
+  }
+  println("");
+
 #ifdef USE_DATASECURE
   DataSecurity requiredGoSecurity;
 
@@ -245,8 +256,15 @@ void BauSystemBDevice::groupValueWriteIndication(
 #endif
   GroupObject &go = _groupObjTable.get(asap);
 
-  if (!go.communicationEnable() || !go.writeEnable())
+  if (!go.communicationEnable() || !go.writeEnable()) {
+    print(">>> BAU WriteInd: ASAP=");
+    print(asap);
+    println(" BLOCKED (comm or write disabled)");
     return;
+  }
 
+  print(">>> BAU WriteInd: ASAP=");
+  print(asap);
+  println(" -> updateGroupObject()");
   updateGroupObject(go, data, dataLength);
 }

@@ -49,16 +49,25 @@ void led_ev_handle(uint8_t led_evt, uint16_t mask) {
   case LED_POWER_ON: {
     bool is_configured = false;
     if (pvETS_is_configured != NULL) {
-      if (!pvETS_is_configured()) {
-        is_configured = pvETS_is_configured();
-      }
+      is_configured = pvETS_is_configured();
     }
+
     if (mask & CONFIG_LED_MASK_BLUETOOTH) {
       if (STATE_DEV_UNPROV == get_provision_state() && !is_configured) {
         led_blink(CONFIG_LED_MASK_BLUETOOTH, CMD_BLINK_RED, 3,
                   LAST_STATE_REFRESH_LED, 300);
       } else {
         led_blink(CONFIG_LED_MASK_BLUETOOTH, CMD_BLINK_BLUE, 3,
+                  LAST_STATE_REFRESH_LED, 300);
+      }
+    }
+
+    if (mask & CONFIG_LED_MASK_KNX) {
+      if (is_configured) {
+        led_blink(CONFIG_LED_MASK_KNX, CMD_BLINK_PINK, 3,
+                  LAST_STATE_REFRESH_LED, 300);
+      } else {
+        led_blink(CONFIG_LED_MASK_KNX, CMD_BLINK_RED, 3,
                   LAST_STATE_REFRESH_LED, 300);
       }
     }

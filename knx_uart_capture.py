@@ -54,9 +54,19 @@ def writer_thread(q, output_path, quiet):
         f.flush()
 
 
+def auto_detect_port():
+    """Auto-detect serial port for both Windows and Linux."""
+    import platform
+    if platform.system() == "Windows":
+        return "COM26"
+    else:
+        return "/dev/ttyUSB0"
+
+
 def main():
     parser = argparse.ArgumentParser(description="KNX UART Capture (No Drop)")
-    parser.add_argument("-p", "--port", default="/dev/ttyUSB0")
+    parser.add_argument("-p", "--port", default=None,
+                        help="Serial port (auto-detect if not specified)")
     parser.add_argument("-b", "--baudrate", type=int, default=115200)
     parser.add_argument("-o", "--output", default=None)
     parser.add_argument("-q", "--quiet", action="store_true",
@@ -70,6 +80,18 @@ def main():
         for p in comports():
             print(f"  {p.device} - {p.description}")
         return
+
+    # Auto-detect port if not specified
+    if args.port is None:
+        args.port = auto_detect_port()
+        if args.port is None:
+            print("ERROR: No serial port found!")
+            from serial.tools.list_ports import comports
+            print("Available:")
+            for p in comports():
+                print(f"  {p.device} - {p.description}")
+            sys.exit(1)
+        print(f"Auto-detected port: {args.port}")
 
     # Output file
     if args.output:
