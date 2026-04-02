@@ -342,8 +342,10 @@ int curtain_handle_set_curtain_type(uint8_t model_idx, uint8_t* par,
       }
     }
     if (p_set->cz_type == cz_opt.type[idx]) {
-      curtain_response_curtain_type(idx, bt_mesh_primary_addr() + model_idx,
-                                    GATEWAY_UNICAST_ADDR);
+      if (notify_led_en == true) {
+        curtain_response_curtain_type(idx, bt_mesh_primary_addr() + model_idx,
+                                      GATEWAY_UNICAST_ADDR);
+      }
       return 0;
     }
     cz_opt.type[idx] = p_set->cz_type;
@@ -406,8 +408,10 @@ int curtain_handle_set_limit_time(uint8_t model_idx, uint8_t* par, int par_len,
       }
     }
     if (p_set->limit_time == cz_opt.limit_time[model_idx]) {
-      curtain_response_limit_time(model_idx, bt_mesh_primary_addr() + model_idx,
-                                  GATEWAY_UNICAST_ADDR);
+      if (notify_led_en == true) {
+        curtain_response_limit_time(model_idx, bt_mesh_primary_addr() + model_idx,
+                                    GATEWAY_UNICAST_ADDR);
+      }
       return 0;
     }
     cz_opt.limit_time[model_idx] = p_set->limit_time;
