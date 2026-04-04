@@ -26,6 +26,7 @@
 #include "../../include/app_device.h"
 #include "../../include/default_network.h"
 #include "../../include/led_ev.h"
+#include "../../include/vendor_model.h"
 #include "mesh/access.h"
 #include "mesh/app_keys.h"   // For bt_mesh_app_key_exists()
 #include "mesh/foundation.h" // For bt_mesh_primary_addr()
@@ -38,7 +39,7 @@
 #include "vendor.h"
 
 LOG_MODULE_REGISTER(fast_provision,
-                    LOG_LEVEL_INF); // Changed to INF to see all logs
+                    LOG_LEVEL_NONE); // Changed to INF to see all logs
 
 /* Fast Provision Context - Global for handlers to access */
 fast_prov_par_t *g_fast_prov = NULL;
@@ -56,10 +57,10 @@ static int64_t prov_lock_start_tick = 0;
  * when multiple devices respond simultaneously.
  * Telink: get_mac_time, delay_time, cb_para
  */
-static int64_t get_mac_time = 0;          /* Timestamp when ADDR_GET received */
-static uint32_t get_mac_delay_ms = 0;     /* Random delay in ms (0-5000) */
+static int64_t get_mac_time = 0;      /* Timestamp when ADDR_GET received */
+static uint32_t get_mac_delay_ms = 0; /* Random delay in ms (0-5000) */
 static const struct bt_mesh_model *get_mac_saved_model = NULL;
-static uint16_t get_mac_saved_dst = 0;    /* Provisioner address (to reply to) */
+static uint16_t get_mac_saved_dst = 0; /* Provisioner address (to reply to) */
 
 /* Forward declaration for deferred MAC response */
 static void send_deferred_get_mac_response(void);
@@ -1174,7 +1175,8 @@ static int handle_addr_get(const struct bt_mesh_model *model,
    * mac_get.ele_addr+256+(u16)clock_time()%(0x8000-256-mac_get.ele_addr)
    * - Only random once (static flag default_addr_random)
    */
-  /* default_addr_random is now module-level (can be reset by mesh_fast_prov_reset_for_retry) */
+  /* default_addr_random is now module-level (can be reset by
+   * mesh_fast_prov_reset_for_retry) */
   if (mac_get.ele_addr != 0 && !default_addr_random &&
       buf->len >= sizeof(mac_addr_get_t)) {
     /* IMPORTANT: Validate ele_addr to avoid division by zero and overflow */
@@ -1228,9 +1230,16 @@ static int handle_addr_get(const struct bt_mesh_model *model,
   get_mac_time = k_uptime_get();
   uint32_t random_val;
   sys_rand_get(&random_val, sizeof(random_val));
-  get_mac_delay_ms = random_val % 5000;  /* 0-5000ms like Telink */
+  get_mac_delay_ms = random_val % 5000; /* 0-5000ms like Telink */
 
   LOG_INF("ADDR_GET received, response deferred by %u ms", get_mac_delay_ms);
+
+  /* Suppress unprovisioned beacon for 60s to prioritize Radio for Fast Prov */
+  extern void bt_mesh_beacon_unprov_suppress(void);
+  bt_mesh_beacon_unprov_suppress();
+
+  /* Disable PB-GATT advertising to further reduce RF interference */
+  bt_mesh_pb_gatt_srv_disable();
 
   return 0;
 }
@@ -1250,7 +1259,7 @@ static void send_deferred_get_mac_response(void) {
   /* Check if delay has elapsed */
   int64_t elapsed = k_uptime_get() - get_mac_time;
   if (elapsed < (int64_t)get_mac_delay_ms) {
-    return;  /* Not yet, wait more */
+    return; /* Not yet, wait more */
   }
 
   /* Clear deferred state */
@@ -1267,38 +1276,29 @@ static void send_deferred_get_mac_response(void) {
   rsp.default_addr = g_fast_prov->mac_addr_info.default_addr;
   rsp.addr = rsp.default_addr;
 
-  BT_MESH_MODEL_BUF_DEFINE(rsp_buf, VD_MESH_ADDR_GET_STS, 8);
-  bt_mesh_model_msg_init(&rsp_buf, VD_MESH_ADDR_GET_STS);
-  net_buf_simple_add_mem(&rsp_buf, rsp.mac, 6);
-  net_buf_simple_add_le16(&rsp_buf, rsp.pid);
+  uint8_t payload[8];
+  memcpy(payload, rsp.mac, 6);
+  payload[6] = rsp.pid & 0xFF;
+  payload[7] = (rsp.pid >> 8) & 0xFF;
 
-  if (!bt_mesh_subnet_exists(DEFAULT_NETWORK_SUBNET_INDEX)) {
-    LOG_ERR("Default network subnet not found (deferred send)");
-    return;
-  }
+  /* Use Queue mechanism instead of direct send to avoid "Advertiser is busy"
+   * error */
+  int ret = mesh_tx_cmd_rsp(VD_MESH_ADDR_GET_STS, payload, 8,
+                            bt_mesh_model_elem(model)->rt->addr, dst_addr, NULL,
+                            (void *)model);
 
-  struct bt_mesh_msg_ctx send_ctx = {
-      .net_idx = DEFAULT_NETWORK_SUBNET_INDEX,
-      .app_idx = DEFAULT_APPKEY_INDEX,
-      .addr = dst_addr,
-      .send_ttl = BT_MESH_TTL_DEFAULT,
-      .send_rel = false,
-  };
-
-  int ret = bt_mesh_model_send(model, &send_ctx, &rsp_buf, NULL, NULL);
   if (ret) {
-    LOG_ERR("Failed to send MAC response (deferred): %d", ret);
+    LOG_ERR("Failed to push MAC rsp to queue: %d", ret);
     if (g_fast_prov->cur_sts == FAST_PROV_GET_ADDR) {
       mesh_fast_prov_sts_set(FAST_PROV_IDLE);
       g_fast_prov->rcv_op = 0;
     }
   } else {
-    LOG_INF("=== TX GET_MAC response (after %u ms delay) ===",
+    LOG_INF("=== Queued GET_MAC response (after %u ms delay) ===",
             get_mac_delay_ms);
     LOG_INF("  dst=0x%04x, MAC=%02X:%02X:%02X:%02X:%02X:%02X, PID=0x%04x",
-            send_ctx.addr, rsp.mac[0], rsp.mac[1], rsp.mac[2], rsp.mac[3],
+            dst_addr, rsp.mac[0], rsp.mac[1], rsp.mac[2], rsp.mac[3],
             rsp.mac[4], rsp.mac[5], rsp.pid);
-    LOG_INF("  default_addr=0x%04x", rsp.default_addr);
   }
 }
 
@@ -1309,6 +1309,10 @@ static int handle_addr_set(const struct bt_mesh_model *model,
                            struct bt_mesh_msg_ctx *ctx,
                            struct net_buf_simple *buf) {
   /* IMPORTANT: Validate input parameters */
+
+  LOG_INF("=========================\n ADDR_SET (0xC8) handler "
+          "\n=========================");
+
   if (!model || !ctx || !buf) {
     LOG_ERR("Invalid parameters: model=%p, ctx=%p, buf=%p", model, ctx, buf);
     return -EINVAL;
@@ -1363,28 +1367,26 @@ static int handle_addr_set(const struct bt_mesh_model *model,
     return -ENODEV;
   }
 
-  BT_MESH_MODEL_BUF_DEFINE(rsp_buf, VD_MESH_ADDR_SET_STS, 8);
-  bt_mesh_model_msg_init(&rsp_buf, VD_MESH_ADDR_SET_STS);
-  net_buf_simple_add_mem(&rsp_buf, fprov->mac_addr_info.mac, 6);
-  net_buf_simple_add_le16(&rsp_buf, fprov->pid);
+  uint8_t payload[8];
+  memcpy(payload, fprov->mac_addr_info.mac, 6);
+  payload[6] = fprov->pid & 0xFF;
+  payload[7] = (fprov->pid >> 8) & 0xFF;
 
-  struct bt_mesh_msg_ctx send_ctx = {
-      .net_idx = DEFAULT_NETWORK_SUBNET_INDEX,
-      .app_idx = DEFAULT_APPKEY_INDEX,
-      .addr = ctx->addr,
-      .send_ttl = BT_MESH_TTL_DEFAULT,
-  };
+  /* Use Queue instead of calling Model Send directly */
+  k_msleep(50);
+  int ret = mesh_tx_cmd_rsp(VD_MESH_ADDR_SET_STS, payload, 8,
+                            bt_mesh_model_elem(model)->rt->addr, ctx->addr,
+                            NULL, (void *)model);
 
-  int ret = bt_mesh_model_send(model, &send_ctx, &rsp_buf, NULL, NULL);
   if (ret) {
-    LOG_ERR("Failed to send address assignment response: %d", ret);
+    LOG_ERR("Failed to push address assigmnent response to queue: %d", ret);
     /* If sending response fails, reset to IDLE to retry */
     fprov->rcv_op = 0;
     mesh_fast_prov_sts_set(FAST_PROV_IDLE);
     return ret;
   } else {
-    LOG_INF("=== TX SET_NODE response ===");
-    LOG_INF("  dst=0x%04x, MAC=%02X:%02X:%02X:%02X:%02X:%02X", send_ctx.addr,
+    LOG_INF("=== Queued SET_NODE response ===");
+    LOG_INF("  dst=0x%04x, MAC=%02X:%02X:%02X:%02X:%02X:%02X", ctx->addr,
             fprov->mac_addr_info.mac[0], fprov->mac_addr_info.mac[1],
             fprov->mac_addr_info.mac[2], fprov->mac_addr_info.mac[3],
             fprov->mac_addr_info.mac[4], fprov->mac_addr_info.mac[5]);
@@ -1614,16 +1616,15 @@ static int handle_prov_confirm(const struct bt_mesh_model *model,
     return -ENODEV;
   }
 
-  /* Send confirmation response */
-  BT_MESH_MODEL_BUF_DEFINE(rsp_buf, VD_MESH_PROV_CONFIRM_STS, 0);
-  bt_mesh_model_msg_init(&rsp_buf, VD_MESH_PROV_CONFIRM_STS);
+  /* Gửi vào hàng đợi Zero-Drop */
+  int ret = mesh_tx_cmd_rsp(VD_MESH_PROV_CONFIRM_STS, NULL, 0,
+                            bt_mesh_model_elem(model)->rt->addr, ctx->addr,
+                            NULL, (void *)model);
 
-  ctx->send_ttl = BT_MESH_TTL_DEFAULT;
-  int ret = bt_mesh_model_send(model, ctx, &rsp_buf, NULL, NULL);
   if (ret) {
-    LOG_ERR("Failed to send confirmation response, err: %d", ret);
+    LOG_ERR("Failed to push confirmation response to queue, err: %d", ret);
   } else {
-    LOG_INF("Provision confirmation sent");
+    LOG_INF("Provision confirmation queued successfully");
   }
 
   return ret;

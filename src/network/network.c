@@ -28,26 +28,31 @@
 #include "../../include/network.h"
 
 #include <zephyr/bluetooth/mesh.h>
-#include <zephyr/bluetooth/mesh/cfg.h>  // For bt_mesh_subnet_del()
+#include <zephyr/bluetooth/mesh/cfg.h> // For bt_mesh_subnet_del()
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/settings/settings.h>
 #include <zephyr/sys/printk.h>
 #include <zephyr/sys/reboot.h>
 
-#include "../../include/default_network.h"  // For default_network_is_present(), del_tmp_keys()
-#include "../../include/execution_scene.h"  // For delete_all_execution_scene()
-#include "../../include/fast_provision.h"   // For is_main_network_provisioned()
-#include "../../include/led.h"              // For led_blink_no_queue()
+#include "../../include/default_network.h" // For default_network_is_present(), del_tmp_keys()
+#include "../../include/execution_scene.h" // For delete_all_execution_scene()
+#include "../../include/fast_provision.h"  // For is_main_network_provisioned()
+#include "../../include/led.h"             // For led_blink_no_queue()
 #include "../../include/led_ev.h"
-#include "../../include/mesh_node.h"  // For send_node_reset_status()
+#include "../../include/mesh_node.h" // For send_node_reset_status()
 #include "../../include/scene.h"
-#include "mesh/access.h"  // For bt_mesh_comp_get()
-#include "mesh/app_keys.h"  // For bt_mesh_app_keys_get(), bt_mesh_app_key_exists(), bt_mesh_app_key_del()
-#include "mesh/foundation.h"  // For bt_mesh_primary_addr()
-#include "mesh/net.h"  // For bt_mesh_subnet_next(), bt_mesh_net_loopback_clear()
+#include "mesh/access.h" // For bt_mesh_comp_get()
+#include "mesh/app_keys.h" // For bt_mesh_app_keys_get(), bt_mesh_app_key_exists(), bt_mesh_app_key_del()
+#include "mesh/foundation.h" // For bt_mesh_primary_addr()
+#include "mesh/net.h" // For bt_mesh_subnet_next(), bt_mesh_net_loopback_clear()
+#include "mesh/rpl.h"
 
-LOG_MODULE_REGISTER(network, CONFIG_LOG_DEFAULT_LEVEL);
+#ifdef ENABLE_NETWORK_LOG
+LOG_MODULE_REGISTER(network, LOG_LEVEL_INF);
+#else
+LOG_MODULE_REGISTER(network, LOG_LEVEL_NONE);
+#endif
 
 /* ============================================================================
  * DELAYED WORK FOR FACTORY RESET
@@ -63,7 +68,7 @@ static struct k_work_delayable factory_reset_work;
 static struct k_work_delayable post_reset_work;
 
 /* Work handler: Perform reboot after stack reset */
-static void post_reset_work_handler(struct k_work* work) {
+static void post_reset_work_handler(struct k_work *work) {
   LOG_INF("Post Reset Work: Rebooting device...");
 
   // 1. Reset network info cache
@@ -93,13 +98,12 @@ static struct k_work_delayable provisioning_enable_delayed_work;
 static struct k_work_delayable provisioning_stop_keys_delayed_work;
 
 /* Forward declarations */
-static void provisioning_led_blink_work_handler(struct k_work* work);
-static void provisioning_enable_delayed_work_handler(struct k_work* work);
-static void provisioning_stop_keys_delayed_work_handler(struct k_work* work);
-static void provisioning_stop(void);
+static void provisioning_led_blink_work_handler(struct k_work *work);
+static void provisioning_enable_delayed_work_handler(struct k_work *work);
+static void provisioning_stop_keys_delayed_work_handler(struct k_work *work);
 
 /* Stop all provisioning works and reset state */
-static void provisioning_stop(void) {
+void provisioning_stop(bool notify_led) {
   if (!provisioning_mode_active) {
     return;
   }
@@ -112,10 +116,11 @@ static void provisioning_stop(void) {
 
   LOG_INF("Provisioning mode disabling...");
   provisioning_mode_active = false;
-
-  /* 1. Blink Red to notify user that mode exited */
-  led_blink_color(1 << CONFIG_LED_IDX_BLUETOOTH, LED_COLOR_RED, 1,
-                  LAST_STATE_REFRESH_LED, 300);
+  if (notify_led) {
+    /* 1. Blink Red to notify user that mode exited */
+    led_blink_color(1 << CONFIG_LED_IDX_BLUETOOTH, LED_COLOR_RED, 1,
+                    LAST_STATE_REFRESH_LED, 300);
+  }
 
   /* 2. Cancel existing tasks */
   k_work_cancel_delayable(&provisioning_timeout_work);
@@ -131,20 +136,20 @@ static void provisioning_stop(void) {
 }
 
 /* Helper Handler: Cleanup Keys after GATT is fully disabled */
-static void provisioning_stop_keys_delayed_work_handler(struct k_work* work) {
+static void provisioning_stop_keys_delayed_work_handler(struct k_work *work) {
   LOG_INF("Provisioning cleanup: Disabling Default Network keys.");
   set_tmp_keys(false);
 }
 
 /* Work handler: Disable provisioning after timeout */
-static void provisioning_timeout_work_handler(struct k_work* work) {
+static void provisioning_timeout_work_handler(struct k_work *work) {
   LOG_INF("Provisioning timeout (%d min). Disabling.",
           PROVISIONING_TIMEOUT_MIN);
-  provisioning_stop();
+  provisioning_stop(true);
 }
 
 /* Work handler: Periodic LED blink every 5 seconds */
-static void provisioning_led_blink_work_handler(struct k_work* work) {
+static void provisioning_led_blink_work_handler(struct k_work *work) {
   if (!provisioning_mode_active) {
     return;
   }
@@ -157,7 +162,7 @@ static void provisioning_led_blink_work_handler(struct k_work* work) {
 }
 
 /* Helper Handler: Enable Provisioning after Keys have stabilized for 2s */
-static void provisioning_enable_delayed_work_handler(struct k_work* work) {
+static void provisioning_enable_delayed_work_handler(struct k_work *work) {
   int err = bt_mesh_prov_enable(BT_MESH_PROV_ADV | BT_MESH_PROV_GATT);
 
   if (err && err != -EALREADY) {
@@ -180,6 +185,8 @@ static void provisioning_enable_delayed_work_handler(struct k_work* work) {
                         provisioning_timeout_work_handler);
   k_work_schedule(&provisioning_timeout_work,
                   K_MINUTES(PROVISIONING_TIMEOUT_MIN));
+  /* Clear RPL */
+  bt_mesh_rpl_clear();
 }
 
 /**
@@ -202,7 +209,7 @@ void network_enable_provisioning_with_timeout(void) {
 
   /* Toggle: if active, then disable */
   if (provisioning_mode_active) {
-    provisioning_stop();
+    provisioning_stop(true);
     return;
   }
 
@@ -330,18 +337,18 @@ static bool is_appkey_from_main_network(uint16_t app_idx) {
  */
 static uint16_t find_bound_appkey_index_internal(void) {
   /* Get composition data */
-  const struct bt_mesh_comp* comp = bt_mesh_comp_get();
+  const struct bt_mesh_comp *comp = bt_mesh_comp_get();
   if (!comp) {
     return 0xFFFF;
   }
 
   /* Scan all elements */
   for (int elem_idx = 0; elem_idx < comp->elem_count; elem_idx++) {
-    const struct bt_mesh_elem* elem = &comp->elem[elem_idx];
+    const struct bt_mesh_elem *elem = &comp->elem[elem_idx];
 
     /* Check standard models */
     for (int i = 0; i < elem->model_count; i++) {
-      struct bt_mesh_model* model = (struct bt_mesh_model*)&elem->models[i];
+      struct bt_mesh_model *model = (struct bt_mesh_model *)&elem->models[i];
       for (int j = 0; j < model->keys_cnt; j++) {
         if (model->keys[j] != BT_MESH_KEY_UNUSED) {
           uint16_t app_idx = model->keys[j];
@@ -356,7 +363,8 @@ static uint16_t find_bound_appkey_index_internal(void) {
 
     /* Check vendor models */
     for (int i = 0; i < elem->vnd_model_count; i++) {
-      struct bt_mesh_model* model = (struct bt_mesh_model*)&elem->vnd_models[i];
+      struct bt_mesh_model *model =
+          (struct bt_mesh_model *)&elem->vnd_models[i];
       for (int j = 0; j < model->keys_cnt; j++) {
         if (model->keys[j] != BT_MESH_KEY_UNUSED) {
           uint16_t app_idx = model->keys[j];

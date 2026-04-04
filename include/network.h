@@ -191,6 +191,7 @@ void network_reset_info(void);
 #if EN_PROVISIONING_TOGGLE
 void network_enable_provisioning_with_timeout(void);
 void provisioning_stop_quietly(void);
+void provisioning_stop(bool notify_led);
 #endif
 
 /**

@@ -287,6 +287,9 @@ static void bt_ready(int err) {
   /* Binding */
   binding_init();
 
+  /* App initial */
+  app_init();
+
   // Delay power on
   k_sleep(K_MSEC(500));
 
@@ -345,19 +348,32 @@ static void log_reset_reason(void) {
   if (cause == 0) {
     LOG_INF("  -> Power-On Reset (cold boot)");
   } else {
-    if (cause & RESET_PIN)          LOG_INF("  -> RESET PIN");
-    if (cause & RESET_SOFTWARE)     LOG_INF("  -> SOFTWARE RESET (sys_reboot)");
-    if (cause & RESET_BROWNOUT)     LOG_INF("  -> BROWNOUT (low voltage)");
-    if (cause & RESET_POR)          LOG_INF("  -> POWER-ON RESET");
-    if (cause & RESET_WATCHDOG)     LOG_INF("  -> WATCHDOG TIMEOUT !!!");
-    if (cause & RESET_DEBUG)        LOG_INF("  -> DEBUG (debugger reset)");
-    if (cause & RESET_SECURITY)     LOG_INF("  -> SECURITY VIOLATION");
-    if (cause & RESET_LOW_POWER_WAKE) LOG_INF("  -> LOW POWER WAKE");
-    if (cause & RESET_CPU_LOCKUP)   LOG_INF("  -> CPU LOCKUP (HardFault) !!!");
-    if (cause & RESET_PARITY)       LOG_INF("  -> PARITY ERROR");
-    if (cause & RESET_HARDWARE)     LOG_INF("  -> HARDWARE");
-    if (cause & RESET_USER)         LOG_INF("  -> USER RESET");
-    if (cause & RESET_TEMPERATURE)  LOG_INF("  -> TEMPERATURE");
+    if (cause & RESET_PIN)
+      LOG_INF("  -> RESET PIN");
+    if (cause & RESET_SOFTWARE)
+      LOG_INF("  -> SOFTWARE RESET (sys_reboot)");
+    if (cause & RESET_BROWNOUT)
+      LOG_INF("  -> BROWNOUT (low voltage)");
+    if (cause & RESET_POR)
+      LOG_INF("  -> POWER-ON RESET");
+    if (cause & RESET_WATCHDOG)
+      LOG_INF("  -> WATCHDOG TIMEOUT !!!");
+    if (cause & RESET_DEBUG)
+      LOG_INF("  -> DEBUG (debugger reset)");
+    if (cause & RESET_SECURITY)
+      LOG_INF("  -> SECURITY VIOLATION");
+    if (cause & RESET_LOW_POWER_WAKE)
+      LOG_INF("  -> LOW POWER WAKE");
+    if (cause & RESET_CPU_LOCKUP)
+      LOG_INF("  -> CPU LOCKUP (HardFault) !!!");
+    if (cause & RESET_PARITY)
+      LOG_INF("  -> PARITY ERROR");
+    if (cause & RESET_HARDWARE)
+      LOG_INF("  -> HARDWARE");
+    if (cause & RESET_USER)
+      LOG_INF("  -> USER RESET");
+    if (cause & RESET_TEMPERATURE)
+      LOG_INF("  -> TEMPERATURE");
   }
 
   LOG_INF("========================================");
@@ -372,7 +388,7 @@ int main(void) {
   LOG_INF("=== Bluetooth Mesh Relay Node Starting ===");
 
   /* Log reset reason FIRST */
-  log_reset_reason();
+  // log_reset_reason();
 
   /* Initialize watchdog early to protect system */
   err = watchdog_process_init();

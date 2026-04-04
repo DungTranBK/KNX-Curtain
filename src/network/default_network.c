@@ -5,26 +5,34 @@
  */
 #include "../../include/default_network.h"
 
-#include <errno.h>  // For EBUSY
+#include <errno.h> // For EBUSY
 #include <network.h>
 #include <string.h>
 #include <zephyr/bluetooth/mesh.h>
-#include <zephyr/bluetooth/mesh/cfg.h>  // For bt_mesh_subnet_del()
+#include <zephyr/bluetooth/mesh/cfg.h> // For bt_mesh_subnet_del()
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 #include <zephyr/sys/atomic.h>
 
 #include "../../include/app_device.h"
+#include "../../include/fact.h"
 #include "../../include/fast_provision.h"
 #include "../../include/vendor.h"
 #include "mesh/access.h"
-#include "mesh/crypto.h"  // For bt_mesh_s1() to check crypto ready (includes keys.h)
+#include "mesh/crypto.h" // For bt_mesh_s1() to check crypto ready (includes keys.h)
 #include "mesh/foundation.h"
-#include "mesh/mesh.h"  // For bt_mesh_start(), bt_mesh_scan_disable(), bt_mesh_suspend()
-#include "mesh/net.h"  // For bt_mesh_subnet_next(), bt_mesh_net_settings_commit(), bt_mesh.flags
-#include "mesh/settings.h"  // For bt_mesh_model_settings_commit()
+#include "mesh/mesh.h" // For bt_mesh_start(), bt_mesh_scan_disable(), bt_mesh_suspend()
+#include "mesh/net.h" // For bt_mesh_subnet_next(), bt_mesh_net_settings_commit(), bt_mesh.flags
+#include "mesh/rpl.h"
+#include "mesh/settings.h" // For bt_mesh_model_settings_commit()
 
+#define ENABLE_DEFAULT_NETWORK_LOG 1
+
+#ifdef ENABLE_DEFAULT_NETWORK_LOG
 LOG_MODULE_REGISTER(default_network, LOG_LEVEL_INF);
+#else
+LOG_MODULE_REGISTER(default_network, LOG_LEVEL_NONE);
+#endif
 
 /* Default Network Keys - Synced with Telink SDK */
 const uint8_t default_net_key[DEFAULT_NET_KEY_SIZE] = {
@@ -71,7 +79,7 @@ static bool default_network_configured_after_reboot =
     false; /* Flag to configure only once after reboot */
 
 /* Delay after power on before enabling default network */
-#define DEFAULT_NETWORK_ENABLE_DELAY_MS \
+#define DEFAULT_NETWORK_ENABLE_DELAY_MS                                        \
   (2000) /* 2 seconds delay after power on */
 
 /* Monitor work - Print default network status every 30 seconds */
@@ -82,7 +90,7 @@ static struct k_work_delayable monitor_work;
  */
 bool default_network_is_present(void) {
   /* Check if subnet 0x0001 exists */
-  const struct bt_mesh_subnet* subnet =
+  const struct bt_mesh_subnet *subnet =
       bt_mesh_subnet_get(DEFAULT_NETWORK_SUBNET_INDEX);
   if (!subnet) {
     return false;
@@ -131,6 +139,11 @@ bool default_network_is_present(void) {
  * @brief Process default network state
  */
 void proc_default_network(void) {
+  /* Skip all network management while factory test is active */
+  if (fact_is_activate()) {
+    return;
+  }
+
   bool is_provisioned = network_is_main_network_provisioned();
   bool should_close = false;
 
@@ -208,9 +221,8 @@ void proc_default_network(void) {
         /* Crypto not ready - wait
          * proc_default_network() is called periodically, will retry
          */
-        LOG_DBG(
-            "Crypto not ready yet, waiting for next proc_default_network() "
-            "call");
+        LOG_DBG("Crypto not ready yet, waiting for next proc_default_network() "
+                "call");
         return;
       }
 
@@ -257,9 +269,8 @@ void proc_default_network(void) {
       /* Check crypto ready before configure */
       if (!is_crypto_ready_for_key_import()) {
         /* Crypto not ready - wait */
-        LOG_DBG(
-            "Crypto not ready yet, waiting for next proc_default_network() "
-            "call");
+        LOG_DBG("Crypto not ready yet, waiting for next proc_default_network() "
+                "call");
         return;
       }
 
@@ -306,9 +317,8 @@ void proc_default_network(void) {
         /* First time detect provisioned, save time */
         if (provision_complete_time == 0) {
           provision_complete_time = current_time;
-          LOG_INF(
-              "Provisioned detected, will close default network after 5 "
-              "seconds");
+          LOG_INF("Provisioned detected, will close default network after 5 "
+                  "seconds");
           return; /* Wait next time */
         }
 
@@ -343,7 +353,7 @@ void proc_default_network(void) {
  */
 static uint8_t count_subnets(void) {
   uint8_t count = 0;
-  struct bt_mesh_subnet* subnet = bt_mesh_subnet_next(NULL);
+  struct bt_mesh_subnet *subnet = bt_mesh_subnet_next(NULL);
 
   while (subnet) {
     count++;
@@ -358,7 +368,7 @@ static uint8_t count_subnets(void) {
  */
 static bool is_mesh_stack_ready(void) {
   /* Check if mesh composition exists - mesh stack initialized */
-  const struct bt_mesh_comp* comp = bt_mesh_comp_get();
+  const struct bt_mesh_comp *comp = bt_mesh_comp_get();
   if (!comp) {
     return false; /* Mesh stack not initialized */
   }
@@ -400,13 +410,16 @@ static bool is_crypto_ready_for_key_import(void) {
 }
 
 /**
- * @brief Enable default network (add keys, bind models, start mesh)
+ * @brief Enable network with given keys (add keys, bind models, start mesh)
+ * @param net_key  16-byte network key
+ * @param app_key  16-byte application key
  */
-static int default_network_enable(void) {
+int default_network_enable_with_keys(const uint8_t *net_key,
+                                     const uint8_t *app_key) {
   uint8_t status;
 
   /* Check stack and crypto */
-  const struct bt_mesh_comp* comp = bt_mesh_comp_get();
+  const struct bt_mesh_comp *comp = bt_mesh_comp_get();
   if (!comp) {
     LOG_ERR("Mesh stack not initialized");
     return -EAGAIN;
@@ -417,47 +430,24 @@ static int default_network_enable(void) {
     return -EAGAIN;
   }
 
-  /* Add default NetKey */
-  status = bt_mesh_subnet_add(DEFAULT_NETWORK_SUBNET_INDEX, default_net_key);
+  /* Add NetKey */
+  status = bt_mesh_subnet_add(DEFAULT_NETWORK_SUBNET_INDEX, net_key);
   if (status == STATUS_INSUFF_RESOURCES) {
-    LOG_ERR("No room for default network subnet");
+    LOG_ERR("No room for subnet");
     return -ENOMEM;
   } else if (status == STATUS_UNSPECIFIED) {
-    /* STATUS_UNSPECIFIED (0x10) = Unable to import network key
-     * According to SDK subnet.c: bt_mesh_subnet_add() calls net_keys_create()
-     * with import=true, net_keys_create() calls bt_mesh_key_import() and
-     * returns error if crypto not ready. Then bt_mesh_subnet_add() returns
-     * STATUS_UNSPECIFIED.
-     *
-     * ROOT CAUSE:
-     * - psa_crypto_init() only inits software state
-     * - Hardware crypto accelerator (nRF54Lx) needs time to reset and init
-     * - When calling bt_mesh_key_import() too early, hardware not ready ->
-     * error
-     *
-     * SOLUTION:
-     * - Crypto has been checked ready in proc_default_network() before calling
-     * - If still fail, it is a real error (not because crypto not ready)
-     * - Do not retry, log error for debug
-     */
-    LOG_ERR(
-        "Failed to import network key (status: 0x%02x) - crypto was "
-        "verified ready",
-        status);
+    LOG_ERR("Failed to import net key (status: 0x%02x)", status);
     return -EIO;
   } else if (status != STATUS_SUCCESS && status != STATUS_IDX_ALREADY_STORED) {
-    LOG_ERR("Failed to add default net key, status: 0x%02x", status);
+    LOG_ERR("Failed to add net key, status: 0x%02x", status);
     return -EINVAL;
   }
 
-  /* Add default AppKey */
-  LOG_INF("\n--- Adding default app key ---");
+  /* Add AppKey */
   status = bt_mesh_app_key_add(DEFAULT_APPKEY_INDEX,
-                               DEFAULT_NETWORK_SUBNET_INDEX, default_app_key);
-  LOG_INF("\n--- End Adding default app key ---");
+                               DEFAULT_NETWORK_SUBNET_INDEX, app_key);
   if (status == STATUS_INSUFF_RESOURCES) {
-    LOG_ERR("No room for default network app key");
-    /* Rollback: delete subnet if AppKey add fail */
+    LOG_ERR("No room for app key");
     bt_mesh_subnet_del(DEFAULT_NETWORK_SUBNET_INDEX);
     return -ENOMEM;
   } else if (status == STATUS_INVALID_NETKEY) {
@@ -465,25 +455,11 @@ static int default_network_enable(void) {
             DEFAULT_NETWORK_SUBNET_INDEX);
     return -EINVAL;
   } else if (status == STATUS_CANNOT_SET) {
-    /* STATUS_CANNOT_SET (0x0f) = Unable to import application key (crypto
-     * error) According to SDK app_keys.c line 276-278: bt_mesh_key_import()
-     * fail -> STATUS_CANNOT_SET
-     *
-     * CAUSE:
-     * - Crypto has been checked ready at Step 0.5
-     * - If still fail, it is real error
-     * - Could be: key import fail, app_id calculation fail, or other error
-     */
-    LOG_ERR(
-        "Failed to import application key (status: 0x%02x) - crypto was "
-        "verified ready",
-        status);
-    /* Rollback: delete subnet if AppKey add fail */
+    LOG_ERR("Failed to import app key (status: 0x%02x)", status);
     bt_mesh_subnet_del(DEFAULT_NETWORK_SUBNET_INDEX);
     return -EIO;
   } else if (status != STATUS_SUCCESS && status != STATUS_IDX_ALREADY_STORED) {
-    LOG_ERR("Failed to add default app key, status: 0x%02x", status);
-    /* Rollback: delete subnet if AppKey add fail */
+    LOG_ERR("Failed to add app key, status: 0x%02x", status);
     bt_mesh_subnet_del(DEFAULT_NETWORK_SUBNET_INDEX);
     return -EINVAL;
   }
@@ -497,12 +473,19 @@ static int default_network_enable(void) {
 
   default_network_start();
 
-  LOG_INF("Default network enabled (subnet: 0x%04X, element: 0x%04X)",
+  LOG_INF("Network enabled (subnet: 0x%04X, element: 0x%04X)",
           DEFAULT_NETWORK_SUBNET_INDEX,
           (comp && comp->elem_count > 0 && comp->elem[0].rt)
               ? comp->elem[0].rt->addr
               : 0);
   return 0;
+}
+
+/**
+ * @brief Enable default network (add keys, bind models, start mesh)
+ */
+static int default_network_enable(void) {
+  return default_network_enable_with_keys(default_net_key, default_app_key);
 }
 
 /**
@@ -524,9 +507,8 @@ void set_tmp_keys(bool enable) {
 
     if (is_present) {
       /* Default network restored: Ensure configured (set address, bind keys) */
-      LOG_DBG(
-          "Default network already present, but will ensure it's fully "
-          "configured");
+      LOG_DBG("Default network already present, but will ensure it's fully "
+              "configured");
     }
 
     /* Set flags */
@@ -584,7 +566,7 @@ void set_tmp_keys(bool enable) {
  * @brief Bind AppKey to all models (SIG and vendor)
  */
 static void default_network_bind_appkey(void) {
-  const struct bt_mesh_comp* comp = bt_mesh_comp_get();
+  const struct bt_mesh_comp *comp = bt_mesh_comp_get();
   if (!comp) {
     return;
   }
@@ -592,12 +574,13 @@ static void default_network_bind_appkey(void) {
   LOG_INF("Binding default AppKey to all models");
 
   for (int elem_idx = 0; elem_idx < comp->elem_count; elem_idx++) {
-    const struct bt_mesh_elem* elem = &comp->elem[elem_idx];
+    const struct bt_mesh_elem *elem = &comp->elem[elem_idx];
 
     /* Bind AppKey to Fast Provision vendor model in default network */
     /* Support both new model ID (FAST_PROV_SRV) and old model ID (FAST_PROV) */
     for (int i = 0; i < elem->vnd_model_count; i++) {
-      struct bt_mesh_model* model = (struct bt_mesh_model*)&elem->vnd_models[i];
+      struct bt_mesh_model *model =
+          (struct bt_mesh_model *)&elem->vnd_models[i];
       if (model->vnd.company == FAST_PROV_VENDOR_COMPANY_ID &&
           (model->vnd.id == BT_MESH_MODEL_ID_VND_FAST_PROV_SRV ||
            model->vnd.id == BT_MESH_MODEL_ID_VND_FAST_PROV)) {
@@ -621,7 +604,7 @@ static void default_network_bind_appkey(void) {
  */
 static void default_network_set_temp_element_addr(void) {
   /* Get fast_provision context if available */
-  extern fast_prov_par_t* g_fast_prov;
+  extern fast_prov_par_t *g_fast_prov;
 
   if (!g_fast_prov) {
     LOG_WRN("g_fast_prov is NULL, cannot set temporary address");
@@ -653,26 +636,25 @@ static void default_network_set_temp_element_addr(void) {
     }
     g_fast_prov->mac_addr_info.default_addr = tmp_addr;
     g_fast_prov->mac_addr_info.addr = tmp_addr;
-    LOG_INF(
-        "Temporary address calculated (fallback): 0x%04X (from MAC[0:1] = "
-        "%02x:%02x)",
-        tmp_addr, g_fast_prov->mac_addr_info.mac[0],
-        g_fast_prov->mac_addr_info.mac[1]);
+    LOG_INF("Temporary address calculated (fallback): 0x%04X (from MAC[0:1] = "
+            "%02x:%02x)",
+            tmp_addr, g_fast_prov->mac_addr_info.mac[0],
+            g_fast_prov->mac_addr_info.mac[1]);
   } else {
     /* Reuse temporary address calculated in mesh_device_key_set_default() */
     tmp_addr = g_fast_prov->mac_addr_info.default_addr;
   }
 
   /* Set element addresses for all elements */
-  const struct bt_mesh_comp* comp = bt_mesh_comp_get();
+  const struct bt_mesh_comp *comp = bt_mesh_comp_get();
   if (comp && comp->elem_count > 0) {
-    const struct bt_mesh_elem* elem = &comp->elem[0];
+    const struct bt_mesh_elem *elem = &comp->elem[0];
     if (elem && elem->rt) {
       elem->rt->addr = tmp_addr;
       LOG_INF("Element[0] address set to: 0x%04X", tmp_addr);
 
       for (int i = 1; i < comp->elem_count; i++) {
-        const struct bt_mesh_elem* e = &comp->elem[i];
+        const struct bt_mesh_elem *e = &comp->elem[i];
         if (e && e->rt) {
           e->rt->addr = tmp_addr + i;
           LOG_INF("Element[%d] address set to: 0x%04X", i, tmp_addr + i);
@@ -824,7 +806,6 @@ void del_tmp_keys(void) {
   LOG_INF("========== del_tmp_keys: SUCCESS ==========");
 
   /* Clear RPL */
-  extern void bt_mesh_rpl_clear(void);
   bt_mesh_rpl_clear();
 }
 
@@ -889,7 +870,7 @@ static void monitor_default_network_status(void) {
  *
  * @param work Work item pointer
  */
-static void monitor_work_handler(struct k_work* work) {
+static void monitor_work_handler(struct k_work *work) {
   monitor_default_network_status();
 
   /* Reschedule after 30 seconds */
@@ -990,18 +971,18 @@ struct bt_mesh_app_key_dummy {
 };
 
 /* --- EXTERN HACK FUNCTION --- */
-extern void* bt_mesh_app_key_get_internal_ptr(uint16_t app_idx);
+extern void *bt_mesh_app_key_get_internal_ptr(uint16_t app_idx);
 
 /* ================================================================= */
 /* 2. HELPER FUNCTIONS (Define before use to fix implicit errors)    */
 /* ================================================================= */
 
-static void print_key_material(const char* name, const uint8_t* key_val) {
+static void print_key_material(const char *name, const uint8_t *key_val) {
   LOG_HEXDUMP_INF(key_val, 16, name);
 }
 
-static void try_print_psa_key(const char* name, struct bt_mesh_key* key) {
-  psa_key_id_t* p_id = (psa_key_id_t*)key;
+static void try_print_psa_key(const char *name, struct bt_mesh_key *key) {
+  psa_key_id_t *p_id = (psa_key_id_t *)key;
   psa_key_id_t key_id = *p_id;
 
   uint8_t raw_key[32];
@@ -1023,8 +1004,8 @@ static void print_app_key_details(uint16_t app_idx) {
   LOG_INF("  AppKey Index: 0x%04X - EXISTS", app_idx);
 
   /* --- HACK: GET INTERNAL STRUCT --- */
-  struct bt_mesh_app_key_dummy* key =
-      (struct bt_mesh_app_key_dummy*)bt_mesh_app_key_get_internal_ptr(app_idx);
+  struct bt_mesh_app_key_dummy *key =
+      (struct bt_mesh_app_key_dummy *)bt_mesh_app_key_get_internal_ptr(app_idx);
 
   if (key) {
     LOG_INF("    Bound to NetKey: 0x%04X", key->net_idx);
@@ -1040,7 +1021,7 @@ static void print_app_key_details(uint16_t app_idx) {
 }
 
 /* Callback function for Subnet */
-static void net_info_cb(struct bt_mesh_subnet* sub) {
+static void net_info_cb(struct bt_mesh_subnet *sub) {
   g_subnet_count++;
   LOG_INF("--- Subnet #%d ---", g_subnet_count);
   LOG_INF("  NetKey Index: 0x%04X", sub->net_idx);
@@ -1077,7 +1058,8 @@ void default_network_print_info(void) {
   /* 3. Subnets */
   g_subnet_count = 0;
   bt_mesh_subnet_foreach(net_info_cb);
-  if (g_subnet_count == 0) LOG_INF("No subnets found.");
+  if (g_subnet_count == 0)
+    LOG_INF("No subnets found.");
 
   /* 4. AppKeys */
   LOG_INF("--- AppKeys List (Scanning 0-20) ---");
@@ -1091,7 +1073,8 @@ void default_network_print_info(void) {
     }
   }
 
-  if (!app_key_found) LOG_INF("  No AppKeys found in range 0-20.");
+  if (!app_key_found)
+    LOG_INF("  No AppKeys found in range 0-20.");
 
   LOG_INF("========================================");
 }
@@ -1100,16 +1083,16 @@ void default_network_print_info(void) {
 #include <psa/crypto.h>
 
 /* Helper to print raw bytes */
-static void print_key_material(const char* name, const uint8_t* key_val) {
+static void print_key_material(const char *name, const uint8_t *key_val) {
   LOG_HEXDUMP_INF(key_val, 16, name);
 }
 
 /* Helper to try exporting PSA Key */
-static void try_print_psa_key(const char* name, struct bt_mesh_key* key) {
+static void try_print_psa_key(const char *name, struct bt_mesh_key *key) {
   /* Hack: Assume struct bt_mesh_key in SDK 3.0.1 contains psa_key_id_t at start
    */
   /* We cast struct pointer to psa_key_id_t* to get ID */
-  psa_key_id_t* p_id = (psa_key_id_t*)key;
+  psa_key_id_t *p_id = (psa_key_id_t *)key;
   psa_key_id_t key_id = *p_id;
 
   uint8_t raw_key[32];
@@ -1133,7 +1116,7 @@ static void try_print_psa_key(const char* name, struct bt_mesh_key* key) {
 static int g_subnet_count = 0;
 
 /* Callback function for Subnet */
-static void net_info_cb(struct bt_mesh_subnet* sub) {
+static void net_info_cb(struct bt_mesh_subnet *sub) {
   g_subnet_count++;
   LOG_INF("--- Subnet #%d ---", g_subnet_count);
   LOG_INF("  NetKey Index: 0x%04X", sub->net_idx);
