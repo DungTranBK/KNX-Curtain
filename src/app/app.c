@@ -498,7 +498,9 @@ static void app_super_loop(void *p1, void *p2, void *p3) {
     }
 
     /* Curtain runs every 2ms for precise position tracking */
-    curtain_proc();
+    if (!fact_is_active()) {
+      curtain_proc();
+    }
 
     /* Other tasks run every 10ms (every 5th iteration) */
     if (++loop_cnt >= 5) {

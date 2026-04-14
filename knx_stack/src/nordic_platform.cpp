@@ -6,10 +6,10 @@
 
 #include "nordic_platform.h"
 
-#include <dk_buttons_and_leds.h>  // Nordic DK library cho LEDs
-#include <stdio.h>                // Thay vì <cstdio> cho Zephyr compatibility
-#include <stdlib.h>               // For strtol
-#include <string.h>               // Thay vì <cstring> cho Zephyr compatibility
+#include <dk_buttons_and_leds.h> // Nordic DK library cho LEDs
+#include <stdio.h>               // Thay vì <cstdio> cho Zephyr compatibility
+#include <stdlib.h>              // For strtol
+#include <string.h>              // Thay vì <cstring> cho Zephyr compatibility
 #include <zephyr/cache.h>
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/drivers/hwinfo.h>
@@ -40,7 +40,7 @@
 #endif
 
 #ifdef USE_KNX_MEMORY_API
-#include <zephyr/settings/settings.h>  // Settings API (TF-M compatible)
+#include <zephyr/settings/settings.h> // Settings API (TF-M compatible)
 
 #include "knx/memory.h"
 #endif
@@ -59,12 +59,12 @@ LOG_MODULE_REGISTER(nordic_platform, LOG_LEVEL_INF);
 #define KNX_UART_DEVICE DT_NODELABEL(uart00)
 
 // KNX TP UART configuration: 19200 baud, 8E1
-static const struct uart_config uart_cfg = {
-    .baudrate = 19200,
-    .parity = UART_CFG_PARITY_EVEN,
-    .stop_bits = UART_CFG_STOP_BITS_1,
-    .data_bits = UART_CFG_DATA_BITS_8,
-    .flow_ctrl = UART_CFG_FLOW_CTRL_NONE};
+static const struct uart_config uart_cfg = {.baudrate = 19200,
+                                            .parity = UART_CFG_PARITY_EVEN,
+                                            .stop_bits = UART_CFG_STOP_BITS_1,
+                                            .data_bits = UART_CFG_DATA_BITS_8,
+                                            .flow_ctrl =
+                                                UART_CFG_FLOW_CTRL_NONE};
 #endif
 
 #ifdef USE_KNX_MEMORY_API
@@ -82,7 +82,7 @@ static const struct uart_config uart_cfg = {
 
 // Static member definitions - share giữa các NordicPlatform instances
 static uint8_t s_eeprom_static_buf[KNX_EEPROM_SIZE];
-uint8_t* NordicPlatform::_eeprom_buffer = nullptr;
+uint8_t *NordicPlatform::_eeprom_buffer = nullptr;
 uint32_t NordicPlatform::_eeprom_size = 0;
 uint64_t NordicPlatform::_seq_send = 0;
 uint64_t NordicPlatform::_seq_tool = 0;
@@ -103,8 +103,8 @@ static struct ring_buf uart_rx_rb;
 // rx_active: true khi đang có data cần xử lý, polling sẽ chạy
 // Khi buffer empty một thời gian, rx_active = false, polling dừng
 static volatile bool rx_active = false;
-static volatile uint32_t rx_last_byte_time = 0;  // Thời điểm nhận byte cuối
-#define RX_IDLE_TIMEOUT_MS 10  // Tắt polling sau 10ms không có data mới
+static volatile uint32_t rx_last_byte_time = 0; // Thời điểm nhận byte cuối
+#define RX_IDLE_TIMEOUT_MS 10 // Tắt polling sau 10ms không có data mới
 
 // Trigger callback: gọi từ ISR để kick work queue ngay lập tức
 static void (*_rx_trigger_callback)(void) = nullptr;
@@ -113,21 +113,21 @@ static void (*_rx_trigger_callback)(void) = nullptr;
 #ifdef DEBUG_UART_GPIO
 // Debug GPIO pins for UART tracing
 // Switch to Port 2 (same as UART) to ensure Non-Secure access
-#define DEBUG_PIN_ISR_ENTRY DT_NODELABEL(gpio2)  // P2.00 - ISR Entry/Exit
-#define DEBUG_PIN_CALLBACK DT_NODELABEL(gpio2)   // P2.01 - process_rx_isr call
-#define DEBUG_PIN_MALLOC_FAIL DT_NODELABEL(gpio2)  // P2.02 - malloc failure
+#define DEBUG_PIN_ISR_ENTRY DT_NODELABEL(gpio2)   // P2.00 - ISR Entry/Exit
+#define DEBUG_PIN_CALLBACK DT_NODELABEL(gpio2)    // P2.01 - process_rx_isr call
+#define DEBUG_PIN_MALLOC_FAIL DT_NODELABEL(gpio2) // P2.02 - malloc failure
 
-static const struct device* debug_gpio_dev = nullptr;
-static const gpio_pin_t debug_pin_isr_entry = 0;    // P2.00
-static const gpio_pin_t debug_pin_callback = 1;     // P2.01
-static const gpio_pin_t debug_pin_malloc_fail = 2;  // P2.02
+static const struct device *debug_gpio_dev = nullptr;
+static const gpio_pin_t debug_pin_isr_entry = 0;   // P2.00
+static const gpio_pin_t debug_pin_callback = 1;    // P2.01
+static const gpio_pin_t debug_pin_malloc_fail = 2; // P2.02
 
 // ISR Loop Detection
 static uint32_t isr_call_count = 0;
 static uint32_t isr_bytes_read = 0;
 static uint32_t last_log_time = 0;
-#define ISR_LOOP_THRESHOLD \
-  1000  // If ISR called 1000 times in 1 second without reading bytes
+#define ISR_LOOP_THRESHOLD                                                     \
+  1000 // If ISR called 1000 times in 1 second without reading bytes
 #endif
 
 // ============================================================================
@@ -141,19 +141,18 @@ static uint32_t last_log_time = 0;
  * @param dev UART device
  * @param user_data NordicPlatform pointer
  */
-void uart_irq_handler(const struct device* dev, void* user_data) {
-  NordicPlatform* platform = (NordicPlatform*)user_data;
+void uart_irq_handler(const struct device *dev, void *user_data) {
+  NordicPlatform *platform = (NordicPlatform *)user_data;
 
 #ifdef DEBUG_UART_GPIO
   // ISR Loop Detection
   isr_call_count++;
   uint32_t now = k_uptime_get_32();
-  if (now - last_log_time >= 1000) {  // Every 1 second
+  if (now - last_log_time >= 1000) { // Every 1 second
     if (isr_call_count > ISR_LOOP_THRESHOLD && isr_bytes_read == 0) {
-      LOG_ERR(
-          "UART ISR LOOP DETECTED: %u calls, %u bytes read in 1s. "
-          "Disabling RX IRQ!",
-          isr_call_count, isr_bytes_read);
+      LOG_ERR("UART ISR LOOP DETECTED: %u calls, %u bytes read in 1s. "
+              "Disabling RX IRQ!",
+              isr_call_count, isr_bytes_read);
       uart_irq_rx_disable(dev);
       // Reset pin to LOW before disabling
       if (debug_gpio_dev) {
@@ -161,7 +160,7 @@ void uart_irq_handler(const struct device* dev, void* user_data) {
       }
       return;
     }
-    if (isr_call_count > 10 || isr_bytes_read > 0) {  // Only log if activity
+    if (isr_call_count > 10 || isr_bytes_read > 0) { // Only log if activity
       LOG_INF("UART ISR Stats: %u calls, %u bytes in 1s", isr_call_count,
               isr_bytes_read);
     }
@@ -213,7 +212,7 @@ void uart_irq_handler(const struct device* dev, void* user_data) {
 
     while (uart_fifo_read(dev, &byte, 1) == 1) {
 #ifdef DEBUG_UART_GPIO
-      isr_bytes_read++;  // Track bytes actually read
+      isr_bytes_read++; // Track bytes actually read
 #endif
       // *** RING BUFFER: No malloc needed! ***
       if (ring_buf_put(&uart_rx_rb, &byte, 1) == 1) {
@@ -279,19 +278,18 @@ void uart_irq_handler(const struct device* dev, void* user_data) {
 NordicPlatform::NordicPlatform()
     :
 #ifdef USE_KNX_UART_API
-      _uart_dev(nullptr),
-      _uart_overflow(false),
+      _uart_dev(nullptr), _uart_overflow(false),
 #endif
       _knx_process_rx_isr(nullptr) {
 
   // Initialize reboot work
-  k_work_init_delayable(&_reboot_work, [](struct k_work* work) {
+  k_work_init_delayable(&_reboot_work, [](struct k_work *work) {
     LOG_ERR("!!! [REBOOT] ASYNCHRONOUS REBOOT EXECUTING NOW !!!");
     sys_reboot(SYS_REBOOT_COLD);
   });
 
   // Initialize reboot work
-  k_work_init_delayable(&_reboot_work, [](struct k_work* work) {
+  k_work_init_delayable(&_reboot_work, [](struct k_work *work) {
     LOG_ERR("!!! [REBOOT] ASYNCHRONOUS REBOOT EXECUTING NOW !!!");
     sys_reboot(SYS_REBOOT_COLD);
   });
@@ -331,9 +329,8 @@ NordicPlatform::~NordicPlatform() {
 // ============================================================================
 
 void NordicPlatform::restart() {
-  LOG_ERR(
-      ">>> [REBOOT] NordicPlatform::restart() - ASYNCHRONOUS REBOOT "
-      "REQUESTED!");
+  LOG_ERR(">>> [REBOOT] NordicPlatform::restart() - ASYNCHRONOUS REBOOT "
+          "REQUESTED!");
 
   // Schedule reboot with a delay to allow KNX stack to finish transmission
   // (e.g., sending the Restart Response or ACK to ETS)
@@ -374,7 +371,7 @@ uint32_t NordicPlatform::uniqueSerialNumber() {
   return serial;
 }
 
-void NordicPlatform::macAddress(uint8_t* data) {
+void NordicPlatform::macAddress(uint8_t *data) {
   if (!data) {
     return;
   }
@@ -386,7 +383,7 @@ void NordicPlatform::macAddress(uint8_t* data) {
     // Fallback: dùng MAC từ BLE Mesh (nếu có)
     // Hoặc generate từ unique serial number
     uint32_t serial = uniqueSerialNumber();
-    data[0] = 0x02;  // Locally administered
+    data[0] = 0x02; // Locally administered
     data[1] = (serial >> 24) & 0xFF;
     data[2] = (serial >> 16) & 0xFF;
     data[3] = (serial >> 8) & 0xFF;
@@ -459,11 +456,11 @@ void NordicPlatform::setupUart() {
 #if defined(NRF_UARTE00_NS)
   // Base address handled viaHAL in writeUart
 #elif defined(NRF_UARTE00)
-  NRF_UARTE_Type* uarte_regs = NRF_UARTE00;
+  NRF_UARTE_Type *uarte_regs = NRF_UARTE00;
 #elif defined(NRF_UARTE0)
-  NRF_UARTE_Type* uarte_regs = NRF_UARTE0;
+  NRF_UARTE_Type *uarte_regs = NRF_UARTE0;
 #else
-  NRF_UARTE_Type* uarte_regs = nullptr;
+  NRF_UARTE_Type *uarte_regs = nullptr;
 #endif
 
   // Configure UART for KNX (19200, 8E1) using Zephyr API
@@ -493,7 +490,8 @@ void NordicPlatform::setupUart() {
   int flushed = 0;
   while (uart_fifo_read(_uart_dev, &dummy, 1) == 1) {
     flushed++;
-    if (flushed > 100) break;  // Safety limit
+    if (flushed > 100)
+      break; // Safety limit
   }
   if (flushed > 0) {
     LOG_INF("Flushed %d garbage bytes from UART RX FIFO", flushed);
@@ -542,7 +540,7 @@ size_t NordicPlatform::writeUart(const uint8_t data) {
   return writeUart(&data, 1);
 }
 
-size_t NordicPlatform::writeUart(const uint8_t* buffer, size_t size) {
+size_t NordicPlatform::writeUart(const uint8_t *buffer, size_t size) {
   if (!_uart_dev || !buffer || size == 0) {
     return 0;
   }
@@ -553,7 +551,7 @@ size_t NordicPlatform::writeUart(const uint8_t* buffer, size_t size) {
   }
 
   // Get UART Base Address
-  NRF_UARTE_Type* uarte = nullptr;
+  NRF_UARTE_Type *uarte = nullptr;
 #if defined(NRF_UARTE00_NS)
   uarte = NRF_UARTE00_NS;
 #elif defined(NRF_UARTE00)
@@ -566,7 +564,7 @@ size_t NordicPlatform::writeUart(const uint8_t* buffer, size_t size) {
     // *** RAW HAL DMA IMPLEMENTATION (ROBUST) ***
 
     // 0. Flush Cache (Critical for DMA from Stack/RAM)
-    sys_cache_data_flush_range((void*)buffer, size);
+    sys_cache_data_flush_range((void *)buffer, size);
 
     // 1. Disable TX Interrupts (Prevent Storm & Zephyr Interference)
     nrf_uarte_int_disable(uarte, NRF_UARTE_INT_TXDRDY_MASK |
@@ -589,7 +587,8 @@ size_t NordicPlatform::writeUart(const uint8_t* buffer, size_t size) {
     // Timeout safety: ~600us/byte -> size*1000us + margin
     int timeout_us = size * 1000 + 2000;
     while (!nrf_uarte_event_check(uarte, NRF_UARTE_EVENT_ENDTX)) {
-      if (timeout_us <= 0) break;
+      if (timeout_us <= 0)
+        break;
       k_busy_wait(10);
       timeout_us -= 10;
     }
@@ -622,7 +621,7 @@ int NordicPlatform::readUart() {
   return -1;
 }
 
-size_t NordicPlatform::readBytesUart(uint8_t* buffer, size_t length) {
+size_t NordicPlatform::readBytesUart(uint8_t *buffer, size_t length) {
   if (!buffer || length == 0) {
     return 0;
   }
@@ -632,7 +631,7 @@ size_t NordicPlatform::readBytesUart(uint8_t* buffer, size_t length) {
 
 bool NordicPlatform::overflowUart() {
   bool overflow = _uart_overflow;
-  _uart_overflow = false;  // Clear flag
+  _uart_overflow = false; // Clear flag
   return overflow;
 }
 
@@ -647,13 +646,13 @@ void NordicPlatform::setupUart() {}
 void NordicPlatform::closeUart() {}
 int NordicPlatform::uartAvailable() { return 0; }
 size_t NordicPlatform::writeUart(const uint8_t data) { return 0; }
-size_t NordicPlatform::writeUart(const uint8_t* buffer, size_t size) {
+size_t NordicPlatform::writeUart(const uint8_t *buffer, size_t size) {
   (void)buffer;
   (void)size;
   return 0;
 }
 int NordicPlatform::readUart() { return -1; }
-size_t NordicPlatform::readBytesUart(uint8_t* buffer, size_t length) {
+size_t NordicPlatform::readBytesUart(uint8_t *buffer, size_t length) {
   (void)buffer;
   (void)length;
   return 0;
@@ -680,7 +679,7 @@ void NordicPlatform::set_knx_process_rx_isr(void (*func)(void)) {
  * @param size Size of EEPROM buffer to allocate and load
  * @return Pointer to EEPROM buffer
  */
-uint8_t* NordicPlatform::getEepromBuffer(uint32_t size) {
+uint8_t *NordicPlatform::getEepromBuffer(uint32_t size) {
   k_mutex_lock(&_memory_mutex, K_FOREVER);
 
   if (_eeprom_buffer == nullptr) {
@@ -688,10 +687,9 @@ uint8_t* NordicPlatform::getEepromBuffer(uint32_t size) {
     _eeprom_buffer = s_eeprom_static_buf;
 
     memset(_eeprom_buffer, 0xFF, _eeprom_size);
-    LOG_INF(
-        ">>> EEPROM buffer using static memory: %d bytes (Subtree Load "
-        "Optimized)",
-        _eeprom_size);
+    LOG_INF(">>> EEPROM buffer using static memory: %d bytes (Subtree Load "
+            "Optimized)",
+            _eeprom_size);
 
     // OPTIMIZED LOAD: Load all settings in one pass using subtree
     // This calls settings_load_callback for each found key under "knx/"
@@ -752,7 +750,7 @@ void NordicPlatform::commitToEeprom() {
   k_mutex_unlock(&_memory_mutex);
 }
 
-uint8_t* NordicPlatform::getNonVolatileMemoryStart() {
+uint8_t *NordicPlatform::getNonVolatileMemoryStart() {
   // Trả về EEPROM buffer để KNX stack có thể đọc/ghi
   // Nếu chưa allocate, allocate với kích thước mặc định
   if (_eeprom_buffer == nullptr) {
@@ -770,13 +768,12 @@ void NordicPlatform::commitNonVolatileMemory() {
 }
 
 uint32_t NordicPlatform::writeNonVolatileMemory(uint32_t relativeAddress,
-                                                uint8_t* buffer, size_t size) {
+                                                uint8_t *buffer, size_t size) {
   // CRITICAL DEBUG: Check what is being written to address 0 (Header)
   if (relativeAddress == 0 && size >= 2 && buffer != nullptr) {
-    LOG_ERR(
-        ">>> writeNonVolatileMemory(addr=0) [FIX VERIFIED]: First 2 bytes "
-        "[0x%02X 0x%02X]",
-        buffer[0], buffer[1]);
+    LOG_ERR(">>> writeNonVolatileMemory(addr=0) [FIX VERIFIED]: First 2 bytes "
+            "[0x%02X 0x%02X]",
+            buffer[0], buffer[1]);
   }
 
   if (relativeAddress + size > KNX_EEPROM_SIZE) {
@@ -815,7 +812,7 @@ uint32_t NordicPlatform::writeNonVolatileMemory(uint32_t relativeAddress,
 }
 
 uint32_t NordicPlatform::readNonVolatileMemory(uint32_t relativeAddress,
-                                               uint8_t* buffer, size_t size) {
+                                               uint8_t *buffer, size_t size) {
   if (relativeAddress + size > KNX_EEPROM_SIZE) {
     LOG_ERR("NVS read: address 0x%x + size %d > max %d", relativeAddress, size,
             KNX_EEPROM_SIZE);
@@ -851,7 +848,7 @@ uint32_t NordicPlatform::writeNonVolatileMemory(uint32_t relativeAddress,
   }
 
   // Tạo buffer và fill với value
-  uint8_t* buffer = (uint8_t*)k_malloc(repeat);
+  uint8_t *buffer = (uint8_t *)k_malloc(repeat);
   if (!buffer) {
     return 0;
   }
@@ -864,23 +861,23 @@ uint32_t NordicPlatform::writeNonVolatileMemory(uint32_t relativeAddress,
 }
 #else
 // Stub implementations khi tắt Memory API
-uint8_t* NordicPlatform::getEepromBuffer(uint32_t size) {
+uint8_t *NordicPlatform::getEepromBuffer(uint32_t size) {
   (void)size;
   return nullptr;
 }
 void NordicPlatform::commitToEeprom() {}
-uint8_t* NordicPlatform::getNonVolatileMemoryStart() { return nullptr; }
+uint8_t *NordicPlatform::getNonVolatileMemoryStart() { return nullptr; }
 size_t NordicPlatform::getNonVolatileMemorySize() { return 0; }
 void NordicPlatform::commitNonVolatileMemory() {}
 uint32_t NordicPlatform::writeNonVolatileMemory(uint32_t relativeAddress,
-                                                uint8_t* buffer, size_t size) {
+                                                uint8_t *buffer, size_t size) {
   (void)relativeAddress;
   (void)buffer;
   (void)size;
   return 0;
 }
 uint32_t NordicPlatform::readNonVolatileMemory(uint32_t relativeAddress,
-                                               uint8_t* buffer, size_t size) {
+                                               uint8_t *buffer, size_t size) {
   (void)relativeAddress;
   (void)buffer;
   (void)size;
@@ -982,10 +979,10 @@ void attachInterrupt(uint32_t pin, voidFuncPtr callback, uint32_t mode) {
   (void)mode;
 }
 
-int NordicPlatform::settings_load_callback(const char* name, size_t len,
+int NordicPlatform::settings_load_callback(const char *name, size_t len,
                                            settings_read_cb read_cb,
-                                           void* cb_arg) {
-  const char* next;
+                                           void *cb_arg) {
+  const char *next;
   uint32_t i = 0;
 
   // Key format is: knx/eeprom/<index> or knx/seq/<send|tool>
@@ -993,7 +990,7 @@ int NordicPlatform::settings_load_callback(const char* name, size_t len,
   // "seq/<send|tool>"
 
   if (strncmp(name, "seq/", 4) == 0) {
-    const char* subkey = name + 4;
+    const char *subkey = name + 4;
     if (strcmp(subkey, "send") == 0) {
       if (len != sizeof(_seq_send)) {
         LOG_ERR(">>> [SUBTREE] SeqSend error: length mismatch (%zu != %zu)",
@@ -1027,7 +1024,8 @@ int NordicPlatform::settings_load_callback(const char* name, size_t len,
   }
 
   next = name + 7;
-  if (!*next) return 0;
+  if (!*next)
+    return 0;
 
   i = strtoul(next, NULL, 10);
   uint32_t offset = i * SETTINGS_CHUNK_SIZE;
@@ -1036,7 +1034,8 @@ int NordicPlatform::settings_load_callback(const char* name, size_t len,
     size_t chunk_len = (_eeprom_size - offset) < SETTINGS_CHUNK_SIZE
                            ? (_eeprom_size - offset)
                            : SETTINGS_CHUNK_SIZE;
-    if (len > chunk_len) len = chunk_len;
+    if (len > chunk_len)
+      len = chunk_len;
 
     ssize_t rc = read_cb(cb_arg, _eeprom_buffer + offset, len);
     if (rc >= 0) {

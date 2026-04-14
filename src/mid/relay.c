@@ -25,7 +25,9 @@
 #include <zephyr/sys/reboot.h>
 
 #include "../../include/app_device.h"
+#include "../../include/fact.h"
 #include "../../include/utilities.h"
+
 
 LOG_MODULE_REGISTER(relay, CONFIG_LOG_DEFAULT_LEVEL);
 
@@ -374,20 +376,26 @@ int relay_init(void) {
  */
 uint8_t relay_proc(void) {
   /* Random power-on relay control delay to prevent power sag */
-  if (!power_on_delay_done) {
-    if (((uint32_t)k_uptime_get() - power_on_delay_st_time) <
-        power_on_delay_interval_ms) {
-      return RELAY_IDLE; /* Block relay switching during power-on delay */
-    } else {
-      power_on_delay_done = true;
-      LOG_INF("Power-on relay delay finished (%u ms)",
-              power_on_delay_interval_ms);
+  if (!fact_is_active()) {
+    if (!power_on_delay_done) {
+      if (((uint32_t)k_uptime_get() - power_on_delay_st_time) <
+          power_on_delay_interval_ms) {
+        return RELAY_IDLE; /* Block relay switching during power-on delay */
+      } else {
+        power_on_delay_done = true;
+        LOG_INF("Power-on relay delay finished (%u ms)",
+                power_on_delay_interval_ms);
+      }
     }
   }
 
   /* Rate-limit relay control for 2-wire power supply (one at a time) */
+  uint16_t interval_ms = RELAY_CONTROL_INTERVAL_MS;
+  if (fact_is_active()) {
+    interval_ms = RELAY_CONTROL_INTERVAL_MS_IN_FACT;
+  }
   uint32_t now = (uint32_t)k_uptime_get();
-  if ((now - relay_para.control_relay_st_time) < RELAY_CONTROL_INTERVAL_MS) {
+  if ((now - relay_para.control_relay_st_time) < interval_ms) {
     if (relay_para.relay_module_st == RELAY_BUSY) {
       /* Already controlling, let it finish */
     } else if (relay_para.RLS_TARGET != relay_para.RLS_PRESENT) {

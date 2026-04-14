@@ -25,10 +25,12 @@
 #include "../../include/fast_provision.h"
 #include "../../include/led.h"
 #include "../../include/network.h"
+#include "../../include/relay.h"
 #include "../../include/utilities.h"
 #include "../../include/vendor.h"
 #include "../../include/vendor_model.h"
 #include "mesh/foundation.h"
+
 
 #ifdef ENABLE_FACT_MID_LOG
 LOG_MODULE_REGISTER(fact, LOG_LEVEL_INF);
@@ -272,6 +274,10 @@ uint8_t fact_set(uint8_t act) {
     set_tx_power(FACT_POWER_DBM); // ADV handles now exist after network enable
     LOG_INF("----------------------------------------------fact_set: act=%d",
             act);
+    foreach (i, RELAY_COUNT) {
+      relay_control_directly(i, G_OFF);
+    }
+    fact_par.relay_st = G_OFF;
   } else {
     fact_par.enable = 0;
     set_tx_power(BT_HCI_VS_LL_TX_POWER_LEVEL_NO_PREF);
@@ -750,6 +756,22 @@ static void fact_show_led_result(void) {
 }
 
 /**
+ * @func   fact_auto_change_relay_state
+ */
+static void fact_auto_change_relay_state(void) {
+  static uint8_t cnt = 0xFE;
+  if (cnt++ >= 10) {
+    cnt = 0;
+  } else {
+    return;
+  }
+  fact_par.relay_st = (fact_par.relay_st ^ 1) & 1;
+  for (int i = 0; i < RELAY_COUNT; i++) {
+    relay_control_directly(i, fact_par.relay_st);
+  }
+}
+
+/**
  * @func   fact_handle
  */
 void fact_handle(void) {
@@ -792,6 +814,7 @@ void fact_handle(void) {
         if (clock_time_exceed_ms(result_par.toggle_st_time,
                                  FACT_TOGGLE_INTERVAL)) {
           fact_show_led_result();
+          fact_auto_change_relay_state();
           result_par.toggle_st_time = clock_time_ms();
         }
       }

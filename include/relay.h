@@ -63,6 +63,7 @@ typedef enum {
  *        Matches Telink CONTROL_RL_INTERVAL_MS = 500ms.
  */
 #define RELAY_CONTROL_INTERVAL_MS 50
+#define RELAY_CONTROL_INTERVAL_MS_IN_FACT 500
 
 /**
  * @brief Delay before storing relay state to flash (ms).

@@ -41,7 +41,6 @@ typedef void (*typeFact_handleExitfactMode)(void);
 
 /******************************************************************************/
 /*                              EXPORT TYPE                                   */
-/* (from Telink: fact_handle.h)                                               */
 /******************************************************************************/
 typedef struct {
   uint8_t enable;
@@ -53,6 +52,7 @@ typedef struct {
   uint8_t response_cnt;
   uint8_t active_idx;
   uint8_t done;
+  uint8_t relay_st;
 } fact_par_t;
 
 typedef struct {
