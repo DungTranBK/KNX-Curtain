@@ -154,7 +154,7 @@ void proc_default_network(void) {
 #if EN_PROVISIONING_TOGGLE
   /* Top-Level: Delete restored default network on boot (if Toggle ON) */
   if (default_network_is_present() &&
-      !default_network_configured_after_reboot) {
+      !default_network_configured_after_reboot && !is_provisioned) {
     LOG_INF("Default network found on boot (Restored). Cleaning up...");
     del_tmp_keys();
     return;

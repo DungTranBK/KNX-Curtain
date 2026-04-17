@@ -273,11 +273,9 @@ void app_knx_shutter_stop(void) {
   app_handle_control_curtain_from_knx(0, CURTAIN_CONTROL_ID_STOP, 0);
 }
 
-void app_knx_shutter_set_position(uint8_t percent) {
-  LOG_INF("KNX -> SHUTTER SET POSITION: %u%%", percent);
-  // Convert 0-100% to 0x00-0xFF
-  uint8_t curtain_pos = (uint8_t)((uint16_t)percent * 255 / 100);
-  app_handle_control_curtain_from_knx(0, CURTAIN_CONTROL_ID_RUN, curtain_pos);
+void app_knx_shutter_set_position(uint8_t raw_val) {
+  LOG_INF("KNX -> SHUTTER SET POSITION (RAW): %u", raw_val);
+  app_handle_control_curtain_from_knx(0, CURTAIN_CONTROL_ID_RUN, raw_val);
 }
 
 /*
@@ -318,14 +316,13 @@ void app_handle_curtain_update_level(uint8_t curtain_idx,
           "current_position=%d",
           curtain_idx, current_position);
 
-  // Convert 0x00-0xFF back to 0-100% for KNX feedback
-  uint8_t knx_pct = (uint8_t)((uint16_t)current_position * 100 / 255);
-  knx_send_position_status(knx_pct);
+  // Send status back to KNX bus (Raw 0-255)
+  knx_adapter_report_curtain_pos(current_position);
 
   // Send limit status on GO5 (MoveStatus)
-  if (knx_pct == 0) {
+  if (current_position == 0) {
     knx_send_direction_feedback(false); // Report UP/OPEN limit
-  } else if (knx_pct == 100) {
+  } else if (current_position == 255) {
     knx_send_direction_feedback(true); // Report DOWN/CLOSED limit
   }
 }
@@ -445,7 +442,10 @@ static void app_handle_fact_confirm_or_activate(uint8_t state) {
     foreach (i, NUMBER_LED) {
       led_set_color(i, LED_COLOR_PINK);
     }
+
+
     // TODO, KNX go to factory test mode (Note: Exit configuration mode if in
+    knx_fact_start_test();
     // currently in it (stop the LED from blinking).)
   }
 }
@@ -459,7 +459,7 @@ static void app_handle_exit_fact_mode(void) {
 }
 
 /* Helper function*/
-bool knx_get_test_status(void) { return false; }
+bool knx_get_test_status(void) { return knx_fact_get_result(); }
 
 /**
  * @brief Initialize app-level callbacks

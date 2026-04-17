@@ -18,12 +18,15 @@
 #include "../../include/knx_provision.h"
 #include "../../include/led.h"
 #include "knx/bau07B0.h"
+#include "knx/bau_systemB_device.h"
 #include "knx/device_object.h"
 #include "knx/property.h"
 #include "knx/security_interface_object.h"
 #include "knx/table_object.h"
+#include "knx/tpuart_data_link_layer.h"
 #include "knx_facade.h"
 #include "nordic_platform.h"
+#include "../../include/utilities.h"
 
 #ifndef CONFIG_LOG_DEFAULT_LEVEL
 #define CONFIG_LOG_DEFAULT_LEVEL 3
@@ -44,6 +47,10 @@ extern void app_knx_shutter_set_position(uint8_t percent);
 extern int app_get_curtain_current_position(uint8_t curtain_idx,
                                             uint8_t* position);
 }
+
+//Callback for app_handle_set_curtain_config
+extern "C" int app_handle_set_curtain_config(int model_idx, uint8_t *par, int par_len,
+                                  uint8_t cmd);
 
 // ============================================================================
 // 2. GLOBALS
@@ -109,10 +116,19 @@ static void knx_on_tables_unload(void) {
 }
 
 /**
- * @brief Load all parameters from KNX stack into shutter_config struct
+ * @brief Load all parameters from KNX stack into shutter_confiqg struct
  */
 static void load_shutter_params(void) {
-  // --- Basic parameters ---
+  uint8_t ets_sync_flag = knx->paramByte(PARAM_ETS_DOWNLOAD_STATUS);
+  bool any_change = (ets_sync_flag == 0xDD);
+
+  LOG_INF("================================================================");
+  LOG_INF("[KNX] Loading device parameters from stack memory...");
+  LOG_INF("ETS Sync Flag Status: 0x%02X (any_change=%d)", ets_sync_flag,
+          any_change);
+  LOG_INF("================================================================");
+
+  // --- LUÔN LUÔN LOAD TỪ STACK (Dùng cho Adapter nội bộ) ---
   shutter_config.motor_type =
       (knx_blind_type_t)knx->paramByte(PARAM_MOTOR_TYPE);
 
@@ -126,8 +142,6 @@ static void load_shutter_params(void) {
   // EnableSceneStore: XML Offset=7, BitOffset=0
   uint8_t raw_byte6 = knx->paramByte(PARAM_ENABLE_FLAGS);
   uint8_t raw_byte7 = knx->paramByte(PARAM_ENABLE_SCENE_STORE_BYTE);
-  LOG_INF("DEBUG: raw Byte[6]=0x%02X, raw Byte[7]=0x%02X", raw_byte6,
-          raw_byte7);
 
   shutter_config.enable_scene =
       knx->paramBit(PARAM_ENABLE_FLAGS, PARAM_ENABLE_SCENE_BIT);
@@ -158,36 +172,65 @@ static void load_shutter_params(void) {
     }
   }
 
-  // --- Log configuration ---
-  LOG_INF("Shutter Config: MotorType=%d, TravelTime=%u",
-          shutter_config.motor_type, shutter_config.travel_time_sec);
-  LOG_INF("  EnableScene=%d, EnableSceneStore=%d", shutter_config.enable_scene,
-          shutter_config.enable_scene_store);
+  // --- CHỈ SYNC SANG APP BLE NẾU CÓ CỜ 0xDD ---
+  if (any_change) {
+    LOG_INF("  [SYNC] ETS download detected (0xDD) - Updating BLE settings...");
+
+    if (knx->configured()) {
+      // Map KNX Enums (1-based) to App Enums (0-based)
+      uint8_t app_type = (shutter_config.motor_type > 0)
+                             ? (uint8_t)(shutter_config.motor_type - 1)
+                             : 0;
+      // Map Time (Seconds to Milliseconds)
+      uint32_t limit_ms = (uint32_t)shutter_config.travel_time_sec * 1000;
+
+      if (limit_ms == 0) limit_ms = 20000;  // Default 20s if not set
+
+      // Sync curtain type to BLE (cmd=0x26: [endpoint, type])
+      uint8_t type_par[2] = { 0x01, app_type };
+      app_handle_set_curtain_config(0, type_par, sizeof(type_par),
+                                    VD_CONFIG_CURTAIN_TYPE_OPT);
+
+      // Sync limit time to BLE (cmd=0x40: [LSB..MSB] 4 bytes, milliseconds)
+      uint8_t time_par[4] = {
+        (uint8_t)(limit_ms & 0xFF),
+        (uint8_t)((limit_ms >> 8) & 0xFF),
+        (uint8_t)((limit_ms >> 16) & 0xFF),
+        (uint8_t)((limit_ms >> 24) & 0xFF)
+      };
+      app_handle_set_curtain_config(0, time_par, sizeof(time_par),
+                                    VD_CONFIG_CURTAIN_LIMIT_TIME);
+    }
+
+    // Reset flag in KNX memory
+    uint8_t* flag_ptr = knx->paramData(PARAM_ETS_DOWNLOAD_STATUS);
+    if (flag_ptr) {
+      *flag_ptr = 0x00;
+      knx->writeMemory();
+      LOG_INF("  [SYNC] ETS download status flag cleared.");
+    }
+  }
+
+  // --- Log resulting configuration ---
+  LOG_INF("KNX Configuration Loaded:");
+  LOG_INF("  Motor Type      : %d", (int)shutter_config.motor_type);
+  LOG_INF("  Travel Time     : %u s", shutter_config.travel_time_sec);
+  LOG_INF("  Scenes Handling : %s",
+          shutter_config.enable_scene ? "ENABLED" : "DISABLED");
+  LOG_INF("  Scene Learning  : %s",
+          shutter_config.enable_scene_store ? "YES" : "NO");
+  LOG_INF("  raw Byte[6]=0x%02X, raw Byte[7]=0x%02X", raw_byte6, raw_byte7);
 
   if (shutter_config.enable_scene) {
     for (uint8_t i = 0; i < KNX_MAX_SCENES; i++) {
       if (shutter_config.scenes[i].active) {
-        LOG_INF("  Scene %c: Num=%u, Pos=%u%%", 'A' + i,
+        LOG_INF("    Scene %c: Num=%u, Pos=%u%%", 'A' + i,
                 shutter_config.scenes[i].num, shutter_config.scenes[i].pos);
       }
     }
   }
-
-  // --- SYNC TO CURTAIN APP ---
-  // If configured, overwrite BLE/Flash settings with KNX priority
-  if (knx->configured()) {
-    // Map KNX Enums (1-based) to App Enums (0-based)
-    uint8_t app_type = (shutter_config.motor_type > 0)
-                           ? (uint8_t)(shutter_config.motor_type - 1)
-                           : 0;
-    // Map Time (Seconds to Milliseconds)
-    uint32_t limit_ms = (uint32_t)shutter_config.travel_time_sec * 1000;
-
-    if (limit_ms == 0) limit_ms = 20000;  // Default 20s if not set
-
-    curtain_set_opt(0, app_type, limit_ms);
-  }
 }
+
 
 /**
  * @brief Process incoming scene command (DPT 18.001)
@@ -257,8 +300,10 @@ static void process_scene_command(uint8_t raw_value) {
     }
 
     uint8_t target_pos = shutter_config.scenes[i].pos;
-    LOG_INF("  >>> MATCH Slot %c: set_position(%u%%)", 'A' + i, target_pos);
-    app_knx_shutter_set_position(target_pos);
+    // Convert 0-100% to 0-255 raw value (app expects 0-255)
+    uint8_t raw_pos = (uint8_t)((uint16_t)target_pos * 255 / 100);
+    LOG_INF("  >>> MATCH Slot %c: pos=%u%% -> raw=%u", 'A' + i, target_pos, raw_pos);
+    app_knx_shutter_set_position(raw_pos);
     return;
   }
 
@@ -274,6 +319,7 @@ static void knx_work_handler(struct k_work* work) {
 
   k_mutex_lock(&knx_stack_mutex, K_FOREVER);
   knx->loop();
+  knx_fact_process();
 
   if (knx->configured()) {
     static uint32_t last_log = 0;
@@ -308,10 +354,11 @@ static void knx_work_handler(struct k_work* work) {
 
     // --- GO3: SAPBP (Set Absolute Position %) ---
     if (knx->getGroupObject(GO_SH_SAPBP).commFlag() == ComFlag::Updated) {
-      uint8_t pct = (uint8_t)knx->getGroupObject(GO_SH_SAPBP).value();
+      uint8_t* raw_ptr = knx->getGroupObject(GO_SH_SAPBP).valueRef();
+      uint8_t raw_val = raw_ptr ? raw_ptr[0] : 0;
       knx->getGroupObject(GO_SH_SAPBP).commFlag(ComFlag::Ok);
-      LOG_INF("KNX -> Position: %u%%", pct);
-      app_knx_shutter_set_position(pct);
+      LOG_INF("KNX -> Position (RAW): %u", raw_val);
+      app_knx_shutter_set_position(raw_val);
     }
 
     // --- GO6: SCENE (DPT 18.001) ---
@@ -443,6 +490,16 @@ int knx_adapter_init(void) {
       "[BOOT] Step 2/3 - Restoring KNX memory (seq numbers, keys, config)...");
   knx->readMemory();
   knx->start();
+
+  // Step 2.5: Force-load and jump sequence numbers BEFORE enabling UART.
+  // This is CRITICAL for KNX Secure: seq numbers must be ready before
+  // receiving any bus frame to prevent replay attacks during boot.
+#ifdef USE_DATASECURE
+  if (knx->configured()) {
+    LOG_INF("[BOOT] Step 2.5 - Force-loading sequence numbers...");
+    ((BauSystemBDevice&)knx->bau()).forceLoadSequenceNumbers();
+  }
+#endif
 
   // Step 3: Enable UART LAST - only after ALL config & seq numbers are loaded.
   // This is the correct KNX boot sequence:
@@ -592,20 +649,101 @@ void knx_send_direction_feedback(bool going_down) {
   k_mutex_unlock(&knx_stack_mutex);
 }
 
-void knx_send_position_status(uint8_t percent) {
+void knx_send_position_status(uint8_t raw_val) {
   if (!knx || !initialized) return;
 
   k_mutex_lock(&knx_stack_mutex, K_FOREVER);
   if (knx->configured()) {
-    knx->getGroupObject(GO_SH_CAPBP).value(percent);
-    LOG_INF("Position -> KNX: %u%%", percent);
+    // Send 0-255 raw value to CAPBP object, using Ucount DPT to bypass % scaling
+    knx->getGroupObject(GO_SH_CAPBP).value(raw_val, DPT_Value_1_Ucount);
+    LOG_INF("Position -> KNX (RAW): %u", raw_val);
   }
   k_mutex_unlock(&knx_stack_mutex);
+}
+
+void knx_adapter_report_curtain_pos(uint8_t raw_val) {
+  knx_send_position_status(raw_val);
 }
 
 const knx_shutter_config_t* knx_get_shutter_config(void) {
   if (!initialized || !knx || !knx->configured()) return nullptr;
   return &shutter_config;
+}
+
+bool knx_adapter_is_tpuart_connected(void) {
+  if (!knx || !initialized) return false;
+  TpUartDataLinkLayer* dll = ((Bau07B0&)knx->bau()).getDataLinkLayer();
+  if (!dll) return false;
+  return dll->isConnected();
+}
+
+uint32_t knx_adapter_get_tx_processed_count(void) {
+  if (!knx || !initialized) return 0;
+  TpUartDataLinkLayer* dll = ((Bau07B0&)knx->bau()).getDataLinkLayer();
+  if (!dll) return 0;
+  return dll->getTxProcessedFrameCounter();
+}
+
+uint32_t knx_adapter_get_tx_success_count(void) {
+  if (!knx || !initialized) return 0;
+  TpUartDataLinkLayer* dll = ((Bau07B0&)knx->bau()).getDataLinkLayer();
+  if (!dll) return 0;
+  return dll->getTxSuccessFrameCounter();
+}
+
+void knx_adapter_set_factory_test_mode(bool enable) {
+  if (!knx || !initialized) return;
+  TpUartDataLinkLayer* dll = ((Bau07B0&)knx->bau()).getDataLinkLayer();
+  if (dll) dll->setFactoryTestMode(enable);
+}
+
+uint32_t knx_adapter_get_echo_count(void) {
+  if (!knx || !initialized) return 0;
+  TpUartDataLinkLayer* dll = ((Bau07B0&)knx->bau()).getDataLinkLayer();
+  if (!dll) return 0;
+  return dll->getRxEchoFrameCounter();
+}
+
+uint32_t knx_adapter_get_invalid_count(void) {
+  if (!knx || !initialized) return 0;
+  TpUartDataLinkLayer* dll = ((Bau07B0&)knx->bau()).getDataLinkLayer();
+  if (!dll) return 0;
+  return dll->getRxInvalidFrameCounter();
+}
+
+uint32_t knx_adapter_get_unknown_count(void) {
+  if (!knx || !initialized) return 0;
+  TpUartDataLinkLayer* dll = ((Bau07B0&)knx->bau()).getDataLinkLayer();
+  if (!dll) return 0;
+  return dll->getRxUnknownControlCounter();
+}
+
+bool knx_adapter_send_test_telegram(uint16_t dest_ga, uint8_t* payload,
+                                     uint8_t payload_len) {
+  if (!knx || !initialized) return false;
+
+  // Access DataLinkLayer via BAU (public getter)
+  TpUartDataLinkLayer* dll = ((Bau07B0&)knx->bau()).getDataLinkLayer();
+  if (!dll) return false;
+
+  // Build a CemiFrame with the given payload
+  CemiFrame frame(payload_len + 1);  // +1 for APCI byte
+  NPDU& npdu = frame.npdu();
+
+  // Set APDU: GroupValueWrite (0x0080) + payload
+  APDU& apdu = frame.apdu();
+  apdu.type(GroupValueWrite);
+  if (payload_len > 0 && payload) {
+    uint8_t* data = apdu.data();
+    memcpy(data + 1, payload, payload_len);
+  }
+
+  // Use public dataRequest to send
+  uint16_t src = knx->individualAddress();
+  dll->dataRequest(AckDontCare, GroupAddress, dest_ga, src, StandardFrame,
+                   LowPriority, npdu);
+
+  return true;
 }
 
 }  // extern "C"

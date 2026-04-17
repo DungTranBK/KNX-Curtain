@@ -14,8 +14,8 @@
 
 LOG_MODULE_REGISTER(knx_prov, LOG_LEVEL_DBG);
 
-/* Must match device tree overlay: partition@154000 */
-#define KNX_PROVISION_FLASH_OFFSET 0x154000
+/* Must match device tree overlay: partition@125000 */
+#define KNX_PROVISION_FLASH_OFFSET 0x125000
 
 /**
  * @brief Simple CRC8 (polynomial 0x07, init 0x00)

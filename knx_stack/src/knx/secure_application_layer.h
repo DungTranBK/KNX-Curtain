@@ -57,6 +57,7 @@ class SecureApplicationLayer : public ApplicationLayer {
   void dataConnectedConfirm(uint16_t tsap) override;
 
   void loop();
+  void forceLoadSequenceNumbers();
 
  protected:
   // to transport layer
@@ -183,7 +184,7 @@ class SecureApplicationLayer : public ApplicationLayer {
       _pendingIncomingSyncRequests;  // Store challenges for incoming sync
                                      // requests
 
-  uint64_t _sequenceNumberToolAccess = 50;
+  uint64_t _sequenceNumberToolAccess = 200000000000ULL;
   uint64_t _sequenceNumber = 300000000000ULL;
 
   uint64_t _lastSavedSequenceNumberTool = 0;

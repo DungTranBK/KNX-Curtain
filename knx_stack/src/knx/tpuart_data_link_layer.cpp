@@ -462,6 +462,21 @@ void TpUartDataLinkLayer::processRxFrameComplete() {
         // and mark this accordingly
         // println("MATCH");
         _rxFrame->addFlags(TP_FRAME_FLAG_ECHO);
+
+        // Strict validation and counting only in factory test mode
+        if (_factoryTestMode && _rxFrame->size() == _txFrame->size()) {
+          bool strictMatch = true;
+          // Byte 0 is already checked (ignoring repeat bit)
+          for (uint16_t i = 1; i < _rxFrame->size(); i++) {
+            if (_rxFrame->data(i) != _txFrame->data(i)) {
+              strictMatch = false;
+              break;
+            }
+          }
+          if (strictMatch) {
+            _rxEchoFrameCounter++;
+          }
+        }
       }
 
       // Now wait for the L_DATA_CON
@@ -527,6 +542,9 @@ void TpUartDataLinkLayer::processTxFrameComplete(bool success) {
   free(cemiData);
   clearTxFrame();
   _txProcessdFrameCounter++;
+  if (success) {
+    _txSuccessFrameCounter++;
+  }
   _txState = TX_IDLE;
 }
 
@@ -678,6 +696,8 @@ void TpUartDataLinkLayer::resetStats() {
   _rxUnkownControlCounter = 0;
   _txFrameCounter = 0;
   _txProcessdFrameCounter = 0;
+  _txSuccessFrameCounter = 0;
+  _rxEchoFrameCounter = 0;
 }
 
 bool TpUartDataLinkLayer::reset() {
@@ -777,6 +797,18 @@ void TpUartDataLinkLayer::enabled(bool value) {
     reset();
 
   stop(!value);
+}
+
+uint32_t TpUartDataLinkLayer::getRxEchoFrameCounter() {
+  return _rxEchoFrameCounter;
+}
+
+uint32_t TpUartDataLinkLayer::getTxSuccessFrameCounter() {
+  return _txSuccessFrameCounter;
+}
+
+void TpUartDataLinkLayer::setFactoryTestMode(bool enable) {
+  _factoryTestMode = enable;
 }
 
 bool TpUartDataLinkLayer::enabled() const { return _initialized && _connected; }

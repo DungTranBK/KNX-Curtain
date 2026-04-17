@@ -320,7 +320,6 @@ int curtain_cfg_handle_get_message(int model_idx, uint8_t* par, int par_len,
 extern "C" {
 #endif
 void curtain_callback_init(typeCurtain_updateCurtainCurrentPosition func);
-void curtain_set_opt(uint8_t idx, uint8_t type, uint32_t limit_time_ms);
 #ifdef __cplusplus
 }
 #endif

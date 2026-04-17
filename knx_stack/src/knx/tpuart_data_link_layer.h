@@ -72,6 +72,9 @@ class TpUartDataLinkLayer : public DataLinkLayer
         uint32_t getRxUnknownControlCounter();
         uint32_t getTxFrameCounter();
         uint32_t getTxProcessedFrameCounter();
+        uint32_t getTxSuccessFrameCounter();
+        uint32_t getRxEchoFrameCounter();
+        void setFactoryTestMode(bool enable);
         uint8_t getMode();
 
     private:
@@ -111,6 +114,9 @@ class TpUartDataLinkLayer : public DataLinkLayer
         volatile uint32_t _rxUnkownControlCounter = 0;
         volatile uint32_t _txFrameCounter = 0;
         volatile uint32_t _txProcessdFrameCounter = 0;
+        volatile uint32_t _txSuccessFrameCounter = 0;
+        volatile uint32_t _rxEchoFrameCounter = 0;
+        volatile bool _factoryTestMode = false;
         volatile bool _rxMarker = false;
         volatile bool _rxOverflow = false;
         volatile uint8_t _tpState = 0x0;

@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "../../KNX-Scene_Switch"
+		},
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../knx_actuator_4_relays"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.h": "c",
+			"*.c": "c"
+		},
+		"clangd.arguments": [
+			"--compile-commands-dir=${workspaceFolder}/build",
+			"--background-index",
+			"--clang-tidy",
+			"--fallback-style=Google"
+		]
+	}
+}

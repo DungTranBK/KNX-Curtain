@@ -51,7 +51,7 @@
 // ============================================================================
 // Device Tree Definitions & Constants
 // ============================================================================
-LOG_MODULE_REGISTER(nordic_platform, LOG_LEVEL_INF);
+LOG_MODULE_REGISTER(nordic_platform, LOG_LEVEL_NONE);
 
 #ifdef USE_KNX_UART_API
 // UART device cho KNX TP

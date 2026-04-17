@@ -8,6 +8,8 @@
 #include "data_property.h"
 
 #define LEN_KNX_SERIAL 6
+#define MAX_APDU_LENGTH_VALUE 55
+
 
 DeviceObject::DeviceObject() {
   // Default to zeros (must be set via manufacturerId() and bauNumber() from
@@ -66,7 +68,7 @@ DeviceObject::DeviceObject() {
             return 1;
           }),
       new DataProperty(PID_MAX_APDU_LENGTH, false, PDT_UNSIGNED_INT, 1,
-                       ReadLv3 | WriteLv0, (uint16_t)254),
+                       ReadLv3 | WriteLv0, (uint16_t)MAX_APDU_LENGTH_VALUE),
       new CallbackProperty<DeviceObject>(
           this, PID_SUBNET_ADDR, false, PDT_UNSIGNED_CHAR, 1,
           ReadLv3 | WriteLv0,

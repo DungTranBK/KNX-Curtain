@@ -874,6 +874,14 @@ void SecureApplicationLayer::updateSequenceNumber(bool toolAccess,
       _bauSystemB.memory().saveMemory();
     }
   } else {
+    // [FIX] RAM Protection: Prevent overwriting RAM value with a low sequence from bus
+    // if we are still waiting for the proactive jump (first 3 seconds) or 
+    // if the value is unreasonably low for this firmware.
+    if (!_sequenceNumberLoaded && seqNum < 300000000000ULL) {
+        LOG_WRN(">>> [SEC] REJECTED low seq update (%llu) in RAM before jump", seqNum);
+        return;
+    }
+
     _sequenceNumber = seqNum;
 
     // BLOCK SAVES UNTIL LOADED: Prevent overwriting persistent data with
@@ -1756,85 +1764,93 @@ uint64_t SecureApplicationLayer::getRandomNumber() {
   return 0x000102030405;  // TODO: generate random number
 }
 
+void SecureApplicationLayer::forceLoadSequenceNumbers() {
+  if (_sequenceNumberLoaded && _sequenceNumberToolLoaded) {
+    return;  // Already loaded, nothing to do
+  }
+
+  LOG_INF(">>> SEQ_DEBUG: STARTING PROACTIVE JUMP (forced)...");
+
+  // Handle General Sequence Number
+  if (!_sequenceNumberLoaded) {
+    uint64_t saved = _secIfObj.getSequenceNumber(false);
+    uint64_t isolated = _bauSystemB.platform().loadSequenceNumber(false);
+    LOG_INF(">>> SEQ_DEBUG: Read SeqNum from Flash = %llu, Isolated = %llu",
+            saved, isolated);
+
+    // Survived ETS download? Use isolated if it's more up-to-date
+    if (isolated > saved) {
+      saved = isolated;
+      LOG_INF(
+          ">>> SEQ_DEBUG: Isolated NVS had more recent value. Using it.");
+    }
+
+    if (saved < 300000000000ULL && isolated < 300000000000ULL) {
+      _sequenceNumber = 300000000000ULL;
+      LOG_INF(
+          ">>> SEQ_DEBUG: Both Flash and Isolated below 300B floor. "
+          "Initializing floor.");
+    } else {
+      _sequenceNumber = (isolated > saved ? isolated : saved) + 2000;
+      LOG_INF(
+          ">>> SEQ_DEBUG: Jump +2000 from %llu (Isolated: %llu, Flash: "
+          "%llu). "
+          "New: %llu",
+          (isolated > saved ? isolated : saved), isolated, saved,
+          _sequenceNumber);
+    }
+
+    _secIfObj.setSequenceNumber(false, _sequenceNumber);
+    _bauSystemB.platform().saveSequenceNumber(false, _sequenceNumber);
+    _lastSavedSequenceNumber = _sequenceNumber;
+    _lastSavedSequenceNumberStandard = _sequenceNumber;
+    _sequenceNumberLoaded = true;
+  }
+
+  // Handle Tool Sequence Number
+  if (!_sequenceNumberToolLoaded) {
+    uint64_t saved = _secIfObj.getSequenceNumber(true);
+    uint64_t isolated = _bauSystemB.platform().loadSequenceNumber(true);
+    LOG_INF(
+        ">>> SEQ_DEBUG: Read ToolSeqNum from Flash = %llu, Isolated = %llu",
+        saved, isolated);
+
+    if (isolated > saved) {
+      saved = isolated;
+      LOG_INF(
+          ">>> SEQ_DEBUG: Isolated NVS had more recent Tool value. Using "
+          "it.");
+    }
+
+    if (saved < 50) {  // Default for tool access
+      _sequenceNumberToolAccess = 50;
+    } else {
+      _sequenceNumberToolAccess = saved + 2000;
+    }
+
+    _secIfObj.setSequenceNumber(true, _sequenceNumberToolAccess);
+    _bauSystemB.platform().saveSequenceNumber(true,
+                                              _sequenceNumberToolAccess);
+    _lastSavedSequenceNumberTool = _sequenceNumberToolAccess;
+    _sequenceNumberToolLoaded = true;
+  }
+
+  // EXPLICIT COMMIT TO FLASH
+  _bauSystemB.writeMemory();
+  _bauSystemB.memory().saveMemory();
+  LOG_INF(">>> SEQ_DEBUG: JUMP SUCCESSFUL & PERSISTED TO FLASH");
+}
+
 void SecureApplicationLayer::loop() {
-  // Proactive Jump on Boot logic
+  // Proactive Jump on Boot logic (fallback if not called from init)
   if (!_sequenceNumberLoaded || !_sequenceNumberToolLoaded) {
     if (_bootTime == 0) {
       _bootTime = millis();
     }
 
-    // Wait 3 seconds for memory restoration to finish
-    if (millis() - _bootTime > 3000) {
-      LOG_INF(">>> SEQ_DEBUG: STARTING PROACTIVE JUMP...");
-
-      // Handle General Sequence Number
-      if (!_sequenceNumberLoaded) {
-        uint64_t saved = _secIfObj.getSequenceNumber(false);
-        uint64_t isolated = _bauSystemB.platform().loadSequenceNumber(false);
-        LOG_INF(">>> SEQ_DEBUG: Read SeqNum from Flash = %llu, Isolated = %llu",
-                saved, isolated);
-
-        // Survived ETS download? Use isolated if it's more up-to-date
-        if (isolated > saved) {
-          saved = isolated;
-          LOG_INF(
-              ">>> SEQ_DEBUG: Isolated NVS had more recent value. Using it.");
-        }
-
-        if (saved < 300000000000ULL && isolated < 300000000000ULL) {
-          _sequenceNumber = 300000000000ULL;
-          LOG_INF(
-              ">>> SEQ_DEBUG: Both Flash and Isolated below 300B floor. "
-              "Initializing floor.");
-        } else {
-          _sequenceNumber = (isolated > saved ? isolated : saved) + 2000;
-          LOG_INF(
-              ">>> SEQ_DEBUG: Jump +2000 from %llu (Isolated: %llu, Flash: "
-              "%llu). "
-              "New: %llu",
-              (isolated > saved ? isolated : saved), isolated, saved,
-              _sequenceNumber);
-        }
-
-        _secIfObj.setSequenceNumber(false, _sequenceNumber);
-        _bauSystemB.platform().saveSequenceNumber(false, _sequenceNumber);
-        _lastSavedSequenceNumber = _sequenceNumber;
-        _lastSavedSequenceNumberStandard = _sequenceNumber;
-        _sequenceNumberLoaded = true;
-      }
-
-      // Handle Tool Sequence Number
-      if (!_sequenceNumberToolLoaded) {
-        uint64_t saved = _secIfObj.getSequenceNumber(true);
-        uint64_t isolated = _bauSystemB.platform().loadSequenceNumber(true);
-        LOG_INF(
-            ">>> SEQ_DEBUG: Read ToolSeqNum from Flash = %llu, Isolated = %llu",
-            saved, isolated);
-
-        if (isolated > saved) {
-          saved = isolated;
-          LOG_INF(
-              ">>> SEQ_DEBUG: Isolated NVS had more recent Tool value. Using "
-              "it.");
-        }
-
-        if (saved < 50) {  // Default for tool access
-          _sequenceNumberToolAccess = 50;
-        } else {
-          _sequenceNumberToolAccess = saved + 2000;
-        }
-
-        _secIfObj.setSequenceNumber(true, _sequenceNumberToolAccess);
-        _bauSystemB.platform().saveSequenceNumber(true,
-                                                  _sequenceNumberToolAccess);
-        _lastSavedSequenceNumberTool = _sequenceNumberToolAccess;
-        _sequenceNumberToolLoaded = true;
-      }
-
-      // EXPLICIT COMMIT TO FLASH
-      _bauSystemB.writeMemory();
-      _bauSystemB.memory().saveMemory();
-      LOG_INF(">>> SEQ_DEBUG: JUMP SUCCESSFUL & PERSISTED TO FLASH");
+    // Wait 200ms then force load (fallback safety net)
+    if (millis() - _bootTime > 200) {
+      forceLoadSequenceNumbers();
     }
   }
 

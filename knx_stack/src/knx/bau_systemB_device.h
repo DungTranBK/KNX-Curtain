@@ -24,6 +24,7 @@ class BauSystemBDevice : public BauSystemB {
   GroupObjectTableObject& groupObjectTable();
 #ifdef USE_DATASECURE
   SecurityInterfaceObject& securityObject() { return _secIfObj; }
+  void forceLoadSequenceNumbers() { _appLayer.forceLoadSequenceNumbers(); }
 #endif
 
  protected:

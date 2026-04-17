@@ -40,6 +40,12 @@ extern "C" {
 #define KNX_MAX_KO_NUMBER 6
 #define KNX_MAX_SCENES 10
 
+
+// --- ETS Download Sync Status (Offset 75 -> moved or kept?) ---
+// Keep it at 75 for compatibility or move to end? 
+// User said expansion to 100, and auto starts at 76. So 75 is still safe.
+#define PARAM_ETS_DOWNLOAD_STATUS 28
+
 // ============================================================================
 // 2. GROUP OBJECT MAPPING (Number= in XML, 1-based)
 // ============================================================================

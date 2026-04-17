@@ -1699,13 +1699,3 @@ static void curtain_control_binding_group(uint8_t model_idx) {
     }
   }
 }
-
-void curtain_set_opt(uint8_t idx, uint8_t type, uint32_t limit_time_ms) {
-  if (idx < ELE_CNT) {
-    cz_opt.type[idx] = type;
-    cz_opt.limit_time[idx] = limit_time_ms;
-    curtainData[idx].curtainLimitTime = limit_time_ms;
-    LOG_INF("KNX SYNC: Curtain %d, Type=%d, LimitTime=%u ms", idx, type,
-            limit_time_ms);
-  }
-}
