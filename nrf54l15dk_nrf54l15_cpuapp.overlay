@@ -1,4 +1,4 @@
-#include <zephyr/dt-bindings/input/input-event-codes.h>
+    #include <zephyr/dt-bindings/input/input-event-codes.h>
 
 &uart00 {
     status = "okay";
@@ -157,7 +157,7 @@
 };
 
 &spi00 {
-    /delete-property/ cs-gpios;
-    zephyr,deferred-init;
+    status = "disabled";
 };
 /delete-node/ &{/pin-controller/spi00_sleep/group1/};
+    

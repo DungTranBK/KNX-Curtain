@@ -1,4 +1,16 @@
-#!/usr/bin/env python3
+  COM9 - JLink CDC UART Port (COM9)
+PS D:\Project\KNX\KNOB\KNX-Knob> py d:\Project\KNX\KNOB\KNX-Knob\uart_tool\knx_uart_capture.py
+Port: /dev/ttyUSB0 @ 115200
+Output: d:\Project\KNX\KNOB\KNX-Knob\uart_tool\logs\knx_capture_20260419_201451.txt
+Mode: LIVE (console + file)
+Ctrl+C to stop.
+
+ERROR: could not open port '/dev/ttyUSB0': FileNotFoundError(2, 'The system cannot find the path specified.', None, 3)
+Available:
+  COM5 - USB Serial Port (COM5)
+  COM8 - JLink CDC UART Port (COM8)
+  COM9 - JLink CDC UART Port (COM9)
+PS D:\Project\KNX\KNOB\KNX-Knob> #!/usr/bin/env python3
 """
 KNX UART Capture Tool (Optimized — No Drop)
 ============================================
