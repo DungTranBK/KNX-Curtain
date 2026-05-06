@@ -18,8 +18,8 @@ extern "C" {
 // ============================================================================
 // 1. APPLICATION METADATA (khớp với XML - giống nhau mọi thiết bị cùng loại)
 // ============================================================================
-#define KNX_MANUFACTURER_ID 0x0085
-#define KNX_BAU_NUMBER_DEFAULT 0x00000000  // Mặc định là 0 (phải nạp từ flash)
+#define KNX_MANUFACTURER_ID 0x035A
+#define KNX_BAU_NUMBER_DEFAULT 0x00000001  // Mặc định là 0 (phải nạp từ flash)
 #define KNX_HARDWARE_TYPE {0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
 #define KNX_HARDWARE_VERSION 0x01
 #define KNX_ORDER_NUMBER {'S', 'H', '0', '0', '1', ' ', ' ', ' ', ' ', ' '}
