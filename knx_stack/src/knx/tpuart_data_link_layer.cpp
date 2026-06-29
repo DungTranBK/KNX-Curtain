@@ -1065,7 +1065,7 @@ bool TpUartDataLinkLayer::markerMode() {
     return false;
 
 #ifdef NCN5120
-  // return true;
+  return true;
 #endif
 
   return false;

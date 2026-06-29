@@ -115,6 +115,40 @@ static void knx_on_tables_unload(void) {
   }
 }
 
+
+/**
+ * @brief Map UI Swing enum to Adapter enum format 
+ * UI: HOST_FAN_DIR_SWING=7, P0=0..P4=4, STOP=6
+ * Adapter: Stop=0, Auto=1, P0=2..P4=6
+ */
+static uint8_t map_curtain_direction_knx_to_ble(uint8_t val) {
+  if (val == 0) return 0;
+  if (val == 255) return 255;
+  
+  if (val <= 140) {
+    // 0..140 -> 0..165 (Tương đương 0..55%)
+    return (val * 20 + 8) / 17;
+  } else {
+    // 141..255 -> 166..255 (Tương đương 55..100%)
+    return (val * 40 + 2830) / 51;
+  }
+}
+
+static uint8_t map_curtain_direction_ble_to_knx(uint8_t val) {
+  if (val == 0) return 0;
+  if (val == 255) return 255;
+  
+  if (val <= 165) {
+    // 0..165 -> 0..140 (Tương đương 0..55%)
+    return (val * 17 + 10) / 20;
+  } else {
+    // 166..255 -> 141..255 (Tương đương 55..100%)
+    return (5610 + (val - 165) * 51 + 20) / 40;
+  }
+}
+
+
+
 /**
  * @brief Load all parameters from KNX stack into shutter_confiqg struct
  */
@@ -358,7 +392,8 @@ static void knx_work_handler(struct k_work* work) {
       uint8_t raw_val = raw_ptr ? raw_ptr[0] : 0;
       knx->getGroupObject(GO_SH_SAPBP).commFlag(ComFlag::Ok);
       LOG_INF("KNX -> Position (RAW): %u", raw_val);
-      app_knx_shutter_set_position(raw_val);
+      uint8_t ble_val = map_curtain_direction_knx_to_ble(raw_val);
+      app_knx_shutter_set_position(ble_val);
     }
 
     // --- GO6: SCENE (DPT 18.001) ---
@@ -662,7 +697,8 @@ void knx_send_position_status(uint8_t raw_val) {
 }
 
 void knx_adapter_report_curtain_pos(uint8_t raw_val) {
-  knx_send_position_status(raw_val);
+  uint8_t knx_val = map_curtain_direction_ble_to_knx(raw_val);
+  knx_send_position_status(knx_val);
 }
 
 const knx_shutter_config_t* knx_get_shutter_config(void) {
