@@ -118,9 +118,9 @@ static void store_default_binding_params(void) {
  * @brief Settings handler — called by settings_load() during init.
  *        Equivalent to Telink restore_binding_para().
  */
-static int sw_binding_settings_set(const char *name, size_t len,
-                                   settings_read_cb read_cb, void *cb_arg) {
-  const char *next;
+static int sw_binding_settings_set(const char* name, size_t len,
+                                   settings_read_cb read_cb, void* cb_arg) {
+  const char* next;
   if (settings_name_steq(name, "para", &next) && !next) {
     if (len != sizeof(binding_para_st)) {
       LOG_WRN("sw_binding: size mismatch, resetting to defaults");
@@ -191,11 +191,11 @@ void sw_blink_led_config(uint16_t mask, uint8_t status) {
  * @return true if subscribed, false otherwise
  */
 static bool is_group_subscribed(int model_idx, u16 group_adr) {
-  const struct bt_mesh_comp *comp = bt_mesh_comp_get();
+  const struct bt_mesh_comp* comp = bt_mesh_comp_get();
   if (!comp || model_idx >= (int)comp->elem_count) {
     return false;
   }
-  const struct bt_mesh_elem *elem = &comp->elem[model_idx];
+  const struct bt_mesh_elem* elem = &comp->elem[model_idx];
   for (int m = 0; m < elem->model_count; m++) {
     if (elem->models[m].id == BT_MESH_MODEL_ID_GEN_LEVEL_SRV) {
       /* Check all subscription slots */
@@ -258,7 +258,7 @@ static void send_binding_response(int model_idx, int st, u16 src_ele_adr) {
   rsp.ele_adr = src_ele_adr;
   rsp.en = binding_para_st[model_idx].en;
   rsp.group_adr = binding_para_st[model_idx].group_dst;
-  mesh_tx_cmd_rsp(VD_CONFIG_NODE_STATUS, (u8 *)&rsp, sizeof(rsp), src_ele_adr,
+  mesh_tx_cmd_rsp(VD_CONFIG_NODE_STATUS, (u8*)&rsp, sizeof(rsp), src_ele_adr,
                   GATEWAY_UNICAST_ADDR, 0, 0);
 }
 
@@ -267,7 +267,7 @@ static void send_binding_response(int model_idx, int st, u16 src_ele_adr) {
  *        Ported from Telink binding_handle_setup_message().
  * @param cfg  Pointer to cfg_binding_format_t parsed from vendor message
  */
-static void binding_handle_setup_message(cfg_binding_format_t *cfg) {
+static void binding_handle_setup_message(cfg_binding_format_t* cfg) {
   int model_idx = cfg->ele_adr - bt_mesh_primary_addr();
   int st = BINDING_ERR_UNKNOWN;
 
@@ -301,7 +301,7 @@ static void binding_handle_setup_message(cfg_binding_format_t *cfg) {
  *        Ported from Telink binding_handle_get_message().
  * @param msg  Pointer to get_binding_format_t parsed from vendor message
  */
-static void binding_handle_get_message(get_binding_format_t *msg) {
+static void binding_handle_get_message(get_binding_format_t* msg) {
   int model_idx = msg->ele_adr - bt_mesh_primary_addr();
 
   if (model_idx < 0 || model_idx >= NUMBER_INPUT) {
@@ -327,7 +327,7 @@ static void binding_handle_get_message(get_binding_format_t *msg) {
 
   rsp.group_adr = binding_para_st[model_idx].group_dst;
 
-  mesh_tx_cmd_rsp(VD_CONFIG_NODE_STATUS, (u8 *)&rsp, sizeof(rsp), msg->ele_adr,
+  mesh_tx_cmd_rsp(VD_CONFIG_NODE_STATUS, (u8*)&rsp, sizeof(rsp), msg->ele_adr,
                   GATEWAY_UNICAST_ADDR, 0, 0);
   LOG_DBG("binding_get_response: idx=%d, en=%d, grp=0x%04x", model_idx, rsp.en,
           rsp.group_adr);
@@ -386,12 +386,12 @@ void binding_init(void) {
  * @param   type  CONFIG_NODE_GET or CONFIG_NODE_SET
  * @param   par   Payload buffer
  */
-void binding_handle_nw_message(u8 type, u8 *par) {
+void binding_handle_nw_message(u8 type, u8* par) {
   if (type == CONFIG_NODE_GET) {
-    get_binding_format_t *get_fmt = (get_binding_format_t *)par;
+    get_binding_format_t* get_fmt = (get_binding_format_t*)par;
     binding_handle_get_message(get_fmt);
   } else if (type == CONFIG_NODE_SET) {
-    cfg_binding_format_t *cfg = (cfg_binding_format_t *)par;
+    cfg_binding_format_t* cfg = (cfg_binding_format_t*)par;
     binding_handle_setup_message(cfg);
   } else {
     LOG_WRN("binding_handle_nw_message: unknown type=0x%02x", type);

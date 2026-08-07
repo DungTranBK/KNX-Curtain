@@ -1,5 +1,4 @@
 #include "../../include/app.h"
-#include "../../include/at24c02.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -10,12 +9,15 @@
 #include <zephyr/logging/log.h>
 #include <zephyr/random/random.h>
 #include <zephyr/sys/byteorder.h>
+#include <zephyr/sys/reboot.h>
 
 #include "../../include/app_device.h"
+#include "../../include/at24c02.h"
 #include "../../include/button.h"
 #include "../../include/curtain.h"
 #include "../../include/fact.h"
 #include "../../include/fast_provision.h"
+#include "../../include/knx_adapter.h"
 #include "../../include/led.h"
 #include "../../include/led_ev.h"
 #include "../../include/mesh_node.h"
@@ -35,6 +37,13 @@ LOG_MODULE_REGISTER(app, CONFIG_LOG_DEFAULT_LEVEL);
 /* I2C device for AT24C02 EEPROM */
 #define I2C_DEV_NODE DT_NODELABEL(i2c_gpio)
 #define AT24C02_TEST_INTERVAL_MS 5000
+
+static bool app_is_init = false;
+
+/* TODO, KNX Forward Declaration for KNX bridge */
+int app_handle_control_curtain_from_knx(uint8_t curtain_idx,
+                                        CurtainControlId_enum cmd_id,
+                                        uint8_t position);
 
 /**
  * @brief Handle sending sensor data to Bluetooth Mesh
@@ -166,12 +175,14 @@ void button_handle_btn_event(uint8_t button_id, uint8_t evt) {
     case PRESS_ONE_TIME:
       if (para_btn_reset.step != STEP_HOLD_10S_RELEASE) {
         // TODO, KNX enable/disable configuration mode
+        knx_toggle_prog_mode();
         break;
       }
       if (para_btn_reset.is_active == true) {
         if (!clock_time_exceed_ms(para_btn_reset.is_active_st_time,
                                   CONFIRM_RESET_TIMEOUT_MS)) {
           // TODO, KNX clear ETS data
+          knx_wipe_config();
           LOG_INF("\n KNX CLEAR ETS DATA");
         } else {
           button_check_clean_reset_param();
@@ -197,6 +208,12 @@ void button_handle_btn_event(uint8_t button_id, uint8_t evt) {
         }
         led_enable_queue();
       }
+      break;
+
+    case PRESS_FOUR_TIME:
+      LOG_INF("BTN %d: PRESS_FOUR_TIME", idx);
+      /* Method 2: factory test via config button 4 presses in <30s from boot */
+      fact_notify_config_button_press();
       break;
 
     case HOLD_10S:
@@ -242,6 +259,25 @@ void app_serial_dispatch(uint8_t *par, size_t par_len) {
   // TODO, KNX handle incoming message from serial port
 }
 
+//============KNX============
+// Bridge: KNX -> Curtain logic
+void app_knx_shutter_move(bool going_down) {
+  LOG_INF("KNX -> SHUTTER MOVE: %s", going_down ? "DOWN" : "UP");
+  // position 0xFF for DOWN, 0x00 for UP
+  app_handle_control_curtain_from_knx(0, CURTAIN_CONTROL_ID_RUN,
+                                      going_down ? 0xFF : 0x00);
+}
+
+void app_knx_shutter_stop(void) {
+  LOG_INF("KNX -> SHUTTER STOP");
+  app_handle_control_curtain_from_knx(0, CURTAIN_CONTROL_ID_STOP, 0);
+}
+
+void app_knx_shutter_set_position(uint8_t raw_val) {
+  LOG_INF("KNX -> SHUTTER SET POSITION (RAW): %u", raw_val);
+  app_handle_control_curtain_from_knx(0, CURTAIN_CONTROL_ID_RUN, raw_val);
+}
+
 /*
  * @func    app_handle_control_relay_from_knx
  * @brief   Handle control relay from KNX, must be called by KNX driver
@@ -279,6 +315,16 @@ void app_handle_curtain_update_level(uint8_t curtain_idx,
   LOG_INF("KNX: app_handle_curtain_update_level: curtain_idx=%d, "
           "current_position=%d",
           curtain_idx, current_position);
+
+  // Send status back to KNX bus (Raw 0-255)
+  knx_adapter_report_curtain_pos(current_position);
+
+  // Send limit status on GO5 (MoveStatus)
+  if (current_position == 0) {
+    knx_send_direction_feedback(false); // Report UP/OPEN limit
+  } else if (current_position == 255) {
+    knx_send_direction_feedback(true); // Report DOWN/CLOSED limit
+  }
 }
 
 /**
@@ -330,7 +376,7 @@ int app_handle_set_curtain_config(int model_idx, uint8_t *par, int par_len,
 */
 bool knx_ets_has_been_configured(void) {
   // TODO, KNX check ETS has been configured
-  return false;
+  return knx_is_configured();
 }
 
 /* ============================================================================
@@ -344,6 +390,14 @@ bool knx_ets_has_been_configured(void) {
  * @retval  None
  */
 void app_handle_refresh_led(uint16_t mask) {
+  if (fact_is_active()) {
+    if (!fact_is_show_result()) {
+      foreach (i, NUMBER_LED) {
+        led_set_color(i, LED_COLOR_PINK);
+      }
+    }
+    return;
+  }
   // Confirm reset case
   if (para_btn_reset.step == STEP_HOLD_10S ||
       para_btn_reset.step == STEP_HOLD_10S_RELEASE ||
@@ -373,6 +427,61 @@ void app_handle_refresh_led(uint16_t mask) {
   }
 }
 
+/**
+ * @brief Fact mode event callbacks (ported from Telink switch.c)
+ */
+static void app_handle_fact_confirm_or_activate(uint8_t state) {
+  if (state == FACT_CONFIRM) {
+    LOG_INF("FACT: CONFIRM");
+    foreach (i, NUMBER_LED) {
+      led_set_color(i, LED_COLOR_BLUE);
+    }
+  }
+  if (state == FACT_ACTIVATE) {
+    LOG_INF("FACT: ACTIVATE");
+    foreach (i, NUMBER_LED) {
+      led_set_color(i, LED_COLOR_PINK);
+    }
+
+
+    // TODO, KNX go to factory test mode (Note: Exit configuration mode if in
+    knx_fact_start_test();
+    // currently in it (stop the LED from blinking).)
+  }
+}
+
+/**
+ * @brief Exit fact mode, reboot device
+ */
+static void app_handle_exit_fact_mode(void) {
+  LOG_INF("FACT: EXIT → reboot");
+  sys_reboot(SYS_REBOOT_COLD);
+}
+
+/* Helper function*/
+bool knx_get_test_status(void) { return knx_fact_get_result(); }
+
+/**
+ * @brief Initialize app-level callbacks
+ */
+void app_init(void) {
+  /* Fact test init (same as Telink app.c) */
+  fact_init();
+  fact_handle_evt_change_callback_init(app_handle_fact_confirm_or_activate,
+                                       app_handle_exit_fact_mode);
+
+  // TODO, init callback function to get KNX factory test status
+  fact_get_knx_test_status_callback_init(knx_get_test_status);
+
+  led_ev_callback_register(knx_ets_has_been_configured);
+
+  scene_callback_init(curtain_get_target_position,
+                      scene_reg_response_delay_init, curtain_set_level);
+  curtain_callback_init(app_handle_curtain_update_level);
+  //
+  app_is_init = true;
+}
+
 static void app_super_loop(void *p1, void *p2, void *p3) {
   ARG_UNUSED(p1);
   ARG_UNUSED(p2);
@@ -380,19 +489,18 @@ static void app_super_loop(void *p1, void *p2, void *p3) {
 
   LOG_INF("Super loop started");
 
-  led_ev_callback_register(knx_ets_has_been_configured);
-
-  scene_callback_init(curtain_get_target_position,
-                      scene_reg_response_delay_init, curtain_set_level);
-  curtain_callback_init(app_handle_curtain_update_level);
-
   uint8_t loop_cnt = 0;
   while (1) {
     /* Yield for 2ms */
     k_msleep(2);
+    if (!app_is_init) {
+      continue;
+    }
 
     /* Curtain runs every 2ms for precise position tracking */
-    curtain_proc();
+    if (!fact_is_active()) {
+      curtain_proc();
+    }
 
     /* Other tasks run every 10ms (every 5th iteration) */
     if (++loop_cnt >= 5) {
@@ -418,6 +526,12 @@ static void app_super_loop(void *p1, void *p2, void *p3) {
 
       /* Vendor model */
       vendor_model_proc();
+
+      /* Factory Test handler */
+      fact_handle();
+
+      /* Process Mesh TX Queue (Flow Control) */
+      vendor_model_tx_process();
     }
   }
 }

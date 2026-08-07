@@ -46,8 +46,13 @@
 #include "mesh/app_keys.h" // For bt_mesh_app_keys_get(), bt_mesh_app_key_exists(), bt_mesh_app_key_del()
 #include "mesh/foundation.h" // For bt_mesh_primary_addr()
 #include "mesh/net.h" // For bt_mesh_subnet_next(), bt_mesh_net_loopback_clear()
+#include "mesh/rpl.h"
 
-LOG_MODULE_REGISTER(network, CONFIG_LOG_DEFAULT_LEVEL);
+#ifdef ENABLE_NETWORK_LOG
+LOG_MODULE_REGISTER(network, LOG_LEVEL_INF);
+#else
+LOG_MODULE_REGISTER(network, LOG_LEVEL_NONE);
+#endif
 
 /* ============================================================================
  * DELAYED WORK FOR FACTORY RESET
@@ -96,10 +101,9 @@ static struct k_work_delayable provisioning_stop_keys_delayed_work;
 static void provisioning_led_blink_work_handler(struct k_work *work);
 static void provisioning_enable_delayed_work_handler(struct k_work *work);
 static void provisioning_stop_keys_delayed_work_handler(struct k_work *work);
-static void provisioning_stop(void);
 
 /* Stop all provisioning works and reset state */
-static void provisioning_stop(void) {
+void provisioning_stop(bool notify_led) {
   if (!provisioning_mode_active) {
     return;
   }
@@ -112,10 +116,11 @@ static void provisioning_stop(void) {
 
   LOG_INF("Provisioning mode disabling...");
   provisioning_mode_active = false;
-
-  /* 1. Blink Red to notify user that mode exited */
-  led_blink_color(1 << CONFIG_LED_IDX_BLUETOOTH, LED_COLOR_RED, 1,
-                  LAST_STATE_REFRESH_LED, 300);
+  if (notify_led) {
+    /* 1. Blink Red to notify user that mode exited */
+    led_blink_color(1 << CONFIG_LED_IDX_BLUETOOTH, LED_COLOR_RED, 1,
+                    LAST_STATE_REFRESH_LED, 300);
+  }
 
   /* 2. Cancel existing tasks */
   k_work_cancel_delayable(&provisioning_timeout_work);
@@ -140,7 +145,7 @@ static void provisioning_stop_keys_delayed_work_handler(struct k_work *work) {
 static void provisioning_timeout_work_handler(struct k_work *work) {
   LOG_INF("Provisioning timeout (%d min). Disabling.",
           PROVISIONING_TIMEOUT_MIN);
-  provisioning_stop();
+  provisioning_stop(true);
 }
 
 /* Work handler: Periodic LED blink every 5 seconds */
@@ -180,6 +185,8 @@ static void provisioning_enable_delayed_work_handler(struct k_work *work) {
                         provisioning_timeout_work_handler);
   k_work_schedule(&provisioning_timeout_work,
                   K_MINUTES(PROVISIONING_TIMEOUT_MIN));
+  /* Clear RPL */
+  bt_mesh_rpl_clear();
 }
 
 /**
@@ -202,7 +209,7 @@ void network_enable_provisioning_with_timeout(void) {
 
   /* Toggle: if active, then disable */
   if (provisioning_mode_active) {
-    provisioning_stop();
+    provisioning_stop(true);
     return;
   }
 

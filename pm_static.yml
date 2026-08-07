@@ -1,0 +1,9 @@
+knx_provision:
+  address: 0x125000
+  size: 0x1000
+  region: flash_primary
+
+nonsecure_storage:
+  address: 0x126000
+  size: 0x3F000
+  region: flash_primary

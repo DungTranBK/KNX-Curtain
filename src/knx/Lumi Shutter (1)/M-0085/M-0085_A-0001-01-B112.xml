@@ -1,0 +1,686 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<KNX CreatedBy="kaenx-creator" ToolVersion="1.0.0" xmlns="http://knx.org/xml/project/20">
+  <ManufacturerData>
+    <Manufacturer RefId="M-0085">
+      <ApplicationPrograms>
+        <ApplicationProgram Id="M-0085_A-0001-01-B112" ApplicationNumber="1" ApplicationVersion="1" ProgramType="ApplicationProgram" MaskVersion="MV-07B0" Name="Shutter Actuator" DefaultLanguage="en-US" LoadProcedureStyle="MergedProcedure" PeiType="0" DynamicTableManagement="false" Linkable="false" IsSecureEnabled="true" MaxSecurityIndividualAddressEntries="500" MaxSecurityGroupKeyTableEntries="512" MinEtsVersion="5.0" Hash="sW3K0LbOY6nezFsfbIt8Eg==">
+          <Static>
+            <Code>
+              <RelativeSegment Id="M-0085_A-0001-01-B112_RS-04-00000" Name="Parameters" Offset="0" Size="28" LoadStateMachine="4" />
+            </Code>
+            <ParameterTypes>
+              <ParameterType Id="M-0085_A-0001-01-B112_PT-1" Name="1">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Standard 3-wire Motor (HOZ_DZ3W)" Value="1" Id="M-0085_A-0001-01-B112_PT-1_EN-1" />
+                  <Enumeration Text="Standard 4-wire Motor (HOZ_DZ4W)" Value="2" Id="M-0085_A-0001-01-B112_PT-1_EN-2" />
+                  <Enumeration Text="AutoHome Intelligent (HOZ_DT99)" Value="3" Id="M-0085_A-0001-01-B112_PT-1_EN-3" />
+                  <Enumeration Text="Pulse-driven 3-wire (HOZ_DZ3WP)" Value="4" Id="M-0085_A-0001-01-B112_PT-1_EN-4" />
+                  <Enumeration Text="Direct 220V Roll-up (VER_220)" Value="5" Id="M-0085_A-0001-01-B112_PT-1_EN-5" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-0085_A-0001-01-B112_PT-3" Name="3">
+                <TypeNumber Type="unsignedInt" minInclusive="1" maxInclusive="300" SizeInBit="16" />
+              </ParameterType>
+              <ParameterType Id="M-0085_A-0001-01-B112_PT-6" Name="6">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Maintain state (No movement)" Value="0" Id="M-0085_A-0001-01-B112_PT-6_EN-0" />
+                  <Enumeration Text="Move to Full Open" Value="1" Id="M-0085_A-0001-01-B112_PT-6_EN-1" />
+                  <Enumeration Text="Move to Full Close" Value="2" Id="M-0085_A-0001-01-B112_PT-6_EN-2" />
+                  <Enumeration Text="Restore last known position" Value="3" Id="M-0085_A-0001-01-B112_PT-6_EN-3" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-0085_A-0001-01-B112_PT-7" Name="7">
+                <TypeRestriction Base="Value" SizeInBit="1">
+                  <Enumeration Text="No" Value="0" Id="M-0085_A-0001-01-B112_PT-7_EN-0" />
+                  <Enumeration Text="Yes" Value="1" Id="M-0085_A-0001-01-B112_PT-7_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-0085_A-0001-01-B112_PT-9" Name="9">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="not active" Value="0" Id="M-0085_A-0001-01-B112_PT-9_EN-0" />
+                  <Enumeration Text="Scene No. 1" Value="1" Id="M-0085_A-0001-01-B112_PT-9_EN-1" />
+                  <Enumeration Text="Scene No. 2" Value="2" Id="M-0085_A-0001-01-B112_PT-9_EN-2" />
+                  <Enumeration Text="Scene No. 3" Value="3" Id="M-0085_A-0001-01-B112_PT-9_EN-3" />
+                  <Enumeration Text="Scene No. 4" Value="4" Id="M-0085_A-0001-01-B112_PT-9_EN-4" />
+                  <Enumeration Text="Scene No. 5" Value="5" Id="M-0085_A-0001-01-B112_PT-9_EN-5" />
+                  <Enumeration Text="Scene No. 6" Value="6" Id="M-0085_A-0001-01-B112_PT-9_EN-6" />
+                  <Enumeration Text="Scene No. 7" Value="7" Id="M-0085_A-0001-01-B112_PT-9_EN-7" />
+                  <Enumeration Text="Scene No. 8" Value="8" Id="M-0085_A-0001-01-B112_PT-9_EN-8" />
+                  <Enumeration Text="Scene No. 9" Value="9" Id="M-0085_A-0001-01-B112_PT-9_EN-9" />
+                  <Enumeration Text="Scene No. 10" Value="10" Id="M-0085_A-0001-01-B112_PT-9_EN-10" />
+                  <Enumeration Text="Scene No. 11" Value="11" Id="M-0085_A-0001-01-B112_PT-9_EN-11" />
+                  <Enumeration Text="Scene No. 12" Value="12" Id="M-0085_A-0001-01-B112_PT-9_EN-12" />
+                  <Enumeration Text="Scene No. 13" Value="13" Id="M-0085_A-0001-01-B112_PT-9_EN-13" />
+                  <Enumeration Text="Scene No. 14" Value="14" Id="M-0085_A-0001-01-B112_PT-9_EN-14" />
+                  <Enumeration Text="Scene No. 15" Value="15" Id="M-0085_A-0001-01-B112_PT-9_EN-15" />
+                  <Enumeration Text="Scene No. 16" Value="16" Id="M-0085_A-0001-01-B112_PT-9_EN-16" />
+                  <Enumeration Text="Scene No. 17" Value="17" Id="M-0085_A-0001-01-B112_PT-9_EN-17" />
+                  <Enumeration Text="Scene No. 18" Value="18" Id="M-0085_A-0001-01-B112_PT-9_EN-18" />
+                  <Enumeration Text="Scene No. 19" Value="19" Id="M-0085_A-0001-01-B112_PT-9_EN-19" />
+                  <Enumeration Text="Scene No. 20" Value="20" Id="M-0085_A-0001-01-B112_PT-9_EN-20" />
+                  <Enumeration Text="Scene No. 21" Value="21" Id="M-0085_A-0001-01-B112_PT-9_EN-21" />
+                  <Enumeration Text="Scene No. 22" Value="22" Id="M-0085_A-0001-01-B112_PT-9_EN-22" />
+                  <Enumeration Text="Scene No. 23" Value="23" Id="M-0085_A-0001-01-B112_PT-9_EN-23" />
+                  <Enumeration Text="Scene No. 24" Value="24" Id="M-0085_A-0001-01-B112_PT-9_EN-24" />
+                  <Enumeration Text="Scene No. 25" Value="25" Id="M-0085_A-0001-01-B112_PT-9_EN-25" />
+                  <Enumeration Text="Scene No. 26" Value="26" Id="M-0085_A-0001-01-B112_PT-9_EN-26" />
+                  <Enumeration Text="Scene No. 27" Value="27" Id="M-0085_A-0001-01-B112_PT-9_EN-27" />
+                  <Enumeration Text="Scene No. 28" Value="28" Id="M-0085_A-0001-01-B112_PT-9_EN-28" />
+                  <Enumeration Text="Scene No. 29" Value="29" Id="M-0085_A-0001-01-B112_PT-9_EN-29" />
+                  <Enumeration Text="Scene No. 30" Value="30" Id="M-0085_A-0001-01-B112_PT-9_EN-30" />
+                  <Enumeration Text="Scene No. 31" Value="31" Id="M-0085_A-0001-01-B112_PT-9_EN-31" />
+                  <Enumeration Text="Scene No. 32" Value="32" Id="M-0085_A-0001-01-B112_PT-9_EN-32" />
+                  <Enumeration Text="Scene No. 33" Value="33" Id="M-0085_A-0001-01-B112_PT-9_EN-33" />
+                  <Enumeration Text="Scene No. 34" Value="34" Id="M-0085_A-0001-01-B112_PT-9_EN-34" />
+                  <Enumeration Text="Scene No. 35" Value="35" Id="M-0085_A-0001-01-B112_PT-9_EN-35" />
+                  <Enumeration Text="Scene No. 36" Value="36" Id="M-0085_A-0001-01-B112_PT-9_EN-36" />
+                  <Enumeration Text="Scene No. 37" Value="37" Id="M-0085_A-0001-01-B112_PT-9_EN-37" />
+                  <Enumeration Text="Scene No. 38" Value="38" Id="M-0085_A-0001-01-B112_PT-9_EN-38" />
+                  <Enumeration Text="Scene No. 39" Value="39" Id="M-0085_A-0001-01-B112_PT-9_EN-39" />
+                  <Enumeration Text="Scene No. 40" Value="40" Id="M-0085_A-0001-01-B112_PT-9_EN-40" />
+                  <Enumeration Text="Scene No. 41" Value="41" Id="M-0085_A-0001-01-B112_PT-9_EN-41" />
+                  <Enumeration Text="Scene No. 42" Value="42" Id="M-0085_A-0001-01-B112_PT-9_EN-42" />
+                  <Enumeration Text="Scene No. 43" Value="43" Id="M-0085_A-0001-01-B112_PT-9_EN-43" />
+                  <Enumeration Text="Scene No. 44" Value="44" Id="M-0085_A-0001-01-B112_PT-9_EN-44" />
+                  <Enumeration Text="Scene No. 45" Value="45" Id="M-0085_A-0001-01-B112_PT-9_EN-45" />
+                  <Enumeration Text="Scene No. 46" Value="46" Id="M-0085_A-0001-01-B112_PT-9_EN-46" />
+                  <Enumeration Text="Scene No. 47" Value="47" Id="M-0085_A-0001-01-B112_PT-9_EN-47" />
+                  <Enumeration Text="Scene No. 48" Value="48" Id="M-0085_A-0001-01-B112_PT-9_EN-48" />
+                  <Enumeration Text="Scene No. 49" Value="49" Id="M-0085_A-0001-01-B112_PT-9_EN-49" />
+                  <Enumeration Text="Scene No. 50" Value="50" Id="M-0085_A-0001-01-B112_PT-9_EN-50" />
+                  <Enumeration Text="Scene No. 51" Value="51" Id="M-0085_A-0001-01-B112_PT-9_EN-51" />
+                  <Enumeration Text="Scene No. 52" Value="52" Id="M-0085_A-0001-01-B112_PT-9_EN-52" />
+                  <Enumeration Text="Scene No. 53" Value="53" Id="M-0085_A-0001-01-B112_PT-9_EN-53" />
+                  <Enumeration Text="Scene No. 54" Value="54" Id="M-0085_A-0001-01-B112_PT-9_EN-54" />
+                  <Enumeration Text="Scene No. 55" Value="55" Id="M-0085_A-0001-01-B112_PT-9_EN-55" />
+                  <Enumeration Text="Scene No. 56" Value="56" Id="M-0085_A-0001-01-B112_PT-9_EN-56" />
+                  <Enumeration Text="Scene No. 57" Value="57" Id="M-0085_A-0001-01-B112_PT-9_EN-57" />
+                  <Enumeration Text="Scene No. 58" Value="58" Id="M-0085_A-0001-01-B112_PT-9_EN-58" />
+                  <Enumeration Text="Scene No. 59" Value="59" Id="M-0085_A-0001-01-B112_PT-9_EN-59" />
+                  <Enumeration Text="Scene No. 60" Value="60" Id="M-0085_A-0001-01-B112_PT-9_EN-60" />
+                  <Enumeration Text="Scene No. 61" Value="61" Id="M-0085_A-0001-01-B112_PT-9_EN-61" />
+                  <Enumeration Text="Scene No. 62" Value="62" Id="M-0085_A-0001-01-B112_PT-9_EN-62" />
+                  <Enumeration Text="Scene No. 63" Value="63" Id="M-0085_A-0001-01-B112_PT-9_EN-63" />
+                  <Enumeration Text="Scene No. 64" Value="64" Id="M-0085_A-0001-01-B112_PT-9_EN-64" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-0085_A-0001-01-B112_PT-10" Name="10">
+                <TypeNumber Type="unsignedInt" minInclusive="0" maxInclusive="100" SizeInBit="8" />
+              </ParameterType>
+            </ParameterTypes>
+            <Parameters>
+              <Parameter Id="M-0085_A-0001-01-B112_P-1" Name="MotorType" ParameterType="M-0085_A-0001-01-B112_PT-1" Text="Motor Type" Value="1">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="0" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-3" Name="TravelTime" ParameterType="M-0085_A-0001-01-B112_PT-3" Text="Time for shutter Up/Down(5-300 sec) (reference for 0-100% position)" SuffixText=" s" Value="20">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="2" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-12" Name="EnableScene" ParameterType="M-0085_A-0001-01-B112_PT-7" Text="Enable Scene Function" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="6" BitOffset="2" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-13" Name="EnableSceneStore" ParameterType="M-0085_A-0001-01-B112_PT-7" Text="Enable Scene Store" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="7" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-15" Name="SceneA_Num" ParameterType="M-0085_A-0001-01-B112_PT-9" Text="Scene A Number" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="8" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-16" Name="SceneA_Pos" ParameterType="M-0085_A-0001-01-B112_PT-10" Text="Scene A Position" SuffixText=" %" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="9" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-18" Name="SceneB_Num" ParameterType="M-0085_A-0001-01-B112_PT-9" Text="Scene B Number" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="10" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-19" Name="SceneB_Pos" ParameterType="M-0085_A-0001-01-B112_PT-10" Text="Scene B Position" SuffixText=" %" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="11" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-21" Name="SceneC_Num" ParameterType="M-0085_A-0001-01-B112_PT-9" Text="Scene C Number" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="12" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-22" Name="SceneC_Pos" ParameterType="M-0085_A-0001-01-B112_PT-10" Text="Scene C Position" SuffixText=" %" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="13" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-24" Name="SceneD_Num" ParameterType="M-0085_A-0001-01-B112_PT-9" Text="Scene D Number" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="14" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-25" Name="SceneD_Pos" ParameterType="M-0085_A-0001-01-B112_PT-10" Text="Scene D Position" SuffixText=" %" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="15" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-27" Name="SceneE_Num" ParameterType="M-0085_A-0001-01-B112_PT-9" Text="Scene E Number" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="16" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-28" Name="SceneE_Pos" ParameterType="M-0085_A-0001-01-B112_PT-10" Text="Scene E Position" SuffixText=" %" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="17" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-30" Name="SceneF_Num" ParameterType="M-0085_A-0001-01-B112_PT-9" Text="Scene F Number" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="18" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-31" Name="SceneF_Pos" ParameterType="M-0085_A-0001-01-B112_PT-10" Text="Scene F Position" SuffixText=" %" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="19" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-33" Name="SceneG_Num" ParameterType="M-0085_A-0001-01-B112_PT-9" Text="Scene G Number" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="20" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-34" Name="SceneG_Pos" ParameterType="M-0085_A-0001-01-B112_PT-10" Text="Scene G Position" SuffixText=" %" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="21" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-36" Name="SceneH_Num" ParameterType="M-0085_A-0001-01-B112_PT-9" Text="Scene H Number" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="22" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-37" Name="SceneH_Pos" ParameterType="M-0085_A-0001-01-B112_PT-10" Text="Scene H Position" SuffixText=" %" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="23" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-39" Name="SceneI_Num" ParameterType="M-0085_A-0001-01-B112_PT-9" Text="Scene I Number" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="24" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-40" Name="SceneI_Pos" ParameterType="M-0085_A-0001-01-B112_PT-10" Text="Scene I Position" SuffixText=" %" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="25" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-42" Name="SceneJ_Num" ParameterType="M-0085_A-0001-01-B112_PT-9" Text="Scene J Number" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="26" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-0085_A-0001-01-B112_P-43" Name="SceneJ_Pos" ParameterType="M-0085_A-0001-01-B112_PT-10" Text="Scene J Position" SuffixText=" %" Value="0">
+                <Memory CodeSegment="M-0085_A-0001-01-B112_RS-04-00000" Offset="27" BitOffset="0" />
+              </Parameter>
+            </Parameters>
+            <ParameterRefs>
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-1" Id="M-0085_A-0001-01-B112_P-1_R-1" Name="MotorType" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-3" Id="M-0085_A-0001-01-B112_P-3_R-3" Name="TravelTime" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-12" Id="M-0085_A-0001-01-B112_P-12_R-12" Name="EnableScene" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-13" Id="M-0085_A-0001-01-B112_P-13_R-13" Name="EnableSceneStore" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-15" Id="M-0085_A-0001-01-B112_P-15_R-15" Name="SceneA_Num" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-16" Id="M-0085_A-0001-01-B112_P-16_R-16" Name="SceneA_Pos" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-18" Id="M-0085_A-0001-01-B112_P-18_R-18" Name="SceneB_Num" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-19" Id="M-0085_A-0001-01-B112_P-19_R-19" Name="SceneB_Pos" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-21" Id="M-0085_A-0001-01-B112_P-21_R-21" Name="SceneC_Num" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-22" Id="M-0085_A-0001-01-B112_P-22_R-22" Name="SceneC_Pos" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-24" Id="M-0085_A-0001-01-B112_P-24_R-24" Name="SceneD_Num" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-25" Id="M-0085_A-0001-01-B112_P-25_R-25" Name="SceneD_Pos" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-27" Id="M-0085_A-0001-01-B112_P-27_R-27" Name="SceneE_Num" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-28" Id="M-0085_A-0001-01-B112_P-28_R-28" Name="SceneE_Pos" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-30" Id="M-0085_A-0001-01-B112_P-30_R-30" Name="SceneF_Num" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-31" Id="M-0085_A-0001-01-B112_P-31_R-31" Name="SceneF_Pos" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-33" Id="M-0085_A-0001-01-B112_P-33_R-33" Name="SceneG_Num" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-34" Id="M-0085_A-0001-01-B112_P-34_R-34" Name="SceneG_Pos" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-36" Id="M-0085_A-0001-01-B112_P-36_R-36" Name="SceneH_Num" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-37" Id="M-0085_A-0001-01-B112_P-37_R-37" Name="SceneH_Pos" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-39" Id="M-0085_A-0001-01-B112_P-39_R-39" Name="SceneI_Num" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-40" Id="M-0085_A-0001-01-B112_P-40_R-40" Name="SceneI_Pos" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-42" Id="M-0085_A-0001-01-B112_P-42_R-42" Name="SceneJ_Num" />
+              <ParameterRef RefId="M-0085_A-0001-01-B112_P-43" Id="M-0085_A-0001-01-B112_P-43_R-43" Name="SceneJ_Pos" />
+            </ParameterRefs>
+            <ComObjectTable>
+              <ComObject Id="M-0085_A-0001-01-B112_O-1" Name="Move" Text="Channel A" Number="1" FunctionText="Shutter up/down" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-8" />
+              <ComObject Id="M-0085_A-0001-01-B112_O-2" Name="Stop" Text="Channel A" Number="2" FunctionText="Stop" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="M-0085_A-0001-01-B112_O-3" Name="Position" Text="Channel A" Number="3" FunctionText="Absolute position" ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1" />
+              <ComObject Id="M-0085_A-0001-01-B112_O-4" Name="PosStatus" Text="Channel A" Number="4" FunctionText="Status current position" ObjectSize="1 Byte" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-5-1" />
+              <ComObject Id="M-0085_A-0001-01-B112_O-5" Name="MoveStatus" Text="Channel A" Number="5" FunctionText="Status current direction" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-8" />
+              <ComObject Id="M-0085_A-0001-01-B112_O-6" Name="Scene" Text="Channel A" Number="6" FunctionText="Scene" ObjectSize="1 Byte" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-18-1" />
+            </ComObjectTable>
+            <ComObjectRefs>
+              <ComObjectRef RefId="M-0085_A-0001-01-B112_O-1" Id="M-0085_A-0001-01-B112_O-1_R-1" />
+              <ComObjectRef RefId="M-0085_A-0001-01-B112_O-2" Id="M-0085_A-0001-01-B112_O-2_R-2" />
+              <ComObjectRef RefId="M-0085_A-0001-01-B112_O-3" Id="M-0085_A-0001-01-B112_O-3_R-3" />
+              <ComObjectRef RefId="M-0085_A-0001-01-B112_O-4" Id="M-0085_A-0001-01-B112_O-4_R-4" />
+              <ComObjectRef RefId="M-0085_A-0001-01-B112_O-5" Id="M-0085_A-0001-01-B112_O-5_R-5" />
+              <ComObjectRef RefId="M-0085_A-0001-01-B112_O-6" Id="M-0085_A-0001-01-B112_O-6_R-6" />
+            </ComObjectRefs>
+            <AddressTable MaxEntries="255" />
+            <AssociationTable MaxEntries="255" />
+            <LoadProcedures>
+              <LoadProcedure MergeId="2">
+                <LdCtrlRelSegment AppliesTo="full" LsmIdx="4" Size="28" Mode="0" Fill="0" />
+              </LoadProcedure>
+              <LoadProcedure MergeId="4">
+                <LdCtrlWriteRelMem ObjIdx="4" Offset="0" Size="28" Verify="true" />
+              </LoadProcedure>
+            </LoadProcedures>
+            <Options SupportsExtendedMemoryServices="true" SupportsExtendedPropertyServices="true" />
+          </Static>
+          <Dynamic>
+            <Channel Text="Lumi Shutter Channel A" Number="1" Id="M-0085_A-0001-01-B112_CH-1" Name="">
+              <ParameterBlock Id="M-0085_A-0001-01-B112_PB-1" Text="General Settings" Name="S1_Config">
+                <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-1_R-1" />
+                <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-3_R-3" />
+                <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-12_R-12" />
+                <ComObjectRefRef RefId="M-0085_A-0001-01-B112_O-1_R-1" />
+                <ComObjectRefRef RefId="M-0085_A-0001-01-B112_O-2_R-2" />
+                <ComObjectRefRef RefId="M-0085_A-0001-01-B112_O-3_R-3" />
+                <ComObjectRefRef RefId="M-0085_A-0001-01-B112_O-4_R-4" />
+                <ComObjectRefRef RefId="M-0085_A-0001-01-B112_O-5_R-5" />
+                <choose ParamRefId="M-0085_A-0001-01-B112_P-12_R-12">
+                  <when test="1">
+                    <ComObjectRefRef RefId="M-0085_A-0001-01-B112_O-6_R-6" />
+                  </when>
+                </choose>
+              </ParameterBlock>
+              <choose ParamRefId="M-0085_A-0001-01-B112_P-12_R-12">
+                <when test="1">
+                  <ParameterBlock Id="M-0085_A-0001-01-B112_PB-2" Text="Scene Settings" Name="SceneAssignments">
+                    <ParameterSeparator Id="M-0085_A-0001-01-B112_PS-1" Text="Scene Settings" />
+                    <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-13_R-13" />
+                    <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-15_R-15" />
+                    <choose ParamRefId="M-0085_A-0001-01-B112_P-15_R-15">
+                      <when test="&gt;0">
+                        <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-16_R-16" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-18_R-18" />
+                    <choose ParamRefId="M-0085_A-0001-01-B112_P-18_R-18">
+                      <when test="&gt;0">
+                        <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-19_R-19" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-21_R-21" />
+                    <choose ParamRefId="M-0085_A-0001-01-B112_P-21_R-21">
+                      <when test="&gt;0">
+                        <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-22_R-22" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-24_R-24" />
+                    <choose ParamRefId="M-0085_A-0001-01-B112_P-24_R-24">
+                      <when test="&gt;0">
+                        <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-25_R-25" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-27_R-27" />
+                    <choose ParamRefId="M-0085_A-0001-01-B112_P-27_R-27">
+                      <when test="&gt;0">
+                        <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-28_R-28" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-30_R-30" />
+                    <choose ParamRefId="M-0085_A-0001-01-B112_P-30_R-30">
+                      <when test="&gt;0">
+                        <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-31_R-31" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-33_R-33" />
+                    <choose ParamRefId="M-0085_A-0001-01-B112_P-33_R-33">
+                      <when test="&gt;0">
+                        <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-34_R-34" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-36_R-36" />
+                    <choose ParamRefId="M-0085_A-0001-01-B112_P-36_R-36">
+                      <when test="&gt;0">
+                        <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-37_R-37" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-39_R-39" />
+                    <choose ParamRefId="M-0085_A-0001-01-B112_P-39_R-39">
+                      <when test="&gt;0">
+                        <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-40_R-40" />
+                      </when>
+                    </choose>
+                    <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-42_R-42" />
+                    <choose ParamRefId="M-0085_A-0001-01-B112_P-42_R-42">
+                      <when test="&gt;0">
+                        <ParameterRefRef RefId="M-0085_A-0001-01-B112_P-43_R-43" />
+                      </when>
+                    </choose>
+                  </ParameterBlock>
+                </when>
+              </choose>
+            </Channel>
+          </Dynamic>
+        </ApplicationProgram>
+      </ApplicationPrograms>
+      <Languages>
+        <Language Identifier="en-US">
+          <TranslationUnit RefId="M-0085_A-0001-01-B112">
+            <TranslationElement RefId="M-0085_A-0001-01-B112">
+              <Translation AttributeName="Name" Text="Shutter Actuator" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-1_EN-1">
+              <Translation AttributeName="Text" Text="Standard 3-wire Motor (HOZ_DZ3W)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-1_EN-2">
+              <Translation AttributeName="Text" Text="Standard 4-wire Motor (HOZ_DZ4W)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-1_EN-3">
+              <Translation AttributeName="Text" Text="AutoHome Intelligent (HOZ_DT99)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-1_EN-4">
+              <Translation AttributeName="Text" Text="Pulse-driven 3-wire (HOZ_DZ3WP)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-1_EN-5">
+              <Translation AttributeName="Text" Text="Direct 220V Roll-up (VER_220)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-6_EN-0">
+              <Translation AttributeName="Text" Text="Maintain state (No movement)" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-6_EN-1">
+              <Translation AttributeName="Text" Text="Move to Full Open" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-6_EN-2">
+              <Translation AttributeName="Text" Text="Move to Full Close" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-6_EN-3">
+              <Translation AttributeName="Text" Text="Restore last known position" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-7_EN-0">
+              <Translation AttributeName="Text" Text="No" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-7_EN-1">
+              <Translation AttributeName="Text" Text="Yes" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-0">
+              <Translation AttributeName="Text" Text="not active" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-1">
+              <Translation AttributeName="Text" Text="Scene No. 1" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-2">
+              <Translation AttributeName="Text" Text="Scene No. 2" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-3">
+              <Translation AttributeName="Text" Text="Scene No. 3" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-4">
+              <Translation AttributeName="Text" Text="Scene No. 4" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-5">
+              <Translation AttributeName="Text" Text="Scene No. 5" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-6">
+              <Translation AttributeName="Text" Text="Scene No. 6" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-7">
+              <Translation AttributeName="Text" Text="Scene No. 7" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-8">
+              <Translation AttributeName="Text" Text="Scene No. 8" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-9">
+              <Translation AttributeName="Text" Text="Scene No. 9" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-10">
+              <Translation AttributeName="Text" Text="Scene No. 10" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-11">
+              <Translation AttributeName="Text" Text="Scene No. 11" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-12">
+              <Translation AttributeName="Text" Text="Scene No. 12" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-13">
+              <Translation AttributeName="Text" Text="Scene No. 13" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-14">
+              <Translation AttributeName="Text" Text="Scene No. 14" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-15">
+              <Translation AttributeName="Text" Text="Scene No. 15" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-16">
+              <Translation AttributeName="Text" Text="Scene No. 16" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-17">
+              <Translation AttributeName="Text" Text="Scene No. 17" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-18">
+              <Translation AttributeName="Text" Text="Scene No. 18" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-19">
+              <Translation AttributeName="Text" Text="Scene No. 19" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-20">
+              <Translation AttributeName="Text" Text="Scene No. 20" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-21">
+              <Translation AttributeName="Text" Text="Scene No. 21" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-22">
+              <Translation AttributeName="Text" Text="Scene No. 22" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-23">
+              <Translation AttributeName="Text" Text="Scene No. 23" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-24">
+              <Translation AttributeName="Text" Text="Scene No. 24" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-25">
+              <Translation AttributeName="Text" Text="Scene No. 25" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-26">
+              <Translation AttributeName="Text" Text="Scene No. 26" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-27">
+              <Translation AttributeName="Text" Text="Scene No. 27" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-28">
+              <Translation AttributeName="Text" Text="Scene No. 28" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-29">
+              <Translation AttributeName="Text" Text="Scene No. 29" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-30">
+              <Translation AttributeName="Text" Text="Scene No. 30" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-31">
+              <Translation AttributeName="Text" Text="Scene No. 31" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-32">
+              <Translation AttributeName="Text" Text="Scene No. 32" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-33">
+              <Translation AttributeName="Text" Text="Scene No. 33" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-34">
+              <Translation AttributeName="Text" Text="Scene No. 34" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-35">
+              <Translation AttributeName="Text" Text="Scene No. 35" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-36">
+              <Translation AttributeName="Text" Text="Scene No. 36" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-37">
+              <Translation AttributeName="Text" Text="Scene No. 37" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-38">
+              <Translation AttributeName="Text" Text="Scene No. 38" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-39">
+              <Translation AttributeName="Text" Text="Scene No. 39" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-40">
+              <Translation AttributeName="Text" Text="Scene No. 40" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-41">
+              <Translation AttributeName="Text" Text="Scene No. 41" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-42">
+              <Translation AttributeName="Text" Text="Scene No. 42" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-43">
+              <Translation AttributeName="Text" Text="Scene No. 43" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-44">
+              <Translation AttributeName="Text" Text="Scene No. 44" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-45">
+              <Translation AttributeName="Text" Text="Scene No. 45" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-46">
+              <Translation AttributeName="Text" Text="Scene No. 46" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-47">
+              <Translation AttributeName="Text" Text="Scene No. 47" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-48">
+              <Translation AttributeName="Text" Text="Scene No. 48" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-49">
+              <Translation AttributeName="Text" Text="Scene No. 49" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-50">
+              <Translation AttributeName="Text" Text="Scene No. 50" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-51">
+              <Translation AttributeName="Text" Text="Scene No. 51" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-52">
+              <Translation AttributeName="Text" Text="Scene No. 52" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-53">
+              <Translation AttributeName="Text" Text="Scene No. 53" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-54">
+              <Translation AttributeName="Text" Text="Scene No. 54" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-55">
+              <Translation AttributeName="Text" Text="Scene No. 55" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-56">
+              <Translation AttributeName="Text" Text="Scene No. 56" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-57">
+              <Translation AttributeName="Text" Text="Scene No. 57" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-58">
+              <Translation AttributeName="Text" Text="Scene No. 58" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-59">
+              <Translation AttributeName="Text" Text="Scene No. 59" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-60">
+              <Translation AttributeName="Text" Text="Scene No. 60" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-61">
+              <Translation AttributeName="Text" Text="Scene No. 61" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-62">
+              <Translation AttributeName="Text" Text="Scene No. 62" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-63">
+              <Translation AttributeName="Text" Text="Scene No. 63" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PT-9_EN-64">
+              <Translation AttributeName="Text" Text="Scene No. 64" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-1">
+              <Translation AttributeName="Text" Text="Motor Type" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-3">
+              <Translation AttributeName="Text" Text="Time for shutter Up/Down(5-300 sec) (reference for 0-100% position)" />
+              <Translation AttributeName="SuffixText" Text=" s" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-12">
+              <Translation AttributeName="Text" Text="Enable Scene Function" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-13">
+              <Translation AttributeName="Text" Text="Enable Scene Store" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-15">
+              <Translation AttributeName="Text" Text="Scene A Number" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-16">
+              <Translation AttributeName="Text" Text="Scene A Position" />
+              <Translation AttributeName="SuffixText" Text=" %" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-18">
+              <Translation AttributeName="Text" Text="Scene B Number" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-19">
+              <Translation AttributeName="Text" Text="Scene B Position" />
+              <Translation AttributeName="SuffixText" Text=" %" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-21">
+              <Translation AttributeName="Text" Text="Scene C Number" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-22">
+              <Translation AttributeName="Text" Text="Scene C Position" />
+              <Translation AttributeName="SuffixText" Text=" %" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-24">
+              <Translation AttributeName="Text" Text="Scene D Number" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-25">
+              <Translation AttributeName="Text" Text="Scene D Position" />
+              <Translation AttributeName="SuffixText" Text=" %" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-27">
+              <Translation AttributeName="Text" Text="Scene E Number" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-28">
+              <Translation AttributeName="Text" Text="Scene E Position" />
+              <Translation AttributeName="SuffixText" Text=" %" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-30">
+              <Translation AttributeName="Text" Text="Scene F Number" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-31">
+              <Translation AttributeName="Text" Text="Scene F Position" />
+              <Translation AttributeName="SuffixText" Text=" %" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-33">
+              <Translation AttributeName="Text" Text="Scene G Number" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-34">
+              <Translation AttributeName="Text" Text="Scene G Position" />
+              <Translation AttributeName="SuffixText" Text=" %" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-36">
+              <Translation AttributeName="Text" Text="Scene H Number" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-37">
+              <Translation AttributeName="Text" Text="Scene H Position" />
+              <Translation AttributeName="SuffixText" Text=" %" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-39">
+              <Translation AttributeName="Text" Text="Scene I Number" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-40">
+              <Translation AttributeName="Text" Text="Scene I Position" />
+              <Translation AttributeName="SuffixText" Text=" %" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-42">
+              <Translation AttributeName="Text" Text="Scene J Number" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_P-43">
+              <Translation AttributeName="Text" Text="Scene J Position" />
+              <Translation AttributeName="SuffixText" Text=" %" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_O-1">
+              <Translation AttributeName="Text" Text="Channel A" />
+              <Translation AttributeName="FunctionText" Text="Shutter up/down" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_O-2">
+              <Translation AttributeName="Text" Text="Channel A" />
+              <Translation AttributeName="FunctionText" Text="Stop" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_O-3">
+              <Translation AttributeName="Text" Text="Channel A" />
+              <Translation AttributeName="FunctionText" Text="Absolute position" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_O-4">
+              <Translation AttributeName="Text" Text="Channel A" />
+              <Translation AttributeName="FunctionText" Text="Status current position" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_O-5">
+              <Translation AttributeName="Text" Text="Channel A" />
+              <Translation AttributeName="FunctionText" Text="Status current direction" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_O-6">
+              <Translation AttributeName="Text" Text="Channel A" />
+              <Translation AttributeName="FunctionText" Text="Scene" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_CH-1">
+              <Translation AttributeName="Text" Text="Lumi Shutter Channel A" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PB-1">
+              <Translation AttributeName="Text" Text="General Settings" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PB-2">
+              <Translation AttributeName="Text" Text="Scene Settings" />
+            </TranslationElement>
+            <TranslationElement RefId="M-0085_A-0001-01-B112_PS-1">
+              <Translation AttributeName="Text" Text="Scene Settings" />
+            </TranslationElement>
+          </TranslationUnit>
+        </Language>
+      </Languages>
+    </Manufacturer>
+  </ManufacturerData>
+</KNX>

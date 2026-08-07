@@ -1,0 +1,4 @@
+[00:43:48.168,470] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=0, IA=0xffff[0m
+[00:43:57.651,448] [0m<inf> default_network: Default Network: CLOSED | Main Network: NOT_PROVISIONED[0m
+[00:43:58.205,559] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=0, IA=0xffff[0m
+[00:44:05.288,259] [0m<inf> knx_adapter: KNX Programming Mode: ON[0m

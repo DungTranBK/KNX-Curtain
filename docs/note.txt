@@ -1,0 +1,4 @@
+Update 16/04/2026
+- Add: test sản xuát KNX
+- Fix: LED sáng 6 lần khi reboot
+- Fix đẩy config 1 lần duy nhất khi download ETS

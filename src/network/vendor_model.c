@@ -17,6 +17,7 @@
 
 #include "../../include/app_device.h" /* For Device Type - Renamed to avoid conflict */
 #include "../../include/curtain.h"
+#include "../../include/default_network.h"
 #include "../../include/fast_provision.h"
 #include "../../include/led_ev.h" /* Fix send_led_evt_to_mcu */
 #include "../../include/net_message.h"
@@ -29,10 +30,77 @@
 #include "../../include/vendor_model.h"
 #include "mesh/access.h" /* For bt_mesh_model_sub_store() */
 
+
 /* Fix for implicit declaration if hidden in system headers */
 const struct bt_mesh_comp *bt_mesh_comp_get(void);
 
-LOG_MODULE_REGISTER(vendor_model, CONFIG_LOG_DEFAULT_LEVEL);
+#ifdef ENABLE_VENDOR_MODEL_LOG
+LOG_MODULE_REGISTER(vendor_model, LOG_LEVEL_INF);
+#else
+LOG_MODULE_REGISTER(vendor_model, LOG_LEVEL_NONE);
+#endif
+
+/* Define message structure stored in Queue */
+typedef struct {
+  uint32_t opcode;
+  uint8_t par[64]; /* Keep 64 bytes as required by project to optimize RAM */
+  uint32_t len;
+  uint16_t adr_src;
+  uint16_t adr_dst;
+  void *model_ptr; /* Pass model pointer directly for Fast Provisioning before
+                      IP assignment */
+} mesh_tx_queue_item_t;
+
+/* Initialize Message Queue containing up to 16 packets */
+K_MSGQ_DEFINE(mesh_tx_msgq, sizeof(mesh_tx_queue_item_t), 16, 4);
+
+static atomic_t mesh_tx_pending_cnt = ATOMIC_INIT(0);
+static uint32_t last_tx_start_time = 0;
+#define TX_TIMEOUT_FALLBACK_MS 1000
+
+static uint8_t current_msg_retries = 0;
+static uint32_t last_retry_time = 0;
+static bool is_in_retry_cooldown = false;
+
+static void handle_tx_failure(const char *reason) {
+  current_msg_retries++;
+  if (current_msg_retries >= 3) {
+    LOG_ERR("%s - Max retries reached. Force dropping SDU.", reason);
+    mesh_tx_queue_item_t item;
+    k_msgq_get(&mesh_tx_msgq, &item,
+               K_NO_WAIT); /* Remove from Queue, discard permanently */
+    current_msg_retries = 0;
+    is_in_retry_cooldown = false;
+  } else {
+    LOG_WRN("%s - Retrying %d/3 after 100ms...", reason, current_msg_retries);
+    last_retry_time = k_uptime_get_32();
+    is_in_retry_cooldown = true;
+  }
+  atomic_set(&mesh_tx_pending_cnt,
+             0); /* Release flag so the next loop iteration can retry */
+}
+
+static void tx_start_cb(uint16_t duration, int err, void *cb_data) {
+  if (err) {
+    handle_tx_failure("Stack tx_start error");
+  }
+}
+
+static void tx_end_cb(int err, void *cb_data) {
+  /* NOW ALLOWED TO REMOVE THE SUCCESSFUL PACKET FROM THE QUEUE */
+  mesh_tx_queue_item_t item;
+  k_msgq_get(&mesh_tx_msgq, &item, K_NO_WAIT);
+
+  current_msg_retries = 0; /* Reset transmission retry counter */
+  atomic_set(&mesh_tx_pending_cnt, 0);
+  vendor_model_tx_process(); /* Immediately process the next packet in the queue
+                              */
+}
+
+static const struct bt_mesh_send_cb vendor_tx_cb = {
+    .start = tx_start_cb,
+    .end = tx_end_cb,
+};
 
 /******************************************************************************/
 /*                          TX COMPLETION GATE                                */
@@ -147,6 +215,12 @@ static int handle_vd_config_node_set_ack(const struct bt_mesh_model *model,
         break;
       case VD_CONFIG_TIMESTAMP:
         timestamp_set(model_idx, config_node->data, data_len);
+        break;
+      case VD_FACT_TEST_RF:
+        fact_handle_config_response(
+            config_node->data, buf->len - offsetof(vd_config_node_ack_t, data),
+            ctx->addr, ctx->recv_dst);
+        LOG_INF("VD_FACT_TEST_RF (0xF8) received from 0x%04X", ctx->addr);
         break;
       default:
         err = curtain_cfg_handle_set_message(model_idx, config_node->data,
@@ -1174,97 +1248,167 @@ void ble_ota_manual_set(uint16_t model_idx, uint8_t *data, int len,
 int mesh_tx_cmd_rsp(uint32_t opcode, uint8_t *par, uint32_t len,
                     uint16_t adr_src, uint16_t adr_dst, uint8_t *uuid,
                     void *model_ptr) {
-  /* 1. Find element index from adr_src */
-  uint16_t primary_addr = network_get_unicast_address();
-  if (primary_addr == 0xFFFF) {
-    LOG_ERR("Device not provisioned, cannot send mesh_tx_cmd_rsp");
-    return -EAGAIN;
-  }
 
-  /* Valid index check */
-  if (adr_src == 0xFFFF || adr_src < primary_addr) {
-    LOG_ERR("Invalid source address 0x%04X (Primary: 0x%04X)", adr_src,
-            primary_addr);
+  if (len > sizeof(((mesh_tx_queue_item_t *)0)->par)) {
+    LOG_ERR("Payload too large for TX queue (%d > %d)", len,
+            sizeof(((mesh_tx_queue_item_t *)0)->par));
     return -EINVAL;
   }
 
-  int elem_idx = adr_src - primary_addr;
-  const struct bt_mesh_comp *comp = bt_mesh_comp_get();
-  if (!comp || elem_idx >= comp->elem_count) {
-    LOG_ERR("Invalid element index %d (Count: %d)", elem_idx,
-            comp ? comp->elem_count : 0);
-    return -EINVAL;
+  mesh_tx_queue_item_t item;
+  item.opcode = opcode;
+  item.len = len;
+  item.adr_src = adr_src;
+  item.adr_dst = adr_dst;
+  item.model_ptr = model_ptr;
+  if (len > 0 && par != NULL) {
+    memcpy(item.par, par, len);
   }
 
-  const struct bt_mesh_elem *elem = &comp->elem[elem_idx];
-
-  /* 2. Opcode Analysis & Model Discovery */
-  uint32_t full_op = opcode;
-  struct bt_mesh_model *model = (struct bt_mesh_model *)model_ptr;
-  bool is_vendor = false;
-
-  if (opcode >= 0xC0 && opcode <= 0xFF) {
-    /* Telink-style 1-byte vendor opcode -> full 3-byte Mesh opcode */
-    full_op = BT_MESH_MODEL_OP_3(opcode, VENDOR_COMPANY_ID_TELINK);
-    is_vendor = true;
-  } else if (opcode > 0xFFFF) {
-    /* Full opcode provided, check if vendor */
-    is_vendor = true;
+  if (k_msgq_put(&mesh_tx_msgq, &item, K_NO_WAIT) != 0) {
+    LOG_WRN("Mesh TX Queue is Full! Dropping msg Op=0x%06X", opcode);
+    return -ENOMEM;
   }
 
-  if (!model) {
-    if (is_vendor) {
-      /* Try find Config Node Vendor Model (0x0001) */
-      model = (struct bt_mesh_model *)bt_mesh_model_find_vnd(
-          elem, VENDOR_COMPANY_ID_TELINK, BT_MESH_MODEL_ID_VND_CONFIG_NODE);
+  LOG_DBG("Queued TX Op=0x%06X (used %d/%d)", opcode,
+          k_msgq_num_used_get(&mesh_tx_msgq), 16);
+  vendor_model_tx_process(); /* Process immediately without waiting 10ms */
+  return 0;
+}
+
+/**
+ * @brief Process Mesh TX Queue periodically
+ * Can be called from app_super_loop every 10ms or immediately after queue input
+ */
+void vendor_model_tx_process(void) {
+  uint32_t now = k_uptime_get_32();
+
+  /* 0. Back-off if a network error was recently encountered */
+  if (is_in_retry_cooldown) {
+    if ((now - last_retry_time) < 100) {
+      return; /* Force 100ms back-off before the next transmission */
+    }
+    is_in_retry_cooldown = false;
+  }
+
+  /* 1. Watchdog Processing */
+  if (atomic_get(&mesh_tx_pending_cnt) > 0) {
+    if ((now - last_tx_start_time) > TX_TIMEOUT_FALLBACK_MS) {
+      handle_tx_failure("TX Timeout Watchdog");
+      return;
     } else {
-      /* For SIG commands, find a compatible proxy model */
-      model = (struct bt_mesh_model *)bt_mesh_model_find(
-          elem, BT_MESH_MODEL_ID_GEN_LEVEL_SRV);
-      if (!model) {
-        model = (struct bt_mesh_model *)bt_mesh_model_find(
-            elem, BT_MESH_MODEL_ID_GEN_LEVEL_CLI);
-      }
+      return; // Transmission in progress, wait for callback
     }
   }
 
-  if (!model) {
-    LOG_INF("No suitable model found for opcode 0x%06X in element %d", full_op,
-            elem_idx);
-    return -ENODEV;
+  /* Thread-safe lock: Only one thread can process the TX queue at a time */
+  if (!atomic_cas(&mesh_tx_pending_cnt, 0, 1)) {
+    return; // Queue is busy being processed by another context
   }
 
-  /* 3. Setup Context */
-  struct bt_mesh_msg_ctx ctx = {
-      .net_idx = network_get_netkey_index(),
-      .app_idx = network_get_appkey_index(),
-      .addr = adr_dst,
-      .send_ttl = BT_MESH_TTL_DEFAULT,
-  };
+  /* 2. Lock acquired, peek at the next packet */
+  mesh_tx_queue_item_t item;
+  if (k_msgq_peek(&mesh_tx_msgq, &item) == 0) {
 
-  if (ctx.app_idx == 0xFFFF) {
-    LOG_ERR("No AppKey index cached, cannot send");
-    return -EACCES;
-  }
+    uint32_t full_op = item.opcode;
+    bool is_vendor = false;
+    struct bt_mesh_model *model = (struct bt_mesh_model *)item.model_ptr;
 
-  /* 4. Create Buffer & Send */
-  LOG_INF("Tx Mesh: Op=0x%06X, Src=0x%04X, Dst=0x%04X, Len=%d", full_op,
-          adr_src, adr_dst, len);
+    if (item.opcode >= 0xC0 && item.opcode <= 0xFF) {
+      full_op = BT_MESH_MODEL_OP_3(item.opcode, VENDOR_COMPANY_ID_TELINK);
+      is_vendor = true;
+    } else if (item.opcode > 0xFFFF) {
+      is_vendor = true;
+    }
 
-  NET_BUF_SIMPLE_DEFINE(msg, 64 + BT_MESH_MIC_SHORT);
-  bt_mesh_model_msg_init(&msg, full_op);
-  net_buf_simple_add_mem(&msg, par, len);
+    /* 2.1 Automatically resolve Model if pointer was not provided */
+    if (!model) {
+      uint16_t primary_addr = network_get_unicast_address();
+      if (primary_addr == 0xFFFF || item.adr_src < primary_addr) {
+        LOG_ERR("Discarded msg: Invalid src 0x%04X (Unprovisioned?)",
+                item.adr_src);
+        k_msgq_get(&mesh_tx_msgq, &item, K_NO_WAIT); /* Flush the bad item */
+        atomic_set(&mesh_tx_pending_cnt, 0);         /* Clear queue lock flag */
+        return;
+      }
 
-  tx_gate_acquire();
-  int err = bt_mesh_model_send(model, &ctx, &msg, &mesh_tx_send_cb, NULL);
+      int elem_idx = item.adr_src - primary_addr;
+      const struct bt_mesh_comp *comp = bt_mesh_comp_get();
+      if (!comp || elem_idx >= comp->elem_count) {
+        LOG_ERR("Discarded msg: Invalid elem %d", elem_idx);
+        k_msgq_get(&mesh_tx_msgq, &item, K_NO_WAIT); /* Flush the bad item */
+        atomic_set(&mesh_tx_pending_cnt, 0);         /* Clear queue lock flag */
+        return;
+      }
 
-  LOG_HEXDUMP_INF(msg.data, msg.len, "Tx Mesh: ");
+      const struct bt_mesh_elem *elem = &comp->elem[elem_idx];
 
-  if (err) {
-    LOG_ERR("bt_mesh_model_send err: %d", err);
-    tx_gate_release();
+      if (is_vendor) {
+        model = (struct bt_mesh_model *)bt_mesh_model_find_vnd(
+            elem, VENDOR_COMPANY_ID_TELINK, BT_MESH_MODEL_ID_VND_CONFIG_NODE);
+      } else {
+        model = (struct bt_mesh_model *)bt_mesh_model_find(
+            elem, BT_MESH_MODEL_ID_GEN_ONOFF_SRV);
+        if (!model) {
+          model = (struct bt_mesh_model *)bt_mesh_model_find(
+              elem, BT_MESH_MODEL_ID_SENSOR_SRV);
+        }
+        if (!model) {
+          model = (struct bt_mesh_model *)bt_mesh_model_find(
+              elem, BT_MESH_MODEL_ID_GEN_ONOFF_CLI);
+        }
+      }
+    }
+
+    /* Model still not found? -> Drop packet to prevent queue deadlock */
+    if (!model) {
+      LOG_ERR("Discarded msg: No model for op=0x%06X", full_op);
+      k_msgq_get(&mesh_tx_msgq, &item, K_NO_WAIT); /* Flush the bad item */
+      atomic_set(&mesh_tx_pending_cnt, 0);         /* Clear queue lock flag */
+      return;
+    }
+
+    struct bt_mesh_msg_ctx ctx = {
+        .addr = item.adr_dst,
+        .send_ttl = BT_MESH_TTL_DEFAULT,
+    };
+
+    if (item.opcode == VD_MESH_ADDR_GET_STS ||
+        item.opcode == VD_MESH_ADDR_SET_STS ||
+        item.opcode == VD_MESH_PROV_CONFIRM_STS) {
+      /* Fast Provisioning uses Default Network (0x0001) */
+      ctx.net_idx = DEFAULT_NETWORK_SUBNET_INDEX;
+      ctx.app_idx = DEFAULT_APPKEY_INDEX;
+    } else {
+      /* Standard messages use Main Network */
+      ctx.net_idx = network_get_netkey_index();
+      ctx.app_idx = network_get_appkey_index();
+
+      if (ctx.app_idx == 0xFFFF) {
+        LOG_ERR("Not provisioned yet, AppKey is missing (Op=0x%06X)", full_op);
+        k_msgq_get(&mesh_tx_msgq, &item, K_NO_WAIT); /* Flush the bad item */
+        atomic_set(&mesh_tx_pending_cnt, 0);         /* Clear queue lock flag */
+        return;
+      }
+    }
+
+    LOG_INF("Tx Mesh (Dequeue): Op=0x%06X, Src=0x%04X, Dst=0x%04X, Len=%d",
+            full_op, item.adr_src, item.adr_dst, item.len);
+
+    NET_BUF_SIMPLE_DEFINE(msg, 64 + BT_MESH_MIC_SHORT);
+    bt_mesh_model_msg_init(&msg, full_op);
+    net_buf_simple_add_mem(&msg, item.par, item.len);
+
+    atomic_inc(&mesh_tx_pending_cnt);
+    last_tx_start_time = k_uptime_get_32();
+
+    int err = bt_mesh_model_send(model, &ctx, &msg, &vendor_tx_cb, NULL);
+    if (err) {
+      handle_tx_failure("bt_mesh_model_send sync error");
+    }
+    /* Push successful. Wait for tx_end_cb to call k_msgq_get. */
   } else {
-    LOG_INF("bt_mesh_model_send success");
+    /* Critical Error: Failed to dequeue, must release the lock! */
+    atomic_set(&mesh_tx_pending_cnt, 0);
   }
-  return err;
 }

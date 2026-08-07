@@ -1,0 +1,237 @@
+*** Booting nRF Connect SDK v3.0.1-9eb5615da66b ***
+*** Using Zephyr OS v4.0.99-77f865b8f8d0 ***
+[00:17:06.867,677] [0m<inf> lumi_debug_main_c: === Bluetooth Mesh Relay Node Starting ===[0m
+[00:17:06.867,731] [0m<inf> fast_provision: MAC settings handler registered[0m
+[00:17:06.867,751] [0m<inf> fast_provision: MAC initialized early: E6:27:EA:1C:DC:D1[0m
+[00:17:06.869,359] [0m<inf> fs_nvs: 8 Sectors of 4096 bytes[0m
+[00:17:06.869,367] [0m<inf> fs_nvs: alloc wra: 2, f60[0m
+[00:17:06.869,372] [0m<inf> fs_nvs: data wra: 2, 640[0m
+[00:17:06.869,445] [0m<inf> bt_sdc_hci_driver: SoftDevice Controller build revision: 
+                                            89 9a 50 8a 95 01 9c 58  fc 39 d2 c1 10 04 ee 02 |..P....X .9......
+                                            64 ce 25 be                                      |d.%.             [0m
+[00:17:06.871,129] [0m<inf> bt_hci_core: HW Platform: Nordic Semiconductor (0x0002)[0m
+[00:17:06.871,145] [0m<inf> bt_hci_core: HW Variant: nRF54Lx (0x0005)[0m
+[00:17:06.871,160] [0m<inf> bt_hci_core: Firmware: Standard Bluetooth controller (0x00) Version 137.20634 Build 2617349514[0m
+[00:17:06.871,337] [0m<inf> bt_hci_core: No ID address. App must call settings_load()[0m
+[00:17:06.871,344] [0m<inf> lumi_debug_main_c: Bluetooth initialized[0m
+[00:17:06.871,350] [0m<inf> lumi_debug_main_c: TX Power: +8 dBm[0m
+[00:17:06.871,363] [0m<inf> dk_bt_mesh_prov_custom: Device UUID generated with PID: 0x0BF2, Version: 1.0.0[0m
+[00:17:06.871,378] [0m<inf> dk_bt_mesh_prov_custom: Device UUID:
+                                                 e4 27 0b f2 dc 91 ae 08  1b d8 01 00 00 6e 51 f7 |.'...... .....nQ.[0m
+[00:17:06.871,427] [0m<inf> fast_provision: Fast Provision model init: key slots=2[0m
+[00:17:06.871,434] [0m<inf> fast_provision:   ✓ Bound DEFAULT_APPKEY_INDEX (0x0001) to slot 0 (default network)[0m
+[00:17:06.871,439] [0m<inf> fast_provision: Fast Provision model bind status:[0m
+[00:17:06.871,460] [0m<inf> fast_provision:     - Default network (AppKey 0x0001): BOUND[0m
+[00:17:06.871,479] [0m<inf> fast_provision:     - Main network (AppKey 0x0000): NOT BOUND (will bind after provisioning)[0m
+[00:17:06.871,507] [1;33m<wrn> bt_mesh_access: Unused space in relation list: 10[0m
+[00:17:06.872,953] [0m<inf> mesh_node: Mesh stack initialized (CPS Diagnostic):[0m
+[00:17:06.872,961] [0m<inf> mesh_node:   Elements: 4[0m
+[00:17:06.872,972] [0m<inf> mesh_node:   Element 0 (loc 0x0000): 7 SIG, 2 VND[0m
+[00:17:06.872,980] [0m<inf> mesh_node:   Element 1 (loc 0x0000): 1 SIG, 1 VND[0m
+[00:17:06.872,987] [0m<inf> mesh_node:   Element 2 (loc 0x0000): 1 SIG, 1 VND[0m
+[00:17:06.872,995] [0m<inf> mesh_node:   Element 3 (loc 0x0000): 1 SIG, 1 VND[0m
+[00:17:06.873,005] [0m<inf> mesh_node: Mesh stack initialized[0m
+[00:17:06.873,319] [0m<inf> curtain: settings[opt] loaded OK: key=0x00, type=[1,0], limit=[20000,0][0m
+[00:17:06.873,359] [0m<inf> curtain: settings[pos] loaded OK: 0, 256[0m
+[00:17:06.873,486] [0m<inf> bt_hci_core: Identity: D1:DC:1C:EA:27:E6 (random)[0m
+[00:17:06.873,503] [0m<inf> bt_hci_core: HCI: version 6.0 (0x0e) revision 0x30f3, manufacturer 0x0059[0m
+[00:17:06.873,518] [0m<inf> bt_hci_core: LMP: version 6.0 (0x0e) subver 0x30f3[0m
+[00:17:06.875,734] [0m<inf> lumi_debug_main_c: Main initialization complete, waiting for Bluetooth ready...[0m
+[00:17:06.875,751] [0m<inf> app: Super loop started[0m
+[00:17:06.886,130] [0m<inf> relay: Power-on relay delay finished (0 ms)[0m
+[00:17:08.376,004] [0m<inf> fast_provision: Fast Provision context initialized from model[0m
+[00:17:08.376,035] [0m<inf> fast_provision: MAC and device key initialized: E6:27:EA:1C:DC:D1[0m
+[00:17:08.376,043] [0m<inf> fast_provision: Fast provision enabled (main network not provisioned)[0m
+[00:17:08.376,059] [0m<inf> fast_provision: Fast Provision work queue started[0m
+[00:17:08.376,066] [0m<inf> dk_bt_mesh_prov_custom: Provisioning toggle enabled - waiting for user input (default: DISABLED)[0m
+[00:17:08.376,096] [0m<inf> lumi_debug_main_c: Device MAC Address:
+                                            e4 27 ea 1c dc 91                                |.'....           [0m
+[00:17:08.376,102] [0m<inf> lumi_debug_main_c: Hardware initialized successfully[0m
+[00:17:08.376,335] [0m<inf> curtain: settings[pos] loaded OK: 0, 256[0m
+[00:17:08.376,383] [0m<inf> curtain: RestorePos: load_subtree rc=0, loaded=1[0m
+[00:17:08.376,390] [0m<inf> curtain: RESTORE CURRENT POS: [0, 0][0m
+[00:17:08.376,620] [0m<inf> curtain: settings[opt] loaded OK: key=0x00, type=[1,0], limit=[20000,0][0m
+[00:17:08.376,682] [0m<inf> curtain: RestoreOpt: load_subtree rc=0, loaded=1[0m
+[00:17:08.376,691] [0m<inf> curtain: RestoreOpt: TYPE=[1, 0], LIMIT=[20000, 0][0m
+[00:17:08.376,698] [0m<inf> knx_adapter: Initializing KNX Shutter Adapter...[0m
+[00:17:08.377,487] [0m<inf> sec_if_obj: === SecurityInterfaceObject CONSTRUCTED ===[0m
+[00:17:08.377,504] [0m<inf> sec_if_obj: FDSK (hardcoded):
+                                     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:17:08.377,510] [0m<inf> sec_if_obj: Tool Key initialized with FDSK (will be shown after restore)[0m
+[00:17:08.377,515] [0m<inf> sec_if_obj: ============================================[0m
+[00:17:08.377,714] [0m<dbg> knx_prov: knx_provision_read: Reading 28 bytes from flash offset 0x00154000[0m
+[00:17:08.377,732] [0m<dbg> knx_prov: knx_provision_read: RAW provision data:
+                                   ff ff ff ff ff ff ff ff  ff ff ff ff ff ff ff ff |........ ........
+                                   ff ff ff ff ff ff ff ff  ff ff ff ff             |........ ....    [0m
+[00:17:08.377,740] [0m<dbg> knx_prov: knx_provision_read:   Magic:   0xFFFFFFFF (expected 0x4B4E5850)[0m
+[00:17:08.377,748] [0m<dbg> knx_prov: knx_provision_read:   Version: 0xFF (expected 0x01)[0m
+[00:17:08.377,754] [1;31m<err> knx_prov: Magic mismatch: got 0xFFFFFFFF, expected 0x4B4E5850[0m
+[00:17:08.377,760] [1;31m<err> knx_prov: Flash likely erased (0xFF) or not programmed at offset 0x00154000[0m
+[00:17:08.377,766] [1;33m<wrn> knx_adapter: No provisioning data — using hardcoded defaults (dev mode)[0m
+[00:17:08.377,775] [0m<inf> knx_adapter: FINAL ACTIVE FDSK for boot:[0m
+[00:17:08.377,788] [0m<inf> knx_adapter: Active FDSK:
+                                      00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:17:08.377,825] [0m<inf> knx_adapter: [BOOT] Step 1/3 - Loading KNX config from NVS...[0m
+[00:17:08.378,056] [0m<inf> nordic_platform: >>> EEPROM buffer using static memory: 4096 bytes (Subtree Load Optimized)[0m
+[00:17:08.378,134] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 7 (512 bytes)[0m
+[00:17:08.378,214] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 6 (512 bytes)[0m
+[00:17:08.378,288] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 5 (512 bytes)[0m
+[00:17:08.378,359] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 4 (512 bytes)[0m
+[00:17:08.378,430] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 3 (512 bytes)[0m
+[00:17:08.378,500] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 2 (512 bytes)[0m
+[00:17:08.378,571] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 1 (512 bytes)[0m
+[00:17:08.378,676] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded chunk 0 (512 bytes)[0m
+[00:17:08.378,779] [0m<inf> knx_adapter: [BOOT] Step 2/3 - Restoring KNX memory (seq numbers, keys, config)...[0m
+[00:17:08.378,842] [0m<inf> sec_if_obj: === Security Interface Object Restored ===[0m
+[00:17:08.378,848] [0m<inf> sec_if_obj: LoadState: 0, SecurityModeEnabled: 0[0m
+[00:17:08.378,864] [0m<inf> sec_if_obj: FDSK (hardcoded):
+                                     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:17:08.378,879] [0m<inf> sec_if_obj: Tool Key (current):
+                                     00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:17:08.378,944] [1;33m<wrn> cbprintf_package: (unsigned) char * used for %p argument. It's recommended to cast it to void * because it may cause misbehavior in certain configurations. String:"!!! TableObject::restore (obj %p): Restored %d bytes. _state=%d, _size=%u, rel_addr=0x%08X, _data=%p" argument:5[0m
+[00:17:08.378,964] [1;33m<wrn> table_obj: !!! TableObject::restore (obj 0x2002be24): Restored 16 bytes. _state=0, _size=0, rel_addr=0x00000000, _data=0[0m
+[00:17:08.378,976] [1;33m<wrn> table_obj: RESTORED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00 00 01 00 85 00 01 0c |........ ........[0m
+[00:17:08.379,030] [1;33m<wrn> cbprintf_package: (unsigned) char * used for %p argument. It's recommended to cast it to void * because it may cause misbehavior in certain configurations. String:"!!! TableObject::restore (obj %p): Restored %d bytes. _state=%d, _size=%u, rel_addr=0x%08X, _data=%p" argument:5[0m
+[00:17:08.379,050] [1;33m<wrn> table_obj: !!! TableObject::restore (obj 0x2002beb4): Restored 9 bytes. _state=0, _size=0, rel_addr=0x00000000, _data=0[0m
+[00:17:08.379,062] [1;33m<wrn> table_obj: RESTORED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:17:08.379,116] [1;33m<wrn> cbprintf_package: (unsigned) char * used for %p argument. It's recommended to cast it to void * because it may cause misbehavior in certain configurations. String:"!!! TableObject::restore (obj %p): Restored %d bytes. _state=%d, _size=%u, rel_addr=0x%08X, _data=%p" argument:5[0m
+[00:17:08.379,135] [1;33m<wrn> table_obj: !!! TableObject::restore (obj 0x2002be60): Restored 9 bytes. _state=0, _size=0, rel_addr=0x00000000, _data=0[0m
+[00:17:08.379,148] [1;33m<wrn> table_obj: RESTORED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:17:08.379,202] [1;33m<wrn> cbprintf_package: (unsigned) char * used for %p argument. It's recommended to cast it to void * because it may cause misbehavior in certain configurations. String:"!!! TableObject::restore (obj %p): Restored %d bytes. _state=%d, _size=%u, rel_addr=0x%08X, _data=%p" argument:5[0m
+[00:17:08.379,221] [1;33m<wrn> table_obj: !!! TableObject::restore (obj 0x2002be88): Restored 9 bytes. _state=0, _size=0, rel_addr=0x00000000, _data=0[0m
+[00:17:08.379,234] [1;33m<wrn> table_obj: RESTORED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:17:08.379,254] [0m<inf> nordic_platform: KNX UART device ready: uart@4a000 (TX=P2.08, RX=P2.07)
+[0m
+[00:17:08.379,261] [1;31m<err> nordic_platform: Failed to configure UART via API: -134. Relying on DTS.[0m
+[00:17:08.379,269] [0m<inf> nordic_platform: KNX UART configured with ISR-triggered polling mode[0m
+[00:17:08.389,032] [0m<inf> knx_adapter: [BOOT] Step 3/3 - Enabling UART (KNX bus ready to receive)...[0m
+[00:17:08.389,052] [0m<inf> nordic_platform: KNX UART device ready: uart@4a000 (TX=P2.08, RX=P2.07)
+[0m
+[00:17:08.389,058] [1;31m<err> nordic_platform: Failed to configure UART via API: -134. Relying on DTS.[0m
+[00:17:08.389,066] [0m<inf> nordic_platform: KNX UART configured with ISR-triggered polling mode[0m
+[00:17:08.389,081] [0m<inf> knx_adapter: KNX Shutter Adapter Initialized Successfully[0m
+[00:17:08.389,256] [0m<inf> relay: Relay module initialized (4 channels, latching, 2-wire)[0m
+[00:17:08.389,268] [0m<inf> button: Button module initialized with 1 buttons[0m
+[00:17:08.389,551] [0m<inf> led_ev: +++led_ev_handle: 0[0m
+[00:17:08.389,563] [0m<inf> led_ev: LED_POWER_ON[0m
+[00:17:08.389,819] [0m<inf> execution_scene: Execution scene restored[0m
+[00:17:08.389,840] [0m<inf> pre_update: Pre-update channel 0: interval 2057 s[0m
+[00:17:08.390,100] [0m<inf> sw_binding: binding_init: done[0m
+[00:17:08.390,158] [0m<inf> curtain: StorePos: save_one rc=0, pos=[0, 536995448][0m
+[00:17:08.390,169] [0m<inf> curtain: **************Control RL: 0, 1, 0[0m
+[00:17:08.390,190] [0m<inf> curtain: curtain_update_device_status: 0, P: 0, T: 0, ST: 2[0m
+[00:17:08.390,198] [0m<inf> app: KNX: app_handle_curtain_update_level: curtain_idx=0, current_position=0[0m
+[00:17:08.692,006] [0m<inf> curtain: **************Control RL: 0, 0, 0[0m
+[00:17:08.890,200] [1;31m<err> vendor_model: Device not provisioned, cannot send mesh_tx_cmd_rsp[0m
+[00:17:08.890,208] [0m<inf> net_message: 
+ ########## Send Curtain Level: 0, 0[0m
+[00:17:11.903,310] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: STARTING PROACTIVE JUMP...[0m
+[00:17:11.903,539] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqTool: 12050 (0x2F12)[0m
+[00:17:11.903,584] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqSend: 300000012000 (0x45D964E6E0)[0m
+[00:17:11.903,664] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: Read SeqNum from Flash = 300000012000, Isolated = 300000012000[0m
+[00:17:11.903,675] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: Jump +2000 from 300000012000 (Isolated: 300000012000, Flash: 300000012000). New: 300000014000[0m
+[00:17:11.904,220] [0m<inf> nordic_platform: >>> Isolated NVS SAVE SUCCESS: SEND = 300000014000 (0x45D964EEB0)[0m
+[00:17:11.904,447] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqTool: 12050 (0x2F12)[0m
+[00:17:11.904,491] [0m<inf> nordic_platform: >>> [SUBTREE] Loaded SeqSend: 300000014000 (0x45D964EEB0)[0m
+[00:17:11.904,571] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: Read ToolSeqNum from Flash = 12050, Isolated = 12050[0m
+[00:17:11.905,121] [0m<inf> nordic_platform: >>> Isolated NVS SAVE SUCCESS: TOOL = 14050 (0x36E2)[0m
+[00:17:11.905,143] [1;33m<wrn> bau_systemB: >>> MEM_TRACE: BauSystemB::writeMemory() called[0m
+[00:17:11.905,149] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::writeMemory() ENTERED[0m
+[00:17:11.905,183] [1;31m<err> nordic_platform: >>> writeNonVolatileMemory(addr=0) [FIX VERIFIED]: First 2 bytes [0x00 0x02][0m
+[00:17:11.905,224] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be24): Saved 16 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:17:11.905,240] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00 00 01 00 85 00 01 0c |........ ........[0m
+[00:17:11.905,253] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002beb4): Saved 9 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:17:11.905,265] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:17:11.905,278] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be60): Saved 9 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:17:11.905,290] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:17:11.905,303] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be88): Saved 9 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:17:11.905,315] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:17:11.905,323] [0m<inf> nordic_platform: commitNonVolatileMemory called -> commitToEeprom[0m
+[00:17:11.905,331] [0m<inf> nordic_platform: >>> commitToEeprom: Saving 4096 bytes in 8 chunks[0m
+[00:17:11.905,343] [0m<inf> nordic_platform: First 20 bytes to save:
+                                          00 02 00 85 00 00 00 00  00 00 00 01 ff ff 00 01 |........ ........
+                                          00 00 01 60                                      |...`             [0m
+[00:17:11.905,381] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/0', size=512)...[0m
+[00:17:11.906,506] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.906,514] [0m<inf> nordic_platform: >>> Chunk 0 saved OK to Settings[0m
+[00:17:11.906,556] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/1', size=512)...[0m
+[00:17:11.906,668] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.906,675] [0m<inf> nordic_platform: >>> Chunk 1 saved OK to Settings[0m
+[00:17:11.906,710] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/2', size=512)...[0m
+[00:17:11.906,819] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.906,826] [0m<inf> nordic_platform: >>> Chunk 2 saved OK to Settings[0m
+[00:17:11.906,863] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/3', size=512)...[0m
+[00:17:11.906,972] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.906,978] [0m<inf> nordic_platform: >>> Chunk 3 saved OK to Settings[0m
+[00:17:11.907,014] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/4', size=512)...[0m
+[00:17:11.907,123] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.907,129] [0m<inf> nordic_platform: >>> Chunk 4 saved OK to Settings[0m
+[00:17:11.907,165] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/5', size=512)...[0m
+[00:17:11.907,276] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.907,282] [0m<inf> nordic_platform: >>> Chunk 5 saved OK to Settings[0m
+[00:17:11.907,317] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/6', size=512)...[0m
+[00:17:11.907,433] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.907,440] [0m<inf> nordic_platform: >>> Chunk 6 saved OK to Settings[0m
+[00:17:11.907,475] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/7', size=512)...[0m
+[00:17:11.907,586] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.907,592] [0m<inf> nordic_platform: >>> Chunk 7 saved OK to Settings[0m
+[00:17:11.907,598] [0m<inf> nordic_platform: >>> Settings: ALL 8 chunks saved successfully![0m
+[00:17:11.907,605] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::saveMemory() called[0m
+[00:17:11.907,610] [1;33m<wrn> knx_memory: >>> MEM_TRACE: Memory::writeMemory() ENTERED[0m
+[00:17:11.907,644] [1;31m<err> nordic_platform: >>> writeNonVolatileMemory(addr=0) [FIX VERIFIED]: First 2 bytes [0x00 0x02][0m
+[00:17:11.907,686] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be24): Saved 16 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:17:11.907,701] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00 00 01 00 85 00 01 0c |........ ........[0m
+[00:17:11.907,715] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002beb4): Saved 9 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:17:11.907,726] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:17:11.907,739] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be60): Saved 9 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:17:11.907,751] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:17:11.907,764] [1;33m<wrn> table_obj: !!! TableObject::save (obj 0x2002be88): Saved 9 bytes. _state=0, _size=0, rel_addr=0x00000000[0m
+[00:17:11.907,776] [1;33m<wrn> table_obj: SAVED TABLE_OBJ DATA:
+                                    00 00 00 00 00 00 00 00  00                      |........ .       [0m
+[00:17:11.907,784] [0m<inf> nordic_platform: commitNonVolatileMemory called -> commitToEeprom[0m
+[00:17:11.907,792] [0m<inf> nordic_platform: >>> commitToEeprom: Saving 4096 bytes in 8 chunks[0m
+[00:17:11.907,805] [0m<inf> nordic_platform: First 20 bytes to save:
+                                          00 02 00 85 00 00 00 00  00 00 00 01 ff ff 00 01 |........ ........
+                                          00 00 01 60                                      |...`             [0m
+[00:17:11.907,841] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/0', size=512)...[0m
+[00:17:11.907,987] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.907,993] [0m<inf> nordic_platform: >>> Chunk 0 saved OK to Settings[0m
+[00:17:11.908,031] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/1', size=512)...[0m
+[00:17:11.908,140] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.908,146] [0m<inf> nordic_platform: >>> Chunk 1 saved OK to Settings[0m
+[00:17:11.908,182] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/2', size=512)...[0m
+[00:17:11.908,292] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.908,298] [0m<inf> nordic_platform: >>> Chunk 2 saved OK to Settings[0m
+[00:17:11.908,335] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/3', size=512)...[0m
+[00:17:11.908,444] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.908,450] [0m<inf> nordic_platform: >>> Chunk 3 saved OK to Settings[0m
+[00:17:11.908,486] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/4', size=512)...[0m
+[00:17:11.908,596] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.908,602] [0m<inf> nordic_platform: >>> Chunk 4 saved OK to Settings[0m
+[00:17:11.908,637] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/5', size=512)...[0m
+[00:17:11.908,749] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.908,755] [0m<inf> nordic_platform: >>> Chunk 5 saved OK to Settings[0m
+[00:17:11.908,790] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/6', size=512)...[0m
+[00:17:11.908,907] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.908,914] [0m<inf> nordic_platform: >>> Chunk 6 saved OK to Settings[0m
+[00:17:11.908,949] [0m<inf> nordic_platform: >>> About to call settings_save_one('knx/eeprom/7', size=512)...[0m
+[00:17:11.909,058] [0m<inf> nordic_platform: >>> settings_save_one() returned rc=0[0m
+[00:17:11.909,065] [0m<inf> nordic_platform: >>> Chunk 7 saved OK to Settings[0m
+[00:17:11.909,071] [0m<inf> nordic_platform: >>> Settings: ALL 8 chunks saved successfully![0m
+[00:17:11.909,078] [0m<inf> sec_app_layer: >>> SEQ_DEBUG: JUMP SUCCESSFUL & PERSISTED TO FLASH[0m
+[00:17:12.354,294] [0m<inf> relay: Power-on relay delay finished (3956 ms)[0m
+[00:17:18.390,899] [1;31m<err> nordic_platform: UART Error: 4[0m
+[00:17:18.393,555] [1;31m<err> nordic_platform: UART Error: 4[0m
+[00:17:18.397,614] [1;31m<err> nordic_platform: UART Error: 4[0m
+[00:17:18.400,304] [1;31m<err> nordic_platform: UART Error: 4[0m

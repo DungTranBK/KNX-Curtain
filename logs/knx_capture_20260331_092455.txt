@@ -1,0 +1,75 @@
+1[00:45:31.637,494] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=0, IA=0xffff[0m
+[00:45:40.956,600] [0m<inf> default_network: Default Network: CLOSED | Main Network: NOT_PROVISIONED[0m
+[00:45:41.639,575] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=0, IA=0xffff[0m
+[00:45:51.341,626] [0m<inf> sec_app_layer: >>> decrypt: SYNC_REQ from 0x110B to 0x0000, len=12, toolAccess=1, authOnly=0[0m
+[00:45:51.341,646] [0m<inf> sec_app_layer: >>> syncReq: Checking Serial Number match[0m
+[00:45:51.341,659] [0m<inf> sec_app_layer: Serial from ETS:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:45:51.341,671] [0m<inf> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:45:51.341,690] [0m<inf> sec_app_layer: >>> syncReq ACCEPTED: serial matches[0m
+[00:45:51.341,710] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x0000, grp=1, tpci=0x03, extFmt=0[0m
+[00:45:51.341,723] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        fb bd 7c 35 70 70                                |..|5pp           [0m
+[00:45:51.341,916] [1;31m<err> sec_app_layer: !!! MAC MISMATCH (conf+auth): calc=0x746AC3C4, decrypt=0x463694FA[0m
+[00:45:51.341,929] [1;31m<err> sec_app_layer: Active FDSK:
+                                        1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:45:51.341,940] [1;31m<err> sec_app_layer: Active KEY (Used for decrypt):
+                                        00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:45:51.341,964] [1;31m<err> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:45:51.652,918] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=0, IA=0xffff[0m
+[00:45:57.355,780] [0m<inf> sec_app_layer: >>> decrypt: SYNC_REQ from 0x110B to 0x0000, len=12, toolAccess=1, authOnly=0[0m
+[00:45:57.355,801] [0m<inf> sec_app_layer: >>> syncReq: Checking Serial Number match[0m
+[00:45:57.355,813] [0m<inf> sec_app_layer: Serial from ETS:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:45:57.355,825] [0m<inf> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:45:57.355,844] [0m<inf> sec_app_layer: >>> syncReq ACCEPTED: serial matches[0m
+[00:45:57.355,865] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x0000, grp=1, tpci=0x03, extFmt=0[0m
+[00:45:57.355,878] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        fb bd 7c 35 70 70                                |..|5pp           [0m
+[00:45:57.356,071] [1;31m<err> sec_app_layer: !!! MAC MISMATCH (conf+auth): calc=0x746AC3C4, decrypt=0x463694FA[0m
+[00:45:57.356,083] [1;31m<err> sec_app_layer: Active FDSK:
+                                        1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:45:57.356,096] [1;31m<err> sec_app_layer: Active KEY (Used for decrypt):
+                                        00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:45:57.356,119] [1;31m<err> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:46:01.676,790] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=0, IA=0xffff[0m
+[00:46:03.379,043] [0m<inf> sec_app_layer: >>> decrypt: SYNC_REQ from 0x110B to 0x0000, len=12, toolAccess=1, authOnly=0[0m
+[00:46:03.379,064] [0m<inf> sec_app_layer: >>> syncReq: Checking Serial Number match[0m
+[00:46:03.379,076] [0m<inf> sec_app_layer: Serial from ETS:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:46:03.379,090] [0m<inf> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:46:03.379,109] [0m<inf> sec_app_layer: >>> syncReq ACCEPTED: serial matches[0m
+[00:46:03.379,130] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x0000, grp=1, tpci=0x03, extFmt=0[0m
+[00:46:03.379,142] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        9e 07 3e 9d 24 91                                |..>.$.           [0m
+[00:46:03.379,335] [1;31m<err> sec_app_layer: !!! MAC MISMATCH (conf+auth): calc=0xB901DFA1, decrypt=0x3823FE26[0m
+[00:46:03.379,348] [1;31m<err> sec_app_layer: Active FDSK:
+                                        1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:46:03.379,360] [1;31m<err> sec_app_layer: Active KEY (Used for decrypt):
+                                        00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:46:03.379,384] [1;31m<err> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:46:09.382,405] [0m<inf> sec_app_layer: >>> decrypt: SYNC_REQ from 0x110B to 0x0000, len=12, toolAccess=1, authOnly=0[0m
+[00:46:09.382,427] [0m<inf> sec_app_layer: >>> syncReq: Checking Serial Number match[0m
+[00:46:09.382,440] [0m<inf> sec_app_layer: Serial from ETS:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:46:09.382,452] [0m<inf> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:46:09.382,470] [0m<inf> sec_app_layer: >>> syncReq ACCEPTED: serial matches[0m
+[00:46:09.382,491] [1;33m<wrn> sec_app_layer: >>> DECRYPT PARAMS: src=0x110B, dst=0x0000, grp=1, tpci=0x03, extFmt=0[0m
+[00:46:09.382,504] [1;33m<wrn> sec_app_layer: >>> APDU:
+                                        9e 07 3e 9d 24 91                                |..>.$.           [0m
+[00:46:09.382,697] [1;31m<err> sec_app_layer: !!! MAC MISMATCH (conf+auth): calc=0xB901DFA1, decrypt=0x3823FE26[0m
+[00:46:09.382,709] [1;31m<err> sec_app_layer: Active FDSK:
+                                        1a a0 3e 78 33 25 9f 70  da be 76 4b 2e 82 5b 5b |..>x3%.p ..vK..[[[0m
+[00:46:09.382,721] [1;31m<err> sec_app_layer: Active KEY (Used for decrypt):
+                                        00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 |........ ........[0m
+[00:46:09.382,745] [1;31m<err> sec_app_layer: Device Serial:
+                                        00 85 00 00 00 0b                                |......           [0m
+[00:46:10.956,695] [0m<inf> default_network: Default Network: CLOSED | Main Network: NOT_PROVISIONED[0m
+[00:46:11.687,478] [0m<inf> knx_adapter: KNX Loop Heartbeat: Configured=0, IA=0xffff[0m

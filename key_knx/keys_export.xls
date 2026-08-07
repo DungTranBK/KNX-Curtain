@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Worksheet ss:Name="Keys">
+  <Table>
+   <Column ss:Width="50"/>
+   <Column ss:Width="250"/>
+   <Column ss:Width="250"/>
+   <Row>
+    <Cell><Data ss:Type="String">STT</Data></Cell>
+    <Cell><Data ss:Type="String">Mã Base32(để nhập vào ETS)</Data></Cell>
+    <Cell><Data ss:Type="String">Key</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">1</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAAA-AAAGIM-EMJK63-5D7G4U-OTS76K-LQ7VTA</Data></Cell>
+    <Cell><Data ss:Type="String">035A0000000190C2312AF6FA3F9B9474E5FF2970FD66</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">2</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAAA-AAALWX-QLPXS7-UUX6QM-3XCKQA-LM5MIZ</Data></Cell>
+    <Cell><Data ss:Type="String">035A00000002ED782DF797E94BFA0CDDC4A8016CEB11</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">3</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAAA-AAAODK-OHCVG3-M4P6SD-KJ25Q4-TWD7EG</Data></Cell>
+    <Cell><Data ss:Type="String">035A0000000386A71C5536D9C7FA435275D872761FC8</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">4</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAAA-AAARFE-L7C47H-OZFHG7-WXVCGM-NZK4RX</Data></Cell>
+    <Cell><Data ss:Type="String">035A000000044A45FC5CF9DD929CDFB5EA2331B95723</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">5</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAAA-AAAUUC-7R6I66-MMZ7PS-HCB7BP-APQA3I</Data></Cell>
+    <Cell><Data ss:Type="String">035A00000005282FC7C8F798CCFDF23883F0BC0F8036</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">6</Data></Cell>
+    <Cell><Data ss:Type="String">ANNACA-AAA2L2-RTJMW7-PSDFEP-GXSSHH-WZG43T</Data></Cell>
+    <Cell><Data ss:Type="String">035A0100000697A8CD2CB7DF21948F35E5239ED93737</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">7</Data></Cell>
+    <Cell><Data ss:Type="String">ANNACA-AAA7DJ-UE3GVI-WMMY4N-DSR327-RBXF3Z</Data></Cell>
+    <Cell><Data ss:Type="String">035A01000007C69A1366AA2CC6638D1CA3BD7E21B977</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">8</Data></Cell>
+    <Cell><Data ss:Type="String">ANNACA-AABCUJ-A2PXKG-I5EAZ6-HDZJEU-5JFBIF</Data></Cell>
+    <Cell><Data ss:Type="String">035A01000008A89069F75191D2033E38F29253A92850</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">9</Data></Cell>
+    <Cell><Data ss:Type="String">ANNACA-AABFWB-JTHKFD-WVEHS3-B2VA2Z-TYHDPB</Data></Cell>
+    <Cell><Data ss:Type="String">035A010000096C14CCEA28ED521E5B0EAA0D667838DE</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">10</Data></Cell>
+    <Cell><Data ss:Type="String">ANNACA-AABKLC-SQ3N6S-KSNNAH-NQF3EU-2QH77W</Data></Cell>
+    <Cell><Data ss:Type="String">035A0100000A9629436DF49526B4076C0BB253503FFF</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">11</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAEA-AABOSV-6K2MDN-U2GBOB-FNPEVK-6ZUS5U</Data></Cell>
+    <Cell><Data ss:Type="String">035A0200000BA55F2B4C1B69A305C12B5E4AABD9A4BB</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">12</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAEA-AABQRN-IESQPH-PMH7DN-KYUYWX-7QCDDC</Data></Cell>
+    <Cell><Data ss:Type="String">035A0200000C22D4125079DEC3FC6D56298B5FF010C6</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">13</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAEA-AABUL2-I5KU53-BPA5SI-RFJQHG-HKTUKD</Data></Cell>
+    <Cell><Data ss:Type="String">035A0200000D17A47554EEC2F0764889530398EA9D14</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">14</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAEA-AAB2HS-R4ZAL6-2KHYPP-3MTZLK-5N4MQZ</Data></Cell>
+    <Cell><Data ss:Type="String">035A0200000E8F28F3205FB4A3E1EFDB2795ABADE321</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">15</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAEA-AAB547-MIRB7T-INL6WY-BREP5B-U4IITZ</Data></Cell>
+    <Cell><Data ss:Type="String">035A0200000F79F62221FCD0D5FAD80C48FE869C4227</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">16</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAGA-AACAIR-GKM7KA-XENGMK-33BVN5-OQ5N4D</Data></Cell>
+    <Cell><Data ss:Type="String">035A030000101113299F502E46998ADEC356F5D0EB78</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">17</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAGA-AACHDO-E6PFL3-DWJHAL-EDOUXE-2UW5CJ</Data></Cell>
+    <Cell><Data ss:Type="String">035A03000011C6E279E55EC7649C0B20DD4B9354B744</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">18</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAGA-AACI5O-EOQA57-EVNYGB-OP7CWN-JZZUEI</Data></Cell>
+    <Cell><Data ss:Type="String">035A030000123AE23A00EFC956E0C173FE2B3539CD08</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">19</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAGA-AACNT2-JLRXMK-VEF76Z-3SR4AQ-BQZ6AM</Data></Cell>
+    <Cell><Data ss:Type="String">035A0300001367A4AE3762AA42FFD9DCA3C04030CF80</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">20</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAGA-AACTZG-YZZDRG-FLXPT6-QN3XSZ-PUMLL2</Data></Cell>
+    <Cell><Data ss:Type="String">035A03000014F26C6723898ABBBE7E83777965F462D7</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">21</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAIA-AACUZP-UWPGH6-3FRCSJ-XUT5G6-56O4XK</Data></Cell>
+    <Cell><Data ss:Type="String">035A0400001532FA59E63FB6588A49BD27D37BBE772E</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">22</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAIA-AACZP5-4OSM6U-2QBCNY-CDWI6T-OFMZAI</Data></Cell>
+    <Cell><Data ss:Type="String">035A040000165FDE3A4CF5350089B810EC8F4DC56640</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">23</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAIA-AAC4HJ-EQS66L-WRCZ3I-O47NJH-4EOOMC</Data></Cell>
+    <Cell><Data ss:Type="String">035A040000170E92425EF2ED116768773ED49F847398</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">24</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAIA-AADCSJ-E4X6RJ-FXMHGR-ZAXR7E-FLJRVF</Data></Cell>
+    <Cell><Data ss:Type="String">035A04000018A49272FE8A4B761CD1C82F1F90AB4C6A</Data></Cell>
+   </Row>
+   <Row>
+    <Cell><Data ss:Type="String">25</Data></Cell>
+    <Cell><Data ss:Type="String">ANNAIA-AADFKG-4RJZ54-U57HJ6-BNRALH-XQZDWK</Data></Cell>
+    <Cell><Data ss:Type="String">035A04000019546E4539EF29DF9D3E0B62059EF0C8EC</Data></Cell>
+   </Row>
+  </Table>
+ </Worksheet>
+</Workbook>

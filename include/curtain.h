@@ -11,11 +11,12 @@
 /******************************************************************************/
 /*                              INCLUDE FILES                                 */
 /******************************************************************************/
+#include <stdbool.h>
+#include <stdint.h>
+
 #include "app_device.h"
 #include "utilities.h"
 #include "vendor_model.h"
-#include <stdbool.h>
-#include <stdint.h>
 
 /******************************************************************************/
 /*                     EXPORTED TYPES and DEFINITIONS                         */
@@ -81,7 +82,7 @@ typedef struct {
   bool send_join;
 } cz_auto_send_t;
 
-enum CurtainType_enum {
+enum {
   HOZ_DZ3W = 0,
   HOZ_DZ4W = 1,
   HOZ_DT99 = 2,
@@ -274,7 +275,7 @@ enum {
 };
 typedef uint8_t CutainState_enum;
 
-#define DEFAULT_PULL_DELAY 300 // ms
+#define DEFAULT_PULL_DELAY 300  // ms
 
 typedef void (*typeCurtain_updateCurtainCurrentPosition)(uint8_t idx,
                                                          uint8_t pos);
@@ -293,9 +294,9 @@ void curtain_update_present_level(uint8_t idx, uint8_t level);
 void curtain_response_st_to_gateway(uint8_t idx);
 void curtain_config_init(void);
 void curtain_config_set_params(uint8_t type, int val);
-int curtain_cfg_set_mcu_opt(int idx, uint8_t *par, int par_len, uint8_t cmd);
-int curtain_cfg_get_mcu_opt(int idx, uint8_t *par, int par_len, uint8_t cmd);
-int curtain_config_handle_response_from_mcu(uint8_t *par, int par_len);
+int curtain_cfg_set_mcu_opt(int idx, uint8_t* par, int par_len, uint8_t cmd);
+int curtain_cfg_get_mcu_opt(int idx, uint8_t* par, int par_len, uint8_t cmd);
+int curtain_config_handle_response_from_mcu(uint8_t* par, int par_len);
 void curtain_reset_all_device_config(void);
 
 int cz_config_enable_auto_send(void);
@@ -304,16 +305,22 @@ void curtain_handle_refresh_led(uint16_t mask);
 void curtain_handle_option_button_state(uint8_t st);
 
 void curtain_control_curtain_by_app(CurtainNumber_enum CT_No,
-                                 CurtainControlId_enum CT_CmdId,
-                                 uint8_t positionPerChar);
+                                    CurtainControlId_enum CT_CmdId,
+                                    uint8_t positionPerChar);
 
 void curtain_init(void);
 void curtain_proc(void);
 
-int curtain_cfg_handle_set_message(int model_idx, uint8_t *par, int par_len,
+int curtain_cfg_handle_set_message(int model_idx, uint8_t* par, int par_len,
                                    uint8_t cmd, bool notify_led_en);
-int curtain_cfg_handle_get_message(int model_idx, uint8_t *par, int par_len,
+int curtain_cfg_handle_get_message(int model_idx, uint8_t* par, int par_len,
                                    uint8_t cmd);
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 void curtain_callback_init(typeCurtain_updateCurtainCurrentPosition func);
+#ifdef __cplusplus
+}
+#endif
 #endif /* CURTAIN_H_ */

@@ -14,5 +14,6 @@ void app_serial_dispatch(uint8_t *data, size_t data_len);
  */
 void button_handle_btn_event(uint8_t button_id, uint8_t evt);
 void app_handle_refresh_led(uint16_t mask);
+void app_init(void);
 
 #endif /* APP_H */

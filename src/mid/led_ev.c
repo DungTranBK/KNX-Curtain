@@ -46,25 +46,30 @@ static bool ota_mcu_new_firmware_is_avalable(void) { return false; }
 void led_ev_handle(uint8_t led_evt, uint16_t mask) {
   LOG_INF("+++led_ev_handle: %d", led_evt);
   switch (led_evt) {
-  case LED_POWER_ON: {
-    bool is_configured = false;
-    if (pvETS_is_configured != NULL) {
-      if (!pvETS_is_configured()) {
-        is_configured = pvETS_is_configured();
-      }
-    }
-    if (mask & CONFIG_LED_MASK_BLUETOOTH) {
-      if (STATE_DEV_UNPROV == get_provision_state() && !is_configured) {
+ case LED_POWER_ON:  {
+      bool is_configured = knx_is_configured();
+      bool ble_provisioned = (get_provision_state() == STATE_DEV_PROVED);
+
+      if (!ble_provisioned && !is_configured) {
+        /* Both unconfigured -> Blink Red */
         led_blink(CONFIG_LED_MASK_BLUETOOTH, CMD_BLINK_RED, 3,
                   LAST_STATE_REFRESH_LED, 300);
       } else {
-        led_blink(CONFIG_LED_MASK_BLUETOOTH, CMD_BLINK_BLUE, 3,
-                  LAST_STATE_REFRESH_LED, 300);
+        /* At least one configured */
+        if (ble_provisioned) {
+          /* Blink Blue for BLE */
+          led_blink(CONFIG_LED_MASK_BLUETOOTH, CMD_BLINK_BLUE, 3,
+                    LAST_STATE_REFRESH_LED, 300);
+        }
+        if (is_configured) {
+          /* Blink Pink for KNX */
+          led_blink(CONFIG_LED_MASK_KNX, CMD_BLINK_PINK, 3,
+                    LAST_STATE_REFRESH_LED, 300);
+        }
       }
+      LOG_INF("LED_POWER_ON");
+      break;
     }
-    LOG_INF("LED_POWER_ON");
-    break;
-  }
 
   case LED_OTA_FAIL: {
     if (!ota_mcu_new_firmware_is_avalable()) {

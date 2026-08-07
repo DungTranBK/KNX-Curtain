@@ -1,6 +1,6 @@
 source "Kconfig.zephyr"
 
-config KNX_ACTUATOR_4_RELAY
+config KNX_CURTAIN
 	bool "Enable Provisioner mode on demo"
 	default false
 

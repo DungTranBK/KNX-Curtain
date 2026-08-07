@@ -6,9 +6,33 @@ project(knx_actuator)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# =============================================================================
+# KNX Stack Configuration
+# =============================================================================
+target_compile_definitions(app PRIVATE
+    MASK_VERSION=0x07B0
+    USE_TP
+    USE_KNX_UART_API
+    USE_KNX_MEMORY_API
+    NCN5120
+    KNX_NO_PRINT
+    USE_DATASECURE
+    KNX_NO_AUTOMATIC_GLOBAL_INSTANCE
+    KNX_FLASH_SIZE=1024
+)
+
+# =============================================================================
+# Include Directories
+# =============================================================================
 zephyr_include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(app PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/knx_stack/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/knx
+)
 
-
+# =============================================================================
+# Source Files
+# =============================================================================
 target_sources(app PRIVATE 
     src/main.c
     src/network/normal_provision.c
@@ -34,4 +58,20 @@ target_sources(app PRIVATE
     src/app/app.c
     src/driver/at24c02.c
     src/app/curtain.c
+
+    # KNX Adapter
+    src/knx/knx_adapter.cpp
+    src/knx/knx_app_layer.cpp
+    src/knx/knx_provision.c
+
+    # KNX Stack - Platform & Facade
+    knx_stack/src/nordic_platform.cpp
+    knx_stack/src/knx_facade.cpp
 )
+
+# Global KNX Core sources
+file(GLOB KNX_CORE_SOURCES 
+    "knx_stack/src/knx/*.cpp"
+    "knx_stack/src/knx/*.c"
+)
+target_sources(app PRIVATE ${KNX_CORE_SOURCES})
